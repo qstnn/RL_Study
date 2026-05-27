@@ -1230,6 +1230,10 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
         + [f"{name}_pos" for name in monitor_names]
         + [f"{name}_vel" for name in monitor_names]
         + [f"{name}_torque" for name in monitor_names]
+        + [f"{name}_computed_torque" for name in monitor_names]
+        + [f"{name}_pos_target" for name in monitor_names]
+        + [f"{name}_vel_target" for name in monitor_names]
+        + [f"{name}_effort_target" for name in monitor_names]
         + ["payload_kg", "drag_force_n", "drag_force_x_w", "drag_force_y_w", "motor_profile"]
         + [f"tune_{name}" for name in LIVE_TUNING_PARAM_NAMES]
     )
@@ -1335,6 +1339,18 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
         selected_vel = [float(joint_vel[idx]) for idx in monitor_indices]
         selected_tau = [float(joint_tau[idx]) for idx in monitor_indices]
 
+        def _selected_tensor_values_or_nan(tensor):
+            if tensor is None:
+                return [math.nan for _ in monitor_indices]
+            values = tensor[monitor_env_id].detach().cpu().numpy()
+            return [float(values[idx]) for idx in monitor_indices]
+
+        robot_data = robot.data
+        selected_computed_tau = _selected_tensor_values_or_nan(getattr(robot_data, "computed_torque", None))
+        selected_pos_target = _selected_tensor_values_or_nan(getattr(robot_data, "joint_pos_target", None))
+        selected_vel_target = _selected_tensor_values_or_nan(getattr(robot_data, "joint_vel_target", None))
+        selected_effort_target = _selected_tensor_values_or_nan(getattr(robot_data, "joint_effort_target", None))
+
         for k, (pos_value, vel_value, tau_value) in enumerate(zip(selected_pos, selected_vel, selected_tau)):
             pos_history[k].append(pos_value)
             vel_history[k].append(vel_value)
@@ -1346,6 +1362,10 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
                 + selected_pos
                 + selected_vel
                 + selected_tau
+                + selected_computed_tau
+                + selected_pos_target
+                + selected_vel_target
+                + selected_effort_target
                 + [
                     float(applied_payload_kg),
                     float(torch.linalg.norm(current_drag_force_w[:2]).item()),
