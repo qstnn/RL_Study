@@ -1,0 +1,203 @@
+--- git status ---
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+  (commit or discard the untracked or modified content in submodules)
+	modified:   deep_robotics_model (modified content, untracked content)
+	modified:   scripts/reinforcement_learning/rsl_rl/play.py
+	modified:   scripts/reinforcement_learning/rsl_rl/train.py
+	modified:   source/rl_training/rl_training/assets/deeprobotics.py
+	modified:   source/rl_training/rl_training/tasks/manager_based/locomotion/velocity/config/wheeled/deeprobotics_m20/rough_env_cfg.py
+
+no changes added to commit (use "git add" and/or "git commit -a") 
+
+
+--- git diff ---
+diff --git a/deep_robotics_model b/deep_robotics_model
+--- a/deep_robotics_model
++++ b/deep_robotics_model
+@@ -1 +1 @@
+-Subproject commit b452a1f404d37155400242f18e454fed8bcc51b8
++Subproject commit b452a1f404d37155400242f18e454fed8bcc51b8-dirty
+diff --git a/scripts/reinforcement_learning/rsl_rl/play.py b/scripts/reinforcement_learning/rsl_rl/play.py
+index 1828983..dbe0c6b 100644
+--- a/scripts/reinforcement_learning/rsl_rl/play.py
++++ b/scripts/reinforcement_learning/rsl_rl/play.py
+@@ -115,7 +115,7 @@ from isaaclab_rl.rsl_rl import (
+     RslRlVecEnvWrapper,
+     export_policy_as_jit,
+     export_policy_as_onnx,
+-    handle_deprecated_rsl_rl_cfg,
++    #handle_deprecated_rsl_rl_cfg,
+ )
+ from isaaclab_tasks.utils import get_checkpoint_path
+ from isaaclab_tasks.utils.hydra import hydra_task_config
+@@ -132,7 +132,7 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
+     env_cfg.scene.num_envs = args_cli.num_envs if args_cli.num_envs is not None else 50
+ 
+     # handle deprecated configurations (convert old policy format to new actor/critic format)
+-    agent_cfg = handle_deprecated_rsl_rl_cfg(agent_cfg, installed_version)
++    #agent_cfg = handle_deprecated_rsl_rl_cfg(agent_cfg, installed_version)
+ 
+     # set the environment seed
+     # note: certain randomizations occur in the environment initialization so we set the seed here
+@@ -267,8 +267,8 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
+             obs, _, _, _ = env.step(actions)
+ 
+         if (
+-            VIS_ENABLEd
+-            and draw_interface is not None
++            True
++            and False
+             and foot_ids is not None
+             and phase_offsets is not None
+             and cycle_time is not None
+@@ -384,4 +384,4 @@ if __name__ == "__main__":
+     # run the main function
+     main()
+     # close sim app
+-    simulation_app.close()
+\ No newline at end of file
++    simulation_app.close()
+diff --git a/scripts/reinforcement_learning/rsl_rl/train.py b/scripts/reinforcement_learning/rsl_rl/train.py
+index 6d317d9..a43adbb 100644
+--- a/scripts/reinforcement_learning/rsl_rl/train.py
++++ b/scripts/reinforcement_learning/rsl_rl/train.py
+@@ -99,7 +99,7 @@ from isaaclab.envs import (
+ )
+ from isaaclab.utils.dict import print_dict
+ from isaaclab.utils.io import dump_yaml
+-from isaaclab_rl.rsl_rl import RslRlOnPolicyRunnerCfg, RslRlVecEnvWrapper, handle_deprecated_rsl_rl_cfg
++from isaaclab_rl.rsl_rl import RslRlOnPolicyRunnerCfg, RslRlVecEnvWrapper
+ from isaaclab_tasks.utils import get_checkpoint_path
+ from isaaclab_tasks.utils.hydra import hydra_task_config
+ 
+@@ -122,7 +122,8 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
+     )
+ 
+     # handle deprecated configurations (convert old policy format to new actor/critic format)
+-    agent_cfg = handle_deprecated_rsl_rl_cfg(agent_cfg, installed_version)
++    #by qn delete
++    #agent_cfg = handle_deprecated_rsl_rl_cfg(agent_cfg, installed_version)
+ 
+     # set the environment seed
+     # note: certain randomizations occur in the environment initialization so we set the seed here
+@@ -179,8 +180,46 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
+ 
+     # convert config to dict and create runner
+     train_cfg = agent_cfg.to_dict()
+-    runner = OnPolicyRunner(env, train_cfg, log_dir=log_dir, device=agent_cfg.device)
+     
++
++# === 终极 RSL-RL 2.x 兼容脱壳包装器 ===
++    class RSLRL2Wrapper:
++        def __init__(self, env):
++            self.env = env
++            
++        def __getattr__(self, name):
++            # 透传所有底层属性
++            return getattr(self.env, name)
++            
++        def _extract(self, obs):
++            # 将新版 IsaacLab 的字典外壳剥离，返回纯 Tensor
++            if isinstance(obs, dict):
++                return obs.get("policy", list(obs.values())[0])
++            return obs
++
++        @property
++        def obs_buf(self):
++            return self._extract(self.env.obs_buf)
++            
++        def get_observations(self):
++            ret = self.env.get_observations()
++            return (self._extract(ret[0]),) + ret[1:]
++            
++        def reset(self):
++            ret = self.env.reset()
++            return (self._extract(ret[0]),) + ret[1:]
++            
++        def step(self, actions):
++            ret = self.env.step(actions)
++            return (self._extract(ret[0]),) + ret[1:]
++
++    # 给环境套上脱壳机
++    env = RSLRL2Wrapper(env)
++    # ============================================
++
++    # 基准线：你原来的代码
++    runner = OnPolicyRunner(env, train_cfg, log_dir=log_dir, device=agent_cfg.device)
++
+     # write git state to logs
+     runner.add_git_repo_to_log(__file__)
+     # load the checkpoint
+@@ -204,4 +243,4 @@ if __name__ == "__main__":
+     # run the main function
+     main()
+     # close sim app
+-    simulation_app.close()
+\ No newline at end of file
++    simulation_app.close()
+diff --git a/source/rl_training/rl_training/assets/deeprobotics.py b/source/rl_training/rl_training/assets/deeprobotics.py
+index 88e6390..8137f8f 100644
+--- a/source/rl_training/rl_training/assets/deeprobotics.py
++++ b/source/rl_training/rl_training/assets/deeprobotics.py
+@@ -3,7 +3,7 @@
+ 
+ # Copyright (c) 2024-2025 Ziqi Fan
+ # SPDX-License-Identifier: Apache-2.0
+-
++import os
+ import isaaclab.sim as sim_utils
+ from isaaclab.actuators import DCMotorCfg, DelayedPDActuatorCfg
+ from isaaclab.assets.articulation import ArticulationCfg
+@@ -64,8 +64,17 @@ DEEPROBOTICS_LITE3_CFG = ArticulationCfg(
+ )
+ 
+ DEEPROBOTICS_M20_CFG = ArticulationCfg(
+-    spawn=sim_utils.UsdFileCfg(
+-        usd_path=f"{ISAACLAB_ASSETS_DATA_DIR}/M20/M20_usd/M20.usd",
++    spawn=sim_utils.UrdfFileCfg(
++        asset_path=f"{ISAACLAB_ASSETS_DATA_DIR}/M20/M20_urdf/urdf/M20.urdf",
++        
++        # ================== 破局核心参数 ==================
++        force_usd_conversion=True,       # 强制重新转换，无视之前残缺的缓存文件！
++        collision_from_visuals=True,     # 强制生成碰撞刚体，确保接触传感器有地方挂载！
++        make_instanceable=True,          # 开启实例优化，多环境必备
++        fix_base=False,                  # 不固定底座
++        joint_drive=None,                # 禁用默认驱动，防报错
++        # ==================================================
++
+         activate_contact_sensors=True,
+         rigid_props=sim_utils.RigidBodyPropertiesCfg(
+             disable_gravity=False,
+@@ -80,6 +89,7 @@ DEEPROBOTICS_M20_CFG = ArticulationCfg(
+             enabled_self_collisions=False, solver_position_iteration_count=4, solver_velocity_iteration_count=1
+         ),
+     ),
++    # --- 下面的 init_state 和 actuators 代码继续保持原样，千万别删 ---
+     init_state=ArticulationCfg.InitialStateCfg(
+         pos=(0.0, 0.0, 0.52),
+         joint_pos={
+@@ -118,5 +128,3 @@ DEEPROBOTICS_M20_CFG = ArticulationCfg(
+         ),
+     },
+ )
+-
+-
+diff --git a/source/rl_training/rl_training/tasks/manager_based/locomotion/velocity/config/wheeled/deeprobotics_m20/rough_env_cfg.py b/source/rl_training/rl_training/tasks/manager_based/locomotion/velocity/config/wheeled/deeprobotics_m20/rough_env_cfg.py
+index d7090a6..24e0d1a 100644
+--- a/source/rl_training/rl_training/tasks/manager_based/locomotion/velocity/config/wheeled/deeprobotics_m20/rough_env_cfg.py
++++ b/source/rl_training/rl_training/tasks/manager_based/locomotion/velocity/config/wheeled/deeprobotics_m20/rough_env_cfg.py
+@@ -255,6 +255,7 @@ class DeeproboticsM20RoughEnvCfg(LocomotionVelocityRoughEnvCfg):
+         self.curriculum.command_levels = None
+ 
+         # ------------------------------Commands------------------------------
++        self.commands.base_velocity.debug_vis = False
+         self.commands.base_velocity.ranges.lin_vel_x = (-2.0, 2.0)
+         self.commands.base_velocity.ranges.lin_vel_y = (-1.0, 1.0)
+-        self.commands.base_velocity.ranges.ang_vel_z = (-1.0, 1.0)
+\ No newline at end of file
++        self.commands.base_velocity.ranges.ang_vel_z = (-1.0, 1.0)
