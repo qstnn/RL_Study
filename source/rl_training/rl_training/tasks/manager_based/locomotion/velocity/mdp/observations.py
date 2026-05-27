@@ -35,3 +35,10 @@ def phase(env: ManagerBasedRLEnv, cycle_time: float) -> torch.Tensor:
     phase = env.episode_length_buf[:, None] * env.step_dt / cycle_time
     phase_tensor = torch.cat([torch.sin(2 * torch.pi * phase), torch.cos(2 * torch.pi * phase)], dim=-1)
     return phase_tensor
+
+
+def payload_mass(env: ManagerBasedEnv, max_payload_kg: float = 65.0) -> torch.Tensor:
+    """Normalized payload mass applied to the base link."""
+    if not hasattr(env, "payload_kg"):
+        return torch.zeros(env.num_envs, 1, device=env.device)
+    return torch.clamp(env.payload_kg / max_payload_kg, min=0.0, max=2.0)

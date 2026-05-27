@@ -131,6 +131,62 @@ def randomize_com_positions(
     asset.root_physx_view.set_coms(com_offsets, env_ids)
 
 
+def randomize_payload_force(
+    env: ManagerBasedEnv,
+    env_ids: torch.Tensor | None,
+    asset_cfg: SceneEntityCfg,
+    payload_ranges: tuple[tuple[float, float], ...] = ((0.0, 0.0), (5.0, 15.0), (40.0, 65.0)),
+    payload_probabilities: tuple[float, ...] = (0.45, 0.40, 0.15),
+    heavy_start_step: int = 300_000,
+    heavy_full_step: int = 650_000,
+    gravity: float = 9.81,
+):
+    """Apply an episode-wise downward payload force and store the payload mass for observations."""
+    asset: RigidObject | Articulation = env.scene[asset_cfg.name]
+    device = asset.device
+
+    if env_ids is None:
+        env_ids = torch.arange(env.scene.num_envs, device=device)
+    else:
+        env_ids = env_ids.to(device=device, dtype=torch.long)
+
+    payload_range_tensor = torch.tensor(payload_ranges, device=device, dtype=torch.float32)
+    probabilities = torch.tensor(payload_probabilities, device=device, dtype=torch.float32)
+    probabilities = probabilities / probabilities.sum()
+    if len(probabilities) >= 3 and heavy_full_step > heavy_start_step:
+        current_step = float(getattr(env, "common_step_counter", 0))
+        heavy_alpha = (current_step - heavy_start_step) / float(heavy_full_step - heavy_start_step)
+        heavy_alpha = max(0.0, min(1.0, heavy_alpha))
+        target_heavy_prob = probabilities[-1] * heavy_alpha
+        non_heavy_prob = probabilities[:-1] / probabilities[:-1].sum()
+        probabilities = torch.cat((non_heavy_prob * (1.0 - target_heavy_prob), target_heavy_prob[None]))
+    payload_modes = torch.multinomial(probabilities, len(env_ids), replacement=True)
+
+    low = payload_range_tensor[payload_modes, 0]
+    high = payload_range_tensor[payload_modes, 1]
+    payload_kg = low + torch.rand(len(env_ids), device=device) * (high - low)
+
+    if not hasattr(env, "payload_kg") or env.payload_kg.shape[0] != env.scene.num_envs:
+        env.payload_kg = torch.zeros(env.scene.num_envs, 1, device=device)
+    env.payload_kg[env_ids, 0] = payload_kg
+
+    if asset_cfg.body_ids == slice(None):
+        num_bodies = asset.num_bodies
+    else:
+        num_bodies = len(asset_cfg.body_ids)
+
+    external_force_b = torch.zeros(len(env_ids), num_bodies, 3, device=device)
+    external_torque_b = torch.zeros_like(external_force_b)
+    external_force_b[:, :, 2] = -payload_kg[:, None] * gravity
+    asset.set_external_force_and_torque(
+        external_force_b,
+        external_torque_b,
+        env_ids=env_ids,
+        body_ids=asset_cfg.body_ids,
+        is_global=True,
+    )
+
+
 """
 Internal helper functions.
 """
