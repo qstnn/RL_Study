@@ -400,7 +400,6 @@ class DeeproboticsLightHWRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
         # Wheels should roll while commanded; M20-style air-time/gait terms
         # would encourage unnecessary wheel unloading on this platform.
         for name in (
-            "joint_mirror",
             "action_mirror",
             "action_sync",
             "feet_air_time",
