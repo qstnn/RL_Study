@@ -14,6 +14,7 @@ import math
 import sys
 from dataclasses import MISSING
 
+from isaaclab.sim import PhysxCfg, SimulationCfg
 import isaaclab.sim as sim_utils
 from isaaclab.assets import ArticulationCfg, AssetBaseCfg
 from isaaclab.envs import ManagerBasedRLEnvCfg
@@ -399,6 +400,64 @@ class RewardsCfg:
         func=mdp.body_lin_acc_l2,
         weight=0.0,
         params={"asset_cfg": SceneEntityCfg("robot", body_names="")},
+    )
+    # Optional zero-command whole-body terms.  They remain disabled for legacy
+    # routes and are enabled only by the LightHW stage-A route.
+    stand_lin_vel_xy_l2 = RewTerm(
+        func=mdp.stand_lin_vel_xy_l2,
+        weight=0.0,
+        params={
+            "command_name": "base_velocity",
+            "command_threshold": 0.15,
+            "asset_cfg": SceneEntityCfg("robot"),
+        },
+    )
+    stand_ang_vel_xy_l2 = RewTerm(
+        func=mdp.stand_ang_vel_xy_l2,
+        weight=0.0,
+        params={
+            "command_name": "base_velocity",
+            "command_threshold": 0.15,
+            "asset_cfg": SceneEntityCfg("robot"),
+        },
+    )
+    stand_contact_force_uniformity = RewTerm(
+        func=mdp.stand_contact_force_uniformity,
+        weight=0.0,
+        params={
+            "sensor_cfg": SceneEntityCfg("contact_forces", body_names=""),
+            "command_name": "base_velocity",
+            "command_threshold": 0.15,
+            "force_floor": 8.0,
+            "min_contact_force": 12.0,
+            "unload_weight": 0.8,
+            "rear_unload_weight": 1.0,
+            "use_history": False,
+        },
+    )
+    stand_rear_contact_force_balance_l2 = RewTerm(
+        func=mdp.stand_rear_contact_force_balance_l2,
+        weight=0.0,
+        params={
+            "sensor_cfg": SceneEntityCfg("contact_forces", body_names=""),
+            "command_name": "base_velocity",
+            "command_threshold": 0.15,
+            "force_floor": 8.0,
+            "min_rear_force": 22.0,
+            "difference_weight": 1.0,
+            "unload_weight": 0.8,
+            "rear_left_body_name_patterns": ("RL_wheel", "hl_wheel"),
+            "rear_right_body_name_patterns": ("RR_wheel", "hr_wheel"),
+        },
+    )
+    stand_flat_orientation_l2 = RewTerm(
+        func=mdp.stand_flat_orientation_l2,
+        weight=0.0,
+        params={
+            "command_name": "base_velocity",
+            "command_threshold": 0.15,
+            "asset_cfg": SceneEntityCfg("robot"),
+        },
     )
 
     # Joint penalties
@@ -834,6 +893,15 @@ class CurriculumCfg:
 class LocomotionVelocityRoughEnvCfg(ManagerBasedRLEnvCfg):
     """Configuration for the locomotion velocity-tracking environment."""
 
+    # env
+    decimation = 4
+    episode_length_s = 20.0
+    # simulation
+    sim: SimulationCfg = SimulationCfg(
+        dt=1 / 200,
+        render_interval=decimation,
+        physx=PhysxCfg(gpu_collision_stack_size=2**27),
+    )
     # Scene settings
     scene: MySceneCfg = MySceneCfg(num_envs=4096, env_spacing=2.5)
     # Basic settings
@@ -855,7 +923,7 @@ class LocomotionVelocityRoughEnvCfg(ManagerBasedRLEnvCfg):
         self.sim.dt = 0.005
         self.sim.render_interval = self.decimation
         self.sim.physics_material = self.scene.terrain.physics_material
-        self.sim.physx.gpu_max_rigid_patch_count = 10 * 2**15
+        self.sim.physx.gpu_max_rigid_patch_count = 2**19
         self.sim.physx.max_position_iteration_count = 4
         self.sim.physx.max_velocity_iteration_count = 1
         # update sensor update periods
@@ -879,7 +947,12 @@ class LocomotionVelocityRoughEnvCfg(ManagerBasedRLEnvCfg):
         for attr in dir(self.rewards):
             if not attr.startswith("__"):
                 reward_attr = getattr(self.rewards, attr)
-                if not callable(reward_attr) and reward_attr.weight == 0:
+                if (
+                    reward_attr is not None
+                    and hasattr(reward_attr, "weight")
+                    and not callable(reward_attr)
+                    and reward_attr.weight == 0
+                ):
                     setattr(self.rewards, attr, None)
 
 

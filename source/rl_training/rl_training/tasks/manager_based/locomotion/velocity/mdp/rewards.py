@@ -16,7 +16,7 @@ from isaaclab.managers import ManagerTermBase
 from isaaclab.managers import RewardTermCfg as RewTerm
 from isaaclab.managers import SceneEntityCfg
 from isaaclab.sensors import ContactSensor, RayCaster
-from isaaclab.utils.math import quat_apply_inverse, yaw_quat
+from isaaclab.utils.math import quat_apply_inverse
 
 if TYPE_CHECKING:
     from isaaclab.envs import ManagerBasedRLEnv
@@ -111,33 +111,6 @@ def track_ang_vel_z_exp(
     return reward
 
 
-def track_lin_vel_xy_yaw_frame_exp(
-    env, std: float, command_name: str, asset_cfg: SceneEntityCfg = SceneEntityCfg("robot")
-) -> torch.Tensor:
-    """Reward tracking of linear velocity commands (xy axes) in the gravity aligned robot frame using exponential kernel."""
-    # extract the used quantities (to enable type-hinting)
-    asset = env.scene[asset_cfg.name]
-    vel_yaw = quat_apply_inverse(yaw_quat(asset.data.root_quat_w), asset.data.root_lin_vel_w[:, :3])
-    lin_vel_error = torch.sum(
-        torch.square(env.command_manager.get_command(command_name)[:, :2] - vel_yaw[:, :2]), dim=1
-    )
-    reward = torch.exp(-lin_vel_error / std**2)
-    # reward *= torch.clamp(-env.scene["robot"].data.projected_gravity_b[:, 2], 0, 0.7) / 0.7
-    return reward
-
-
-def track_ang_vel_z_world_exp(
-    env, command_name: str, std: float, asset_cfg: SceneEntityCfg = SceneEntityCfg("robot")
-) -> torch.Tensor:
-    """Reward tracking of angular velocity commands (yaw) in world frame using exponential kernel."""
-    # extract the used quantities (to enable type-hinting)
-    asset = env.scene[asset_cfg.name]
-    ang_vel_error = torch.square(env.command_manager.get_command(command_name)[:, 2] - asset.data.root_ang_vel_w[:, 2])
-    reward = torch.exp(-ang_vel_error / std**2)
-    reward *= torch.clamp(-env.scene["robot"].data.projected_gravity_b[:, 2], 0, 0.7) / 0.7
-    return reward
-
-
 def joint_power(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg = SceneEntityCfg("robot")) -> torch.Tensor:
     """Reward joint_power"""
     # extract the used quantities (to enable type-hinting)
@@ -165,6 +138,26 @@ def stand_still_without_cmd(
     reward *= torch.linalg.norm(env.command_manager.get_command(command_name), dim=1) < command_threshold
     # reward *= torch.clamp(-env.scene["robot"].data.projected_gravity_b[:, 2], 0, 0.7) / 0.7
     return reward
+
+
+def stand_still_joint_deviation_l1(
+    env: ManagerBasedRLEnv,
+    command_name: str,
+    command_threshold: float = 0.06,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Penalize L1 joint deviation from the default pose at standstill.
+
+    目的：提供 M20 配置引用的零命令姿态项；激活条件：命令向量范数小于
+    ``command_threshold``；返回值：选定关节默认角偏差绝对值之和，运动命令下为零。
+    """
+    asset: Articulation = env.scene[asset_cfg.name]
+    deviation = torch.sum(
+        torch.abs(asset.data.joint_pos[:, asset_cfg.joint_ids] - asset.data.default_joint_pos[:, asset_cfg.joint_ids]),
+        dim=1,
+    )
+    command = env.command_manager.get_command(command_name)
+    return deviation * (torch.linalg.norm(command, dim=1) < float(command_threshold)).float()
 
 def joint_pos_penalty(
     env: ManagerBasedRLEnv,
@@ -328,7 +321,6 @@ def joint_mirror(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg, mirror_joint
     reward = torch.zeros(env.num_envs, device=env.device)
     # Iterate over all joint pairs
     for joint_pair in env.joint_mirror_joints_cache:
-        # Calculate the difference for each pair and add to the total reward
         diff = torch.sum(
             torch.square(asset.data.joint_pos[:, joint_pair[0][0]] - asset.data.joint_pos[:, joint_pair[1][0]]),
             dim=-1,
@@ -337,6 +329,65 @@ def joint_mirror(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg, mirror_joint
     reward *= 1 / len(mirror_joints) if len(mirror_joints) > 0 else 0
     reward *= torch.clamp(-env.scene["robot"].data.projected_gravity_b[:, 2], 0, 0.7) / 0.7
     return reward * get_gait_level_tensor(env)
+
+
+def joint_mirror_default_offset(
+    env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg, mirror_joints: list[list[str]]
+) -> torch.Tensor:
+    """Mirror joint deviations around the model-specific default pose."""
+    asset: Articulation = env.scene[asset_cfg.name]
+    if not hasattr(env, "joint_mirror_default_offset_cache") or env.joint_mirror_default_offset_cache is None:
+        env.joint_mirror_default_offset_cache = [
+            [asset.find_joints(joint_name) for joint_name in joint_pair] for joint_pair in mirror_joints
+        ]
+    reward = torch.zeros(env.num_envs, device=env.device)
+    for joint_pair in env.joint_mirror_default_offset_cache:
+        joint_a = asset.data.joint_pos[:, joint_pair[0][0]] - asset.data.default_joint_pos[:, joint_pair[0][0]]
+        joint_b = asset.data.joint_pos[:, joint_pair[1][0]] - asset.data.default_joint_pos[:, joint_pair[1][0]]
+        reward += torch.sum(torch.square(joint_a - joint_b), dim=-1)
+    reward *= 1 / len(mirror_joints) if mirror_joints else 0
+    reward *= torch.clamp(-env.scene["robot"].data.projected_gravity_b[:, 2], 0, 0.7) / 0.7
+    return reward * get_gait_level_tensor(env)
+
+
+def joint_pair_symmetry_l2(
+    env: ManagerBasedRLEnv,
+    joint_pairs: list[tuple[str, str]] | list[tuple[str, str, float]],
+    use_absolute: bool = False,
+    use_default_offset: bool = True,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Penalize mismatch between selected joint pairs.
+
+    A third value in each pair can be used as a sign relation. For example,
+    ("FL_hip_joint", "FR_hip_joint", -1.0) enforces opposite deviations.
+    """
+    asset: Articulation = env.scene[asset_cfg.name]
+    normalized_pairs = tuple(
+        (str(pair[0]), str(pair[1]), float(pair[2]) if len(pair) > 2 else 1.0) for pair in joint_pairs
+    )
+    cache_key = (normalized_pairs, bool(use_absolute), bool(use_default_offset))
+    if not hasattr(env, "joint_pair_symmetry_cache") or env.joint_pair_symmetry_cache is None:
+        env.joint_pair_symmetry_cache = {}
+    if cache_key not in env.joint_pair_symmetry_cache:
+        env.joint_pair_symmetry_cache[cache_key] = [
+            (asset.find_joints(left_name)[0], asset.find_joints(right_name)[0], sign)
+            for left_name, right_name, sign in normalized_pairs
+        ]
+
+    penalty = torch.zeros(env.num_envs, device=env.device)
+    for left_ids, right_ids, sign in env.joint_pair_symmetry_cache[cache_key]:
+        left_pos = asset.data.joint_pos[:, left_ids]
+        right_pos = asset.data.joint_pos[:, right_ids]
+        if use_default_offset:
+            left_pos = left_pos - asset.data.default_joint_pos[:, left_ids]
+            right_pos = right_pos - asset.data.default_joint_pos[:, right_ids]
+        if use_absolute:
+            left_pos = torch.abs(left_pos)
+            right_pos = torch.abs(right_pos)
+            sign = 1.0
+        penalty += torch.mean(torch.square(left_pos - sign * right_pos), dim=1)
+    return penalty / max(len(normalized_pairs), 1)
 
 
 def action_mirror(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg, mirror_joints: list[list[str]]) -> torch.Tensor:
@@ -451,29 +502,6 @@ def action_sync(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg, joint_groups:
 #     return torch.sum(reward, dim=1)
 
 
-def feet_air_time_positive_biped(env, command_name: str, threshold: float, sensor_cfg: SceneEntityCfg) -> torch.Tensor:
-    """Reward long steps taken by the feet for bipeds.
-
-    This function rewards the agent for taking steps up to a specified threshold and also keep one foot at
-    a time in the air.
-
-    If the commands are small (i.e. the agent is not supposed to take a step), then the reward is zero.
-    """
-    contact_sensor: ContactSensor = env.scene.sensors[sensor_cfg.name]
-    # compute the reward
-    air_time = contact_sensor.data.current_air_time[:, sensor_cfg.body_ids]
-    contact_time = contact_sensor.data.current_contact_time[:, sensor_cfg.body_ids]
-    in_contact = contact_time > 0.0
-    in_mode_time = torch.where(in_contact, contact_time, air_time)
-    single_stance = torch.sum(in_contact.int(), dim=1) == 1
-    reward = torch.min(torch.where(single_stance.unsqueeze(-1), in_mode_time, 0.0), dim=1)[0]
-    reward = torch.clamp(reward, max=threshold)
-    # no reward for zero command
-    reward *= torch.norm(env.command_manager.get_command(command_name)[:, :2], dim=1) > 0.1
-    # reward *= torch.clamp(-env.scene["robot"].data.projected_gravity_b[:, 2], 0, 0.7) / 0.7
-    return reward
-
-
 def feet_air_time_variance_penalty(env: ManagerBasedRLEnv, sensor_cfg: SceneEntityCfg) -> torch.Tensor:
     """Penalize variance in the amount of time each foot spends in the air/on the ground relative to each other"""
     # extract the used quantities (to enable type-hinting)
@@ -521,6 +549,433 @@ def feet_contact_without_cmd(env: ManagerBasedRLEnv, command_name: str, sensor_c
     # print(reward, "reward after multiply")
     # reward *= torch.clamp(-env.scene["robot"].data.projected_gravity_b[:, 2], 0, 0.7) / 0.7
     return reward
+
+
+def stand_contact_force_uniformity(
+    env: ManagerBasedRLEnv,
+    sensor_cfg: SceneEntityCfg,
+    command_name: str,
+    command_threshold: float = 0.15,
+    force_floor: float = 8.0,
+    min_contact_force: float = 12.0,
+    unload_weight: float = 0.8,
+    rear_unload_weight: float = 1.0,
+    rear_body_name_patterns: tuple[str, ...] = ("RL_wheel", "RR_wheel", "hl_wheel", "hr_wheel"),
+    use_history: bool = False,
+) -> torch.Tensor:
+    """Penalize uneven wheel support only in static command states."""
+    contact_sensor: ContactSensor = env.scene.sensors[sensor_cfg.name]
+    if use_history:
+        force_z = torch.abs(contact_sensor.data.net_forces_w_history[:, :, sensor_cfg.body_ids, 2])
+        force_z = torch.max(force_z, dim=1)[0]
+    else:
+        force_z = torch.abs(contact_sensor.data.net_forces_w[:, sensor_cfg.body_ids, 2])
+
+    mean_force = torch.mean(force_z, dim=1, keepdim=True)
+    normalized_force = force_z / torch.clamp(mean_force, min=force_floor)
+    uniformity = torch.mean(torch.square(normalized_force - 1.0), dim=1)
+
+    unload = torch.clamp(min_contact_force - force_z, min=0.0) / min_contact_force
+    unload_scale = torch.ones(force_z.shape[1], device=force_z.device, dtype=force_z.dtype)
+    if rear_unload_weight != 1.0:
+        body_names = getattr(contact_sensor, "body_names", [])
+        patterns = tuple(pattern.lower() for pattern in rear_body_name_patterns)
+        for local_index, body_id in enumerate(sensor_cfg.body_ids):
+            body_name = body_names[int(body_id)] if int(body_id) < len(body_names) else ""
+            if any(pattern in body_name.lower() for pattern in patterns):
+                unload_scale[local_index] = float(rear_unload_weight)
+    unload_penalty = torch.mean(torch.square(unload) * unload_scale.unsqueeze(0), dim=1)
+
+    command_gate = torch.linalg.norm(env.command_manager.get_command(command_name), dim=1) < command_threshold
+    return (uniformity + unload_weight * unload_penalty) * command_gate.float()
+
+
+def stand_rear_contact_force_balance_l2(
+    env: ManagerBasedRLEnv,
+    sensor_cfg: SceneEntityCfg,
+    command_name: str,
+    command_threshold: float = 0.15,
+    force_floor: float = 8.0,
+    min_rear_force: float = 22.0,
+    difference_weight: float = 1.0,
+    unload_weight: float = 0.8,
+    rear_left_body_name_patterns: tuple[str, ...] = ("RL_wheel", "hl_wheel"),
+    rear_right_body_name_patterns: tuple[str, ...] = ("RR_wheel", "hr_wheel"),
+) -> torch.Tensor:
+    """Penalize rear left/right support mismatch only in static command states."""
+    contact_sensor: ContactSensor = env.scene.sensors[sensor_cfg.name]
+    body_names = getattr(contact_sensor, "body_names", [])
+
+    def _find_local_index(patterns: tuple[str, ...]) -> int | None:
+        lowered_patterns = tuple(pattern.lower() for pattern in patterns)
+        for local_index, body_id in enumerate(sensor_cfg.body_ids):
+            body_name = body_names[int(body_id)] if int(body_id) < len(body_names) else ""
+            if any(pattern in body_name.lower() for pattern in lowered_patterns):
+                return local_index
+        return None
+
+    rear_left_index = _find_local_index(rear_left_body_name_patterns)
+    rear_right_index = _find_local_index(rear_right_body_name_patterns)
+    if rear_left_index is None or rear_right_index is None:
+        return torch.zeros(env.num_envs, device=env.device)
+
+    force_z = torch.abs(contact_sensor.data.net_forces_w[:, sensor_cfg.body_ids, 2])
+    rear_left_force = force_z[:, rear_left_index]
+    rear_right_force = force_z[:, rear_right_index]
+    rear_mean_force = torch.clamp(0.5 * (rear_left_force + rear_right_force), min=force_floor)
+
+    balance_penalty = torch.square((rear_left_force - rear_right_force) / rear_mean_force)
+    rear_forces = torch.stack((rear_left_force, rear_right_force), dim=1)
+    unload = torch.clamp(min_rear_force - rear_forces, min=0.0) / min_rear_force
+    unload_penalty = torch.mean(torch.square(unload), dim=1)
+
+    command_gate = torch.linalg.norm(env.command_manager.get_command(command_name), dim=1) < command_threshold
+    return (difference_weight * balance_penalty + unload_weight * unload_penalty) * command_gate.float()
+
+
+def stand_flat_orientation_l2(
+    env: ManagerBasedRLEnv,
+    command_name: str,
+    command_threshold: float = 0.15,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Penalize static roll/pitch tilt without constraining locomotion posture."""
+    command_gate = torch.linalg.norm(env.command_manager.get_command(command_name), dim=1) < command_threshold
+    return flat_orientation_l2(env, asset_cfg=asset_cfg) * command_gate.float()
+
+
+def stand_joint_limit_margin_l2(
+    env: ManagerBasedRLEnv,
+    command_name: str,
+    command_threshold: float = 0.15,
+    margin: float = 0.08,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Penalize static joints before they sit on the soft position limits."""
+    asset: Articulation = env.scene[asset_cfg.name]
+    joint_pos = asset.data.joint_pos[:, asset_cfg.joint_ids]
+    soft_limits = asset.data.soft_joint_pos_limits[:, asset_cfg.joint_ids, :]
+    margin = max(float(margin), 1.0e-6)
+
+    lower_penalty = torch.clamp(soft_limits[..., 0] + margin - joint_pos, min=0.0) / margin
+    upper_penalty = torch.clamp(joint_pos - soft_limits[..., 1] + margin, min=0.0) / margin
+    penalty = torch.mean(torch.square(lower_penalty) + torch.square(upper_penalty), dim=1)
+
+    command_gate = torch.linalg.norm(env.command_manager.get_command(command_name), dim=1) < command_threshold
+    return penalty * command_gate.float()
+
+
+def stand_joint_pair_symmetry_l2(
+    env: ManagerBasedRLEnv,
+    joint_pairs: list[tuple[str, str]] | list[tuple[str, str, float]],
+    command_name: str,
+    command_threshold: float = 0.15,
+    use_absolute: bool = False,
+    use_default_offset: bool = True,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Apply selected joint symmetry only while the command is near zero."""
+    command_gate = torch.linalg.norm(env.command_manager.get_command(command_name), dim=1) < command_threshold
+    return joint_pair_symmetry_l2(
+        env,
+        joint_pairs=joint_pairs,
+        use_absolute=use_absolute,
+        use_default_offset=use_default_offset,
+        asset_cfg=asset_cfg,
+    ) * command_gate.float()
+
+
+def _straight_motion_command_gate(
+    env: ManagerBasedRLEnv,
+    command_name: str,
+    min_lin_vel_x: float = 0.2,
+    max_abs_lin_vel_y: float = 0.35,
+    max_abs_ang_vel_z: float = 0.35,
+) -> torch.Tensor:
+    command = env.command_manager.get_command(command_name)
+    return (
+        (command[:, 0] > min_lin_vel_x)
+        & (torch.abs(command[:, 1]) < max_abs_lin_vel_y)
+        & (torch.abs(command[:, 2]) < max_abs_ang_vel_z)
+    )
+
+
+def straight_motion_contact_force_uniformity(
+    env: ManagerBasedRLEnv,
+    sensor_cfg: SceneEntityCfg,
+    command_name: str,
+    min_lin_vel_x: float = 0.2,
+    max_abs_lin_vel_y: float = 0.35,
+    max_abs_ang_vel_z: float = 0.35,
+    force_floor: float = 8.0,
+    min_contact_force: float = 10.0,
+    unload_weight: float = 0.6,
+) -> torch.Tensor:
+    """Penalize one wheel unloading during mostly straight forward motion."""
+    contact_sensor: ContactSensor = env.scene.sensors[sensor_cfg.name]
+    force_z = torch.abs(contact_sensor.data.net_forces_w_history[:, :, sensor_cfg.body_ids, 2])
+    force_z = torch.max(force_z, dim=1)[0]
+
+    mean_force = torch.mean(force_z, dim=1, keepdim=True)
+    normalized_force = force_z / torch.clamp(mean_force, min=force_floor)
+    uniformity = torch.mean(torch.square(normalized_force - 1.0), dim=1)
+
+    unload = torch.clamp(min_contact_force - force_z, min=0.0) / min_contact_force
+    unload_penalty = torch.mean(torch.square(unload), dim=1)
+
+    command_gate = _straight_motion_command_gate(
+        env,
+        command_name,
+        min_lin_vel_x=min_lin_vel_x,
+        max_abs_lin_vel_y=max_abs_lin_vel_y,
+        max_abs_ang_vel_z=max_abs_ang_vel_z,
+    )
+    return (uniformity + unload_weight * unload_penalty) * command_gate.float()
+
+
+def straight_motion_joint_pair_symmetry_l2(
+    env: ManagerBasedRLEnv,
+    joint_pairs: list[tuple[str, str]] | list[tuple[str, str, float]],
+    command_name: str,
+    min_lin_vel_x: float = 0.2,
+    max_abs_lin_vel_y: float = 0.35,
+    max_abs_ang_vel_z: float = 0.35,
+    use_absolute: bool = False,
+    use_default_offset: bool = True,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Apply left-right joint symmetry only while rolling mostly straight forward."""
+    command_gate = _straight_motion_command_gate(
+        env,
+        command_name,
+        min_lin_vel_x=min_lin_vel_x,
+        max_abs_lin_vel_y=max_abs_lin_vel_y,
+        max_abs_ang_vel_z=max_abs_ang_vel_z,
+    )
+    return joint_pair_symmetry_l2(
+        env,
+        joint_pairs=joint_pairs,
+        use_absolute=use_absolute,
+        use_default_offset=use_default_offset,
+        asset_cfg=asset_cfg,
+    ) * command_gate.float()
+
+
+def straight_motion_yaw_rate_l2(
+    env: ManagerBasedRLEnv,
+    command_name: str,
+    min_lin_vel_x: float = 0.2,
+    max_abs_lin_vel_y: float = 0.35,
+    max_abs_ang_vel_z: float = 0.35,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """直行门控的偏航角速度误差平方。
+
+    只在前进且侧向/yaw命令较小的样本上惩罚机身实际偏航速度，
+    用于压制累计偏航漂移；不改变静止、侧移和转向命令的奖励。
+    返回值为每个环境的 yaw 角速度误差平方，权重由配置中的负值给出。
+    """
+    command = env.command_manager.get_command(command_name)
+    asset: RigidObject = env.scene[asset_cfg.name]
+    yaw_error = command[:, 2] - asset.data.root_ang_vel_b[:, 2]
+    command_gate = _straight_motion_command_gate(
+        env,
+        command_name,
+        min_lin_vel_x=min_lin_vel_x,
+        max_abs_lin_vel_y=max_abs_lin_vel_y,
+        max_abs_ang_vel_z=max_abs_ang_vel_z,
+    )
+    return torch.square(yaw_error) * command_gate.float()
+
+
+def straight_motion_flat_orientation_l2(
+    env: ManagerBasedRLEnv,
+    command_name: str,
+    min_lin_vel_x: float = 0.2,
+    max_abs_lin_vel_y: float = 0.35,
+    max_abs_ang_vel_z: float = 0.35,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Penalize roll/pitch only during mostly straight forward rolling."""
+    command_gate = _straight_motion_command_gate(
+        env,
+        command_name,
+        min_lin_vel_x=min_lin_vel_x,
+        max_abs_lin_vel_y=max_abs_lin_vel_y,
+        max_abs_ang_vel_z=max_abs_ang_vel_z,
+    )
+    return flat_orientation_l2(env, asset_cfg=asset_cfg) * command_gate.float()
+
+
+def _wheel_pos_in_base_frame(
+    env: ManagerBasedRLEnv,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Return selected wheel/body positions in the root-link frame."""
+    asset: Articulation = env.scene[asset_cfg.name]
+    wheel_pos_w = asset.data.body_link_pos_w[:, asset_cfg.body_ids, :]
+    rel_pos_w = wheel_pos_w - asset.data.root_link_pos_w[:, None, :]
+    num_wheels = len(asset_cfg.body_ids)
+    return quat_apply_inverse(
+        asset.data.root_link_quat_w[:, None, :].expand(-1, num_wheels, -1).reshape(-1, 4),
+        rel_pos_w.reshape(-1, 3),
+    ).reshape(env.num_envs, num_wheels, 3)
+
+
+def _wheel_z_in_base_frame(
+    env: ManagerBasedRLEnv,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Return selected wheel/body z positions in the root-link frame."""
+    return _wheel_pos_in_base_frame(env, asset_cfg=asset_cfg)[..., 2]
+
+
+def _wheel_height_symmetry_penalty(
+    wheel_z: torch.Tensor,
+    height_scale: float,
+    front_rear_weight: float,
+    left_right_weight: float,
+    variance_weight: float,
+) -> torch.Tensor:
+    wheel_z = wheel_z / height_scale
+    front_z = torch.mean(wheel_z[:, 0:2], dim=1)
+    rear_z = torch.mean(wheel_z[:, 2:4], dim=1)
+    left_z = torch.mean(wheel_z[:, [0, 2]], dim=1)
+    right_z = torch.mean(wheel_z[:, [1, 3]], dim=1)
+    variance = torch.mean(torch.square(wheel_z - torch.mean(wheel_z, dim=1, keepdim=True)), dim=1)
+    return (
+        front_rear_weight * torch.square(front_z - rear_z)
+        + left_right_weight * torch.square(left_z - right_z)
+        + variance_weight * variance
+    )
+
+
+def stand_wheel_height_symmetry_l2(
+    env: ManagerBasedRLEnv,
+    command_name: str,
+    command_threshold: float = 0.15,
+    height_scale: float = 0.08,
+    front_rear_weight: float = 0.5,
+    left_right_weight: float = 1.0,
+    variance_weight: float = 0.8,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Penalize uneven wheel height in the base frame only while standing."""
+    wheel_z = _wheel_z_in_base_frame(env, asset_cfg=asset_cfg)
+    penalty = _wheel_height_symmetry_penalty(
+        wheel_z,
+        height_scale=height_scale,
+        front_rear_weight=front_rear_weight,
+        left_right_weight=left_right_weight,
+        variance_weight=variance_weight,
+    )
+    command_gate = torch.linalg.norm(env.command_manager.get_command(command_name), dim=1) < command_threshold
+    return penalty * command_gate.float()
+
+
+def stand_wheel_xy_geometry_l2(
+    env: ManagerBasedRLEnv,
+    command_name: str,
+    command_threshold: float = 0.15,
+    target_front_x: float = 0.235,
+    target_rear_x: float = -0.243,
+    target_left_y: float = 0.202,
+    target_right_y: float = -0.202,
+    x_scale: float = 0.12,
+    y_scale: float = 0.08,
+    x_weight: float = 0.5,
+    y_weight: float = 1.0,
+    rear_y_weight: float = 1.5,
+    pair_symmetry_weight: float = 0.5,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Keep the standing wheels in a symmetric rectangle in the base frame.
+
+    The body order is expected to be FL, FR, RL, RR. This term targets the visual standing
+    posture directly, instead of inferring it only from joint angles whose signs differ by leg.
+    """
+    wheel_pos = _wheel_pos_in_base_frame(env, asset_cfg=asset_cfg)
+    target_x = torch.tensor(
+        [target_front_x, target_front_x, target_rear_x, target_rear_x],
+        dtype=wheel_pos.dtype,
+        device=wheel_pos.device,
+    )
+    target_y = torch.tensor(
+        [target_left_y, target_right_y, target_left_y, target_right_y],
+        dtype=wheel_pos.dtype,
+        device=wheel_pos.device,
+    )
+
+    x_error = torch.mean(torch.square((wheel_pos[..., 0] - target_x) / x_scale), dim=1)
+    y_error = torch.mean(torch.square((wheel_pos[..., 1] - target_y) / y_scale), dim=1)
+
+    rear_target_abs_y = 0.5 * (abs(target_left_y) + abs(target_right_y))
+    rear_y = wheel_pos[:, 2:4, 1]
+    rear_inward = torch.mean(torch.square(torch.clamp(rear_target_abs_y - torch.abs(rear_y), min=0.0) / y_scale), dim=1)
+
+    front_pair_y = torch.square((wheel_pos[:, 0, 1] + wheel_pos[:, 1, 1]) / y_scale)
+    rear_pair_y = torch.square((wheel_pos[:, 2, 1] + wheel_pos[:, 3, 1]) / y_scale)
+    pair_symmetry = 0.5 * (front_pair_y + rear_pair_y)
+
+    command_gate = torch.linalg.norm(env.command_manager.get_command(command_name), dim=1) < command_threshold
+    penalty = x_weight * x_error + y_weight * y_error + rear_y_weight * rear_inward + pair_symmetry_weight * pair_symmetry
+    return penalty * command_gate.float()
+
+
+def straight_motion_front_wheel_lower_than_rear_l2(
+    env: ManagerBasedRLEnv,
+    command_name: str,
+    min_lin_vel_x: float = 0.2,
+    max_abs_lin_vel_y: float = 0.35,
+    max_abs_ang_vel_z: float = 0.35,
+    allowed_front_lower: float = 0.015,
+    height_scale: float = 0.08,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Penalize front wheels sitting noticeably lower than rear wheels during straight forward motion."""
+    wheel_z = _wheel_z_in_base_frame(env, asset_cfg=asset_cfg)
+    front_z = torch.mean(wheel_z[:, 0:2], dim=1)
+    rear_z = torch.mean(wheel_z[:, 2:4], dim=1)
+    front_lower = torch.clamp(rear_z - front_z - allowed_front_lower, min=0.0) / height_scale
+    command_gate = _straight_motion_command_gate(
+        env,
+        command_name,
+        min_lin_vel_x=min_lin_vel_x,
+        max_abs_lin_vel_y=max_abs_lin_vel_y,
+        max_abs_ang_vel_z=max_abs_ang_vel_z,
+    )
+    return torch.square(front_lower) * command_gate.float()
+
+
+def straight_motion_wheel_height_symmetry_l2(
+    env: ManagerBasedRLEnv,
+    command_name: str,
+    min_lin_vel_x: float = 0.2,
+    max_abs_lin_vel_y: float = 0.35,
+    max_abs_ang_vel_z: float = 0.35,
+    height_scale: float = 0.08,
+    front_rear_weight: float = 1.0,
+    left_right_weight: float = 0.5,
+    variance_weight: float = 0.5,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Penalize front/rear and left/right wheel height imbalance in the base frame."""
+    wheel_z = _wheel_z_in_base_frame(env, asset_cfg=asset_cfg)
+    command_gate = _straight_motion_command_gate(
+        env,
+        command_name,
+        min_lin_vel_x=min_lin_vel_x,
+        max_abs_lin_vel_y=max_abs_lin_vel_y,
+        max_abs_ang_vel_z=max_abs_ang_vel_z,
+    )
+    penalty = _wheel_height_symmetry_penalty(
+        wheel_z,
+        height_scale=height_scale,
+        front_rear_weight=front_rear_weight,
+        left_right_weight=left_right_weight,
+        variance_weight=variance_weight,
+    )
+    return penalty * command_gate.float()
 
 
 def feet_stumble(env: ManagerBasedRLEnv, sensor_cfg: SceneEntityCfg) -> torch.Tensor:
@@ -921,9 +1376,6 @@ def upward(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg = SceneEntityCfg("r
     return reward
 
 
-
-
-
 def base_height_l2(
     env: ManagerBasedRLEnv,
     target_height: float,
@@ -971,6 +1423,38 @@ def ang_vel_xy_l2(env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg = SceneEntit
     reward = torch.sum(torch.square(asset.data.root_ang_vel_b[:, :2]), dim=1)
     # reward *= torch.clamp(-env.scene["robot"].data.projected_gravity_b[:, 2], 0, 0.7) / 0.7
     return reward
+
+
+def stand_lin_vel_xy_l2(
+    env: ManagerBasedRLEnv,
+    command_name: str,
+    command_threshold: float = 0.15,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """在零指令时惩罚机身水平速度，直接训练全身保持而非只收腿。
+
+    仅当命令范数低于 ``command_threshold`` 时启用，返回每个环境的机身
+    body-frame 水平速度平方和；非零运动命令不会受到该静止项的干扰。
+    """
+    asset: RigidObject = env.scene[asset_cfg.name]
+    command_gate = torch.linalg.norm(env.command_manager.get_command(command_name), dim=1) < command_threshold
+    return torch.sum(torch.square(asset.data.root_lin_vel_b[:, :2]), dim=1) * command_gate.float()
+
+
+def stand_ang_vel_xy_l2(
+    env: ManagerBasedRLEnv,
+    command_name: str,
+    command_threshold: float = 0.15,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """在零指令时惩罚机身横滚/俯仰角速度，抑制静止摇摆。
+
+    仅当命令范数低于 ``command_threshold`` 时启用，返回每个环境的机身
+    body-frame roll/pitch 角速度平方和；不约束高速前进时的正常姿态修正。
+    """
+    asset: RigidObject = env.scene[asset_cfg.name]
+    command_gate = torch.linalg.norm(env.command_manager.get_command(command_name), dim=1) < command_threshold
+    return torch.sum(torch.square(asset.data.root_ang_vel_b[:, :2]), dim=1) * command_gate.float()
 
 
 def undesired_contacts(env: ManagerBasedRLEnv, threshold: float, sensor_cfg: SceneEntityCfg) -> torch.Tensor:

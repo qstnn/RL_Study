@@ -267,3 +267,21 @@ def bad_orientation_2(
     # extract the used quantities (to enable type-hinting)
     asset: RigidObject = env.scene[asset_cfg.name]
     return (asset.data.projected_gravity_b[:, 2] > 0) | (asset.data.projected_gravity_b[:, :2].abs() > 0.7).any(-1)
+
+
+def bad_orientation_relaxed(
+    env: ManagerBasedRLEnv,  # type: ignore
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+    max_tilt_xy: float = 0.95,
+    max_inverted_z: float = 0.2,
+) -> torch.Tensor:
+    """Terminate only for near-sideways or inverted poses.
+
+    The default bad_orientation_2 threshold is useful once locomotion is learned, but the new m20hw URDF
+    needs a wider recovery window during early baseline training.
+    """
+    asset: RigidObject = env.scene[asset_cfg.name]
+    projected_gravity = asset.data.projected_gravity_b
+    return (projected_gravity[:, 2] > max_inverted_z) | (
+        torch.linalg.norm(projected_gravity[:, :2], dim=-1) > max_tilt_xy
+    )

@@ -31,7 +31,7 @@ class UniformThresholdVelocityCommand(mdp.UniformVelocityCommand):
         self.metrics["knee_pos"] = torch.zeros(self.num_envs, device=self.device)
         self._metric_step_counter = torch.zeros(self.num_envs, dtype=torch.long, device=self.device)
 
-        knee_joint_ids = self.robot.find_joints(".*[Kk]nee.*")[0]
+        knee_joint_ids = self.robot.find_joints(self.cfg.knee_joint_names)[0]
         self._knee_joint_ids = torch.tensor(knee_joint_ids, dtype=torch.long, device=self.device)
 
     def reset(self, env_ids: Sequence[int] | None = None) -> dict[str, float]:
@@ -92,6 +92,7 @@ class UniformThresholdVelocityCommandCfg(mdp.UniformVelocityCommandCfg):
     """Configuration for the uniform threshold velocity command generator."""
 
     class_type: type = UniformThresholdVelocityCommand
+    knee_joint_names: str | list[str] = ".*[Kk]nee.*"
 
 
 class DiscreteCommandController(CommandTerm):
