@@ -11,7 +11,7 @@
 - `train_blind_rough.sh`
 - `play_blind_rough.sh`
 
-盲 rough 入口使用任务 `Rough-Deeprobotics-LightHW-Blind-v0`，默认 run_name 为 `lighthw_rough_blind`。它移除 policy 和 critic 的 height_scan，观测维度为 policy=60、critic=60、action=16。
+盲 rough 入口使用任务 `Rough-Deeprobotics-LightHW-Blind-v0`，默认 run_name 为 `lighthw_rough_blind`。它移除 policy 的 height_scan、保留 critic 的高度观测，维度为 policy=60、critic=236、action=16。
 
 这些脚本会先切到本 route 目录，再调用仓库根目录的 RSL-RL 启动入口，因此日志会自然落到本 route 的 `logs/` 下。
 

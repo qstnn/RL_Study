@@ -421,12 +421,9 @@ class DeeproboticsLightHWRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
 
         # ---------------------------- Terminations -------------------------
         self.terminations.illegal_contact = None
-        self.terminations.bad_orientation_2.func = mdp.bad_orientation_relaxed
-        self.terminations.bad_orientation_2.params = {
-            "asset_cfg": SceneEntityCfg("robot"),
-            "max_tilt_xy": 0.95,
-            "max_inverted_z": 0.2,
-        }
+        # Match the original M20 rough route: keep time-out and terrain-bound
+        # termination, but do not terminate a rollout solely on orientation.
+        self.terminations.bad_orientation_2 = None
 
         # ---------------------------- Curriculum ---------------------------
         # Keep terrain progression for rough training, but do not silently
@@ -436,12 +433,12 @@ class DeeproboticsLightHWRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
         # ------------------------------ Commands ---------------------------
         self.commands.base_velocity.debug_vis = False
         self.commands.base_velocity.resampling_time_range = (8.0, 8.0)
-        # Give the policy a substantial zero-command population without
-        # removing the full-speed target from the remaining environments.
-        self.commands.base_velocity.rel_standing_envs = 0.20
+        # Keep the M20 zero-command ratio and command envelope for a direct
+        # reward/PPO comparison.  z is the yaw-rate command in this interface.
+        self.commands.base_velocity.rel_standing_envs = 0.02
         self.commands.base_velocity.ranges.lin_vel_x = (-3.5, 3.5)
-        self.commands.base_velocity.ranges.lin_vel_y = (-0.15, 0.15)
-        self.commands.base_velocity.ranges.ang_vel_z = (-0.30, 0.30)
+        self.commands.base_velocity.ranges.lin_vel_y = (-1.0, 1.0)
+        self.commands.base_velocity.ranges.ang_vel_z = (-1.0, 1.0)
         self.commands.base_velocity.knee_joint_names = self.calf_joint_names
 
         # Final reward authority: apply the M20 profile after all inherited

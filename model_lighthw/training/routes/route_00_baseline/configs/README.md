@@ -6,7 +6,7 @@
 
 - `deeprobotics_lighthw/__init__.py`：注册 `Flat-Deeprobotics-LightHW-v0`、原始 `Rough-Deeprobotics-LightHW-v0` 和独立的 `Rough-Deeprobotics-LightHW-Blind-v0`
 - `deeprobotics_lighthw/rough_env_cfg.py`：M20 风格奖励骨架，但按 LightHW 重新分配动作尺度、接触阈值和高度目标
-- `deeprobotics_lighthw/blind_rough_env_cfg.py`：从 policy/critic 组移除 `height_scan`，两组观测均为 60 维
+- `deeprobotics_lighthw/blind_rough_env_cfg.py`：从 policy 组移除 `height_scan`，critic 保留高度扫描，观测为 60/236 维
 - `deeprobotics_lighthw/flat_env_cfg.py`：关掉地形扫描和地形课程，作为首轮平地基线
 - `deeprobotics_lighthw/agents/rsl_rl_ppo_cfg.py`：PPO 默认超参
 

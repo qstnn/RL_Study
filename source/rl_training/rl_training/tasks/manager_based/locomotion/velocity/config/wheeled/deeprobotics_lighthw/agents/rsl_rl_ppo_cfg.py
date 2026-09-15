@@ -8,31 +8,31 @@ from isaaclab_rl.rsl_rl import RslRlOnPolicyRunnerCfg, RslRlPpoActorCriticCfg, R
 @configclass
 class DeeproboticsLightHWRoughPPORunnerCfg(RslRlOnPolicyRunnerCfg):
     num_steps_per_env = 24
-    max_iterations = 12000
+    max_iterations = 20000
     save_interval = 100
-    # Keep this parameter-only static-hold pass in its own TensorBoard tree.
-    experiment_name = "deeprobotics_lighthw_static_hold_hs_v1"
+    # Use an explicit M20-derived name for the LightHW comparison route.
+    experiment_name = "lighthw_rough_fromM20"
     empirical_normalization = False
     clip_actions = 100
     policy = RslRlPpoActorCriticCfg(
-        init_noise_std=0.40,
+        init_noise_std=1.0,
         noise_std_type="log",
-        actor_hidden_dims=[384, 256, 128],
-        critic_hidden_dims=[384, 256, 128],
+        actor_hidden_dims=[512, 256, 128],
+        critic_hidden_dims=[512, 256, 128],
         activation="elu",
     )
     algorithm = RslRlPpoAlgorithmCfg(
         value_loss_coef=1.0,
         use_clipped_value_loss=True,
         clip_param=0.2,
-        entropy_coef=0.0015,
+        entropy_coef=0.01,
         num_learning_epochs=5,
         num_mini_batches=4,
-        learning_rate=2.0e-4,
+        learning_rate=1.0e-3,
         schedule="adaptive",
         gamma=0.99,
         lam=0.95,
-        desired_kl=0.008,
+        desired_kl=0.01,
         max_grad_norm=1.0,
     )
 
