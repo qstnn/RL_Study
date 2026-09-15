@@ -433,10 +433,10 @@ class DeeproboticsLightHWRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
         # ------------------------------ Commands ---------------------------
         self.commands.base_velocity.debug_vis = False
         self.commands.base_velocity.resampling_time_range = (8.0, 8.0)
-        # Keep the M20 zero-command ratio and command envelope for a direct
-        # reward/PPO comparison.  z is the yaw-rate command in this interface.
+        # Start the base route at a learnable forward speed.  The later
+        # high-speed route restores the 3.5 m/s range explicitly.
         self.commands.base_velocity.rel_standing_envs = 0.02
-        self.commands.base_velocity.ranges.lin_vel_x = (-3.5, 3.5)
+        self.commands.base_velocity.ranges.lin_vel_x = (-1.0, 1.0)
         self.commands.base_velocity.ranges.lin_vel_y = (-1.0, 1.0)
         self.commands.base_velocity.ranges.ang_vel_z = (-1.0, 1.0)
         self.commands.base_velocity.knee_joint_names = self.calf_joint_names

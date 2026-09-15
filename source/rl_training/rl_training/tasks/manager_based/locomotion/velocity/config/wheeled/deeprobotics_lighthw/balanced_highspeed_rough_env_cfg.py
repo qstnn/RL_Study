@@ -64,6 +64,11 @@ class DeeproboticsLightHWBalancedHighSpeedRoughEnvCfg(DeeproboticsLightHWRoughEn
         command.resampling_time_range = (16.0, 16.0)
         command.lateral_range = (-0.05, 0.05)
         command.yaw_range = (-0.10, 0.10)
+        # The parent rough route is intentionally low-speed; this route is the
+        # separate high-speed stage and must retain its 3.5 m/s forward range.
+        command.ranges.lin_vel_x = (-3.5, 3.5)
+        command.ranges.lin_vel_y = (-0.05, 0.05)
+        command.ranges.ang_vel_z = (-0.10, 0.10)
         command.high_speed_min = 2.50
         command.high_speed_max = 3.50
         command.high_speed_anchor_ratio = 0.50
