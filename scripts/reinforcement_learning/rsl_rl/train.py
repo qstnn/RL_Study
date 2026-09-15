@@ -44,6 +44,18 @@ cli_args.add_rsl_rl_args(parser)
 AppLauncher.add_app_launcher_args(parser)
 args_cli, hydra_args = parser.parse_known_args()
 
+if args_cli.task == "Rough-Deeprobotics-LightHW-Blind-v0" and (
+    args_cli.resume
+    or args_cli.load_run is not None
+    or args_cli.checkpoint is not None
+    or getattr(args_cli, "transfer_checkpoint", None) is not None
+    or getattr(args_cli, "warm_start_checkpoint", None) is not None
+):
+    parser.error(
+        "Rough-Deeprobotics-LightHW-Blind-v0 requires a fresh start; "
+        "do not pass resume, load_run, checkpoint, transfer_checkpoint, or warm_start_checkpoint."
+    )
+
 # always enable cameras to record video
 if args_cli.video:
     args_cli.enable_cameras = True
@@ -116,6 +128,20 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
     """Train with RSL-RL agent."""
     # override configurations with non-hydra CLI arguments
     agent_cfg = cli_args.update_rsl_rl_cfg(agent_cfg, args_cli)
+    if getattr(agent_cfg, "fresh_start_only", False):
+        checkpoint_options = (
+            agent_cfg.resume,
+            args_cli.checkpoint is not None,
+            args_cli.load_run is not None,
+            getattr(args_cli, "transfer_checkpoint", None) is not None,
+            getattr(args_cli, "warm_start_checkpoint", None) is not None,
+            agent_cfg.algorithm.class_name == "Distillation",
+        )
+        if any(checkpoint_options):
+            raise ValueError(
+                "Rough-Deeprobotics-LightHW-Blind-v0 requires a fresh start; "
+                "do not pass resume, load_run, checkpoint, transfer_checkpoint, or warm_start_checkpoint."
+            )
     env_cfg.scene.num_envs = args_cli.num_envs if args_cli.num_envs is not None else env_cfg.scene.num_envs
     agent_cfg.max_iterations = (
         args_cli.max_iterations if args_cli.max_iterations is not None else agent_cfg.max_iterations
@@ -126,7 +152,9 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
     # set the environment seed
     # note: certain randomizations occur in the environment initialization so we set the seed here
     env_cfg.seed = agent_cfg.seed
-    env_cfg.sim.device = args_cli.device if args_cli.device is not None else env_cfg.sim.device
+    if args_cli.device is not None:
+        env_cfg.sim.device = args_cli.device
+        agent_cfg.device = args_cli.device
 
     # multi-gpu training configuration
     if args_cli.distributed:

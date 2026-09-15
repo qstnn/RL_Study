@@ -39,6 +39,14 @@ parser.add_argument(
 )
 parser.add_argument("--seed", type=int, default=None, help="Seed used for the environment")
 parser.add_argument("--real-time", action="store_true", default=False, help="Run in real-time, if possible.")
+parser.add_argument(
+    "--fixed_command",
+    type=float,
+    nargs=3,
+    default=None,
+    metavar=("VX", "VY", "WZ"),
+    help="Use a fixed velocity command [vx, vy, wz] during playback.",
+)
 parser.add_argument("--keyboard", action="store_true", default=False, help="Whether to use keyboard.")
 # append RSL-RL cli arguments
 cli_args.add_rsl_rl_args(parser)
@@ -46,6 +54,11 @@ cli_args.add_rsl_rl_args(parser)
 AppLauncher.add_app_launcher_args(parser)
 # parse the arguments
 args_cli, hydra_args = parser.parse_known_args()
+# Fail before launching Isaac Sim when the task was omitted.  Without this
+# check the Hydra decorator receives ``None`` and reports an opaque
+# ``NoneType has no attribute split`` error after simulator startup.
+if args_cli.task is None:
+    parser.error("the following arguments are required: --task (for example, --task Rough-Deeprobotics-LightHW-v0)")
 # always enable cameras to record video
 if args_cli.video:
     args_cli.enable_cameras = True
@@ -123,6 +136,16 @@ from isaaclab_tasks.utils.hydra import hydra_task_config
 import rl_training.tasks  # noqa: F401
 
 
+def _sync_base_velocity_command(env, command_state: torch.Tensor):
+    """同步键盘命令到 command manager，使 Isaac 自带 debug_vis 显示真实播放命令。"""
+    try:
+        command_term = env.command_manager.get_term("base_velocity")
+    except Exception:
+        return
+    if hasattr(command_term, "vel_command_b"):
+        command_term.vel_command_b[: command_state.shape[0], :3] = command_state[:, :3]
+
+
 @hydra_task_config(args_cli.task, args_cli.agent)
 def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agent_cfg: RslRlOnPolicyRunnerCfg):
     """Play with RSL-RL agent."""
@@ -137,7 +160,9 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
     # set the environment seed
     # note: certain randomizations occur in the environment initialization so we set the seed here
     env_cfg.seed = agent_cfg.seed
-    env_cfg.sim.device = args_cli.device if args_cli.device is not None else env_cfg.sim.device
+    if args_cli.device is not None:
+        env_cfg.sim.device = args_cli.device
+        agent_cfg.device = args_cli.device
 
     # spawn the robot randomly in the grid (instead of their terrain levels)
     env_cfg.scene.terrain.max_init_terrain_level = None
@@ -155,7 +180,21 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
     env_cfg.curriculum.command_levels = None
 
     keyboard_command_state = None
-    if args_cli.keyboard:
+    if args_cli.fixed_command is not None:
+        env_cfg.scene.num_envs = 1
+        env_cfg.terminations.time_out = None
+        fixed_command = torch.tensor(args_cli.fixed_command, dtype=torch.float32)
+
+        def _fixed_command_obs_term(env):
+            nonlocal keyboard_command_state
+            keyboard_command_state = fixed_command.unsqueeze(0).to(env.device)
+            _sync_base_velocity_command(env, keyboard_command_state)
+            return keyboard_command_state
+
+        env_cfg.observations.policy.velocity_commands = ObsTerm(
+            func=_fixed_command_obs_term,
+        )
+    elif args_cli.keyboard:
         env_cfg.scene.num_envs = 1
         env_cfg.terminations.time_out = None
         env_cfg.commands.base_velocity.debug_vis = False

@@ -63,3 +63,12 @@ class DeeproboticsLightHWBalancedHighSpeedPPORunnerCfg(DeeproboticsLightHWRoughP
         # This is effective for actor-only transfer and avoids the excessive
         # wheel exploration seen in the failed static route.
         self.policy.init_noise_std = 0.25
+
+
+@configclass
+class DeeproboticsLightHWBlindRoughPPORunnerCfg(DeeproboticsLightHWRoughPPORunnerCfg):
+    """PPO runner for the no-height-observation rough LightHW task."""
+
+    experiment_name = "deeprobotics_lighthw_blind_rough"
+    run_name = "lighthw_rough_blind"
+    fresh_start_only = True

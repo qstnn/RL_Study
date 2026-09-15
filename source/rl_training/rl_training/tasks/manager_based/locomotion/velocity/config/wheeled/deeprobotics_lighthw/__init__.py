@@ -30,6 +30,18 @@ gym.register(
 )
 
 gym.register(
+    id="Rough-Deeprobotics-LightHW-Blind-v0",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.blind_rough_env_cfg:DeeproboticsLightHWBlindRoughEnvCfg",
+        "rsl_rl_cfg_entry_point": (
+            f"{agents.__name__}.rsl_rl_ppo_cfg:DeeproboticsLightHWBlindRoughPPORunnerCfg"
+        ),
+    },
+)
+
+gym.register(
     id="Rough-Deeprobotics-LightHW-BalancedHighSpeed-v0",
     entry_point="isaaclab.envs:ManagerBasedRLEnv",
     disable_env_checker=True,

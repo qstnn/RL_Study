@@ -6,6 +6,8 @@
 
 - flat 入口用于先验证站立、低速跟踪和动作维度是否正确。
 - rough 入口用于带地形的适配训练。
+- `Rough-Deeprobotics-LightHW-v0` 保留原始 236 维 policy/critic height-scan 基线。
+- `Rough-Deeprobotics-LightHW-Blind-v0` 是独立的无高度观测任务，policy/critic 均为 60 维，action 为 16 维；其默认 run_name 为 `lighthw_rough_blind`，从头训练。
 - 训练日志写到本路线下的 `logs/rsl_rl/<experiment_name>/`。
 
 - `configs/`：环境、奖励、PPO 配置。
