@@ -32,6 +32,42 @@ GitHub 默认 ZIP 通常只有 Git LFS 指针，17 个真实网格不会随源�
 不需要修改用户名、项目目录、URDF/mesh 路径，也不要在解压目录运行 `git pull` 或 `git lfs pull`。
 ZIP 不包含 Isaac Sim、驱动和 Conda 环境，也不自动更新；更新代码时重新下载到独立目录并保留旧运行数据。
 
+### 单位网络出现证书验证错误
+
+如果下载提示 `CERTIFICATE_VERIFY_FAILED: self-signed certificate in certificate chain`，
+说明当前 Python 无法信任连接的证书链。单位 HTTPS 检查以及 Conda 与系统证书库不同都可能导致此问题，
+这不是 R6 训练配置错误。现有脚本无需更新即可在 Ubuntu 上先尝试系统证书库：
+
+```bash
+SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt python model_lighthw/training/multiskill/prepare_zip.py
+```
+
+它只为这次调用选择证书库；前提是单位所需的 CA 已包含在该文件中。
+新版本也支持等价的显式参数：
+
+```bash
+python model_lighthw/training/multiskill/prepare_zip.py --ca-bundle /etc/ssl/certs/ca-certificates.crt
+```
+
+如果系统证书库仍不信任该连接，向单位网络管理员获取可信的 PEM 格式 CA 文件，
+将下面的占位路径替换为该文件的实际路径：
+
+```bash
+SSL_CERT_FILE=/absolute/path/to/company-ca.pem python model_lighthw/training/multiskill/prepare_zip.py
+```
+
+这些方式保留证书链、主机名和网格 SHA256 校验，不修改全局信任库。
+证书选择规则参见 [Python ssl 文档](https://docs.python.org/3.11/library/ssl.html#ssl.create_default_context)。
+
+也可以在网格已准备好的电脑上，把完整项目目录连同 `model_lighthw/lighthw_urdf/meshes/` 一起压缩，
+通过U盘或已有文件传输方式送到另一台电脑。解压后只做离线校验：
+
+```bash
+python model_lighthw/training/multiskill/prepare_zip.py --check
+```
+
+出现 `All 17 meshes match` 后直接进入 R6 预检与短验，不需要再次联网下载。
+
 ### 使用 Git 获取
 
 在 Ubuntu 安装 Git LFS：`sudo apt-get install git-lfs`，再执行 `git lfs install`。

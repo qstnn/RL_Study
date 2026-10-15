@@ -1,0 +1,21 @@
+{
+  "verified_at": "2026-10-15T19:37:59.059458+08:00",
+  "reported_error": "self-signed certificate in certificate chain",
+  "reported_network": "organization network, HTTPS inspection possible",
+  "original_error_reproductions": 2,
+  "regression_command": "python -m pytest model_lighthw/training/multiskill/tests/test_zip_tls.py -q",
+  "regression_result": "7 passed",
+  "trusted_ca_download": "passed",
+  "ssl_cert_file_download": "passed",
+  "unknown_or_wrong_ca_rejected": "passed",
+  "hostname_verification": "passed",
+  "corrupt_download_keeps_original": "passed",
+  "offline_check_without_ca_or_network": "passed",
+  "certificate_verification_disabled": false,
+  "remote_computer_fix_verified": false,
+  "gpu_validation": "not_run",
+  "source_sha256": {
+    "model_lighthw/training/multiskill/prepare_zip.py": "ee1116b3804fd8c741fb2f35518ff8f93fbdbe71fd8934f8654e522db700a25a",
+    "model_lighthw/training/multiskill/tests/test_zip_tls.py": "ce5de7d829cd9dae6b435fe32eb5a466f430a82871e72af2e07891faec8eba5c"
+  }
+}
