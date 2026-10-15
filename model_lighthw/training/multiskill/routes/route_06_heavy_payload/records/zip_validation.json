@@ -1,0 +1,40 @@
+{
+  "verified_at": "2026-10-15T19:23:03.930091+08:00",
+  "base_commit": "977cdead4e2ae7f6c475afedea014a3544eb83ea",
+  "checkout": "/tmp/lighthw-r6-zip-sriqqa61/renamed R6 directory",
+  "archive_contains_git": false,
+  "renamed_directory_with_spaces": true,
+  "mesh_hash_count": 17,
+  "http_download_verified_mesh": "model_lighthw/lighthw_urdf/meshes/FR_wheel_link.STL",
+  "download_uses_git": false,
+  "pointer_detection": "passed",
+  "corrupt_http_keeps_original": "passed",
+  "temporary_file_cleanup": "passed",
+  "cpu_asset_checks": [
+    {
+      "payload_kg": 0,
+      "status": "cpu_check_passed",
+      "gpu_verified": false
+    },
+    {
+      "payload_kg": 65,
+      "status": "cpu_check_passed",
+      "gpu_verified": false
+    }
+  ],
+  "existing_cpu_tests": "29 passed in archive checkout",
+  "gpu_validation": "not_run",
+  "modified_source_sha256": {
+    "README.md": "f09fb10de7205ec77b4236a652ccc09b6f95a6b4ec1096c29677bdd2f8b51e0f",
+    "model_lighthw/training/multiskill/README.md": "1313da3c2e7279423285f7d5bf22637ebf31688e3c3abf96b2f721d5b176877b",
+    "model_lighthw/training/multiskill/common.py": "1a0233349c3000108f832f8a020b80bb1515c0b5014330fb690d8f5a83fea333",
+    "model_lighthw/training/multiskill/prepare_zip.py": "1da3b4f8b67f02c769855165d2cb88a78f280e702b7f403653f631155d131da5",
+    "model_lighthw/training/multiskill/routes/route_06_heavy_payload/README.md": "ac2b0141e8952ede162ee3f2b795550b919f4f7809bd9f837852f947cccc516e"
+  },
+  "mesh_sources": {
+    "fresh_https_downloads": 1,
+    "verified_local_meshes_copied_into_archive": 16
+  },
+  "original_multiskill_source_sha256_checked": 33,
+  "original_multiskill_sources_unchanged": true
+}

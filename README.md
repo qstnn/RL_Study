@@ -1,7 +1,7 @@
 # rl_training
 
 本分支为 **LightHW 多技能 R6 / 重载静态持载**。
-跨电脑拉取、Git LFS 资产准备、启动训练与回放命令见
+跨电脑 Git 拉取或 ZIP 下载、无 Git 网格补齐、启动训练与回放命令见
 [技能启动说明](model_lighthw/training/multiskill/README.md)。
 下方保留上游项目的通用说明。
 

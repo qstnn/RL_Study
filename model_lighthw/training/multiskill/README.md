@@ -6,6 +6,34 @@ R6 任务为 `MultiSkill-LightHW-HeavyPayload-v0`，提供从零训练、同路�
 
 ## 另一台电脑获取
 
+### 网页下载 ZIP（无需 Git 拉取）
+
+直接下载 [R6 分支 ZIP](https://github.com/qstnn/RL_Study/archive/refs/heads/lighthw-multiskill-heavy-payload-r6.zip)，
+或在 GitHub 切换到 `lighthw-multiskill-heavy-payload-r6` 后点击 **Code → Download ZIP**。
+这个分支已经包含所需的 lighthw 基线，不需要下载两个分支再覆盖文件。
+
+解压到独立目录，在含有 `source/` 和 `model_lighthw/` 的项目根目录打开终端：
+
+```bash
+python3 model_lighthw/training/multiskill/prepare_zip.py
+```
+
+GitHub 默认 ZIP 通常只有 Git LFS 指针，17 个真实网格不会随源码一起下载。
+上面的入口仅使用 Python 标准库，通过 HTTPS 补齐缺失/指针/校验失败的网格（全部约269MB），
+固定已发布资产提交，逐个验证 SHA256，完整后才替换文件。正确网格自动跳过，失败后可重试同一命令。
+需要能访问 `media.githubusercontent.com`；不需要 Git 登录、Git LFS 或 `.git` 目录。
+只是校验现有文件、不联网时使用 `python3 model_lighthw/training/multiskill/prepare_zip.py --check`。
+
+若希望网页 ZIP 本身直接包含真实网格，仓库管理员也可在 **Settings → General → Archives** 勾选
+**Include Git LFS objects in archives** 后重新下载。此项是 GitHub 仓库设置，修改 `.gitattributes`
+不能代替开启该设置；本次未改变远端设置。参见 [GitHub 官方说明](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/managing-git-lfs-objects-in-archives-of-your-repository)。
+
+准备完成后，按下方“启动 R6”激活完整 `lab` 环境，执行 check、smoke 和2次更新短验，再启动正式训练。
+不需要修改用户名、项目目录、URDF/mesh 路径，也不要在解压目录运行 `git pull` 或 `git lfs pull`。
+ZIP 不包含 Isaac Sim、驱动和 Conda 环境，也不自动更新；更新代码时重新下载到独立目录并保留旧运行数据。
+
+### 使用 Git 获取
+
 在 Ubuntu 安装 Git LFS：`sudo apt-get install git-lfs`，再执行 `git lfs install`。
 已有本项目仓库时，在其根目录执行：
 
@@ -50,7 +78,7 @@ R6 分支补齐了共享依赖、基础入口引用的 `locomotion/skills/__init
 
 ## 启动 R6
 
-在实际克隆目录的根目录执行。使用已经能运行 Isaac Sim 的完整 `lab` 环境：
+在实际克隆或解压目录的根目录执行。使用已经能运行 Isaac Sim 的完整 `lab` 环境：
 
 ```bash
 conda activate lab

@@ -82,12 +82,14 @@ def asset_manifest():
         if not path.is_relative_to(URDF.parents[1]):
             raise ValueError(f"Unexpected mesh location: {path}")
         relative = str(path.relative_to(REPO))
+        if not path.is_file():
+            raise ValueError(f"Mesh missing: {relative}; run python3 model_lighthw/training/multiskill/prepare_zip.py")
         meshes[relative] = sha256(path)
         expected_path = ROOT / "records/portable_assets.json"
         if expected_path.exists():
             expected = json.loads(expected_path.read_text())["meshes"]
             if expected.get(relative) != meshes[relative]:
-                raise ValueError(f"Mesh missing/corrupt or still a Git LFS pointer: {relative}; run git lfs pull study")
+                raise ValueError(f"Mesh corrupt or still a Git LFS pointer: {relative}; run python3 model_lighthw/training/multiskill/prepare_zip.py (ZIP) or git lfs pull study (Git checkout)")
     return {"urdf": str(URDF.relative_to(REPO)), "urdf_sha256": sha256(URDF), "meshes": meshes,
             "mass_kg": sum(float(m.attrib["value"]) for m in tree.findall("link/inertial/mass")),
             "joint_count": len(joints)}

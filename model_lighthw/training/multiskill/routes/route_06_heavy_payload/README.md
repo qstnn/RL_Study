@@ -2,8 +2,9 @@
 
 **任务：`MultiSkill-LightHW-HeavyPayload-v0`。代码与 CPU 集成检查已完成，GPU 实例化及行为验收待验证。**
 目标对应1-11：静止承载分级增加到65kg。当前实现固定载荷的阶段训练，首轮空载；不自动跳到65kg。
-本机正在训练R1，本路线在另一台电脑运行。先按[同步与环境说明](../../README.md)拉取
-`lighthw-multiskill-heavy-payload-r6` 和 Git LFS 网格，再在仓库根执行以下命令。
+本机正在训练R1，本路线在另一台电脑运行。先按[同步与环境说明](../../README.md)获取
+`lighthw-multiskill-heavy-payload-r6`。支持 Git 拉取，也支持网页下载 ZIP 后运行
+`python3 model_lighthw/training/multiskill/prepare_zip.py` 补齐网格；再在项目根目录执行以下命令。
 
 ## 直接启动
 

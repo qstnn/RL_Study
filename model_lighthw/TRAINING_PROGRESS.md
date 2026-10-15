@@ -1,6 +1,21 @@
 # LightHW 技能分支训练进展
 
-最后更新：**2026-10-15 16:23（Asia/Shanghai，UTC+08:00）**。
+最后更新：**2026-10-15 19:23（Asia/Shanghai，UTC+08:00）**。
+
+**2026-10-15 19:23 新增网页 ZIP 获取方式，R6 训练配置保持。** 用户另一台电脑 Git 拉取有问题，新增
+`training/multiskill/prepare_zip.py`：仅用 Python 标准库，通过 HTTPS 按固定已发布版本补齐17个规范网格，
+逐个 SHA256 校验、正确文件跳过、临时文件完成后再替换；`--check` 只读离线检查。
+补齐 README 中 ZIP 下载/解压/资产准备/启动流程，资产缺失提示同时支持 ZIP 与 Git。
+没有修改 R6 奖励、PPO、载荷、控制或路径配置，没有改动原工作区 R1 源码；无需 `.git` 目录。
+
+**本轮验证与训练日期：** 2026-10-15，在无 `.git` 且名称含空格的解压副本中，0kg/65kg CPU资产检查及
+既有29项CPU测试通过。LFS指针识别、真实HTTPS下载一个网格（禁用PATH中的Git）、全部17网格哈希通过；
+其余16个网格由本地已校验资产填入副本，未重复进行全量HTTP下载。注入错误HTTP响应后，原文件不变且临时文件清理。
+原工作区33个多技能源码哈希保持。R6 GPU短验、机器人PPO和承载行为本轮均未执行。
+验证见[ZIP验证记录](training/multiskill/routes/route_06_heavy_payload/records/zip_validation.json)。
+
+**当前阶段/下一步：** ZIP交付入口已完成本地验证；另一台电脑下载技能分支ZIP并运行资产准备命令后，
+继续按下方原启动流程做GPU短验及空载基线。远端Archive设置没有修改，原Git拉取方式仍可用。
 
 本分支为`lighthw-multiskill-heavy-payload-r6`，基于本地`lighthw`提交`62e4614`。
 用户确认本机正在进行R1训练；R6在独立工作区实现，供另一台电脑拉取启动。
