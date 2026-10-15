@@ -1,0 +1,243 @@
+{
+  "checked_at": "2026-10-15T15:33:10.709904+08:00",
+  "evidence": "static_URDF_FK_and_ideal_vertical_contact_equilibrium",
+  "assets": {
+    "urdf": "model_lighthw/lighthw_urdf/urdf/lighthw.urdf",
+    "urdf_sha256": "5abb7c07c0ad401f7940018fee739ecc2fb4e0d3e8fc83274e75d1886db19fbb",
+    "meshes": {
+      "model_lighthw/lighthw_urdf/meshes/Base_link.STL": "a6dbaa22756431924cf909783c26586aec9c10aa75c80ef4d90433886b5e7800",
+      "model_lighthw/lighthw_urdf/meshes/FR_hip_link.STL": "30daf2bc9bc34db9e9a284415590d26f262cbf150f5fa7aa1ad8d9bbb11b0f99",
+      "model_lighthw/lighthw_urdf/meshes/FR_thigh_link.STL": "7a58d9b91693db46c6dc4d2aec1921106980f044f14cbb30bb15c00d1b9066af",
+      "model_lighthw/lighthw_urdf/meshes/FR_calf_link.STL": "9ac58208ce979ff4aa781b673dc672fd17034b656bcc7c353b11c0d477047441",
+      "model_lighthw/lighthw_urdf/meshes/FR_wheel_link.STL": "414ef55ce9b23cd63e14b41400d9bb16a654f8093d655966b01c4230f848dae5",
+      "model_lighthw/lighthw_urdf/meshes/FL_hip_link.STL": "b7f0ac0a962b1b186c0bc5df0be3ca43fb75887590fb29be867309d2db4c3c1d",
+      "model_lighthw/lighthw_urdf/meshes/FL_thigh_link.STL": "ce051cbecd24f98314d1c2f8f2786159478bd155817a390ea337e26cecbf8b0b",
+      "model_lighthw/lighthw_urdf/meshes/FL_calf_link.STL": "af6c83aff8fdbb732bac7b4b66c5253990e5371726fe1f39f788c85485dd4c6a",
+      "model_lighthw/lighthw_urdf/meshes/FL_wheel_link.STL": "e04d847bd92e2e82e2db97936baac7bc4bf84e55eed807aec79693b96ea56457",
+      "model_lighthw/lighthw_urdf/meshes/RR_hip_link.STL": "50ed9c9f67a4233cc89972e0fcb931220600fd8def4803c7b1208776d12359de",
+      "model_lighthw/lighthw_urdf/meshes/RR_thigh_link.STL": "7d38d8eb8a9b98c61a7a5145574d04fe17c085f714fe8504575a9c1b5c9fa763",
+      "model_lighthw/lighthw_urdf/meshes/RR_calf_link.STL": "9d1f7fcd8474c8d2d58f07ae48952591da4ef0819337cbe257a29c47054df230",
+      "model_lighthw/lighthw_urdf/meshes/RR_wheel_link.STL": "de3b3cdc14eec5d77b643604428d18d4a19a480adf0f3a13ed9b9167d83bd23e",
+      "model_lighthw/lighthw_urdf/meshes/RL_hip_link.STL": "ddc49b47b15f04b69d6ea3f1e5695378f790858fbd94f88a702bfb2082f4f4cc",
+      "model_lighthw/lighthw_urdf/meshes/RL_thigh_link.STL": "dc8909987b4cf065facdfb6606c062c35447d3f01bbc548994e4a294eaf71285",
+      "model_lighthw/lighthw_urdf/meshes/RL_calf_link.STL": "865636e859e42f7f5efca4780ccf25b064f5e77f5bf09ed33e109320d4332fe4",
+      "model_lighthw/lighthw_urdf/meshes/RL_wheel_link.STL": "4046ec2e68eec89622ba44797e49bb4795d4937c9a3e25156fb6e9c0fed754b0"
+    },
+    "mass_kg": 11.66811148685705,
+    "joint_count": 16
+  },
+  "default_joint_angles": {
+    "FR_hip_joint": 0.0,
+    "FR_thigh_joint": 0.6,
+    "FR_calf_joint": -1.5,
+    "FR_wheel_joint": 0.0,
+    "FL_hip_joint": 0.0,
+    "FL_thigh_joint": 0.6,
+    "FL_calf_joint": -1.5,
+    "FL_wheel_joint": 0.0,
+    "RR_hip_joint": 0.0,
+    "RR_thigh_joint": -0.6,
+    "RR_calf_joint": 1.5,
+    "RR_wheel_joint": 0.0,
+    "RL_hip_joint": 0.0,
+    "RL_thigh_joint": -0.6,
+    "RL_calf_joint": 1.5,
+    "RL_wheel_joint": 0.0
+  },
+  "base_com_m": [
+    0.020898140137887263,
+    -0.0008059323819059001,
+    -0.08565204684540659
+  ],
+  "wheel_contacts_in_base_m": [
+    [
+      0.3335566876371111,
+      -0.2024273373845995,
+      -0.4162230176131977
+    ],
+    [
+      0.33355368822986153,
+      0.2024273366821273,
+      -0.41622301761324454
+    ],
+    [
+      -0.34109472646220307,
+      -0.2024273373845589,
+      -0.416223017613061
+    ],
+    [
+      -0.34109488720006803,
+      0.2024269992975108,
+      -0.4162231451667818
+    ]
+  ],
+  "wheel_collision_radii_m": {
+    "FR_wheel_link": 0.08750023391228524,
+    "FL_wheel_link": 0.08750023347849077,
+    "RR_wheel_link": 0.08750023206839466,
+    "RL_wheel_link": 0.08750023251158012
+  },
+  "default_collision_bbox_m": [
+    [
+      -0.42859490651455345,
+      -0.2110731717858494,
+      -0.4162229763818423
+    ],
+    [
+      0.42104951070121943,
+      0.2110731710833772,
+      0.09674103558063507
+    ]
+  ],
+  "hip_zero_straight_leg_height_upper_bound_m": 0.5475002329926877,
+  "static_cases": [
+    {
+      "payload_kg": 0.0,
+      "assumed_payload_com_in_base_m": [
+        0.0,
+        0.0,
+        0.2
+      ],
+      "total_com_in_base_m": [
+        0.020898140137887263,
+        -0.0008059323819059001,
+        -0.08565204684540659
+      ],
+      "vertical_wheel_forces_N": [
+        30.822604821108385,
+        30.594757539408928,
+        26.637320403674394,
+        26.409490921875932
+      ],
+      "all_vertical_forces_nonnegative": true,
+      "leg_static_torques_Nm": {
+        "FR_hip_joint": 3.3284289324062937,
+        "FR_thigh_joint": 2.3674901431450572,
+        "FR_calf_joint": 4.856605967367236,
+        "FL_hip_joint": -3.29448226714356,
+        "FL_thigh_joint": 2.3513479392227117,
+        "FL_calf_joint": 4.8130878289046795,
+        "RR_hip_joint": 2.691261532152312,
+        "RR_thigh_joint": -2.0456110945588786,
+        "RR_calf_joint": -4.038099348982424,
+        "RL_hip_joint": -2.6557429289086674,
+        "RL_thigh_joint": -2.026550621722916,
+        "RL_calf_joint": -3.992383464680266
+      },
+      "max_abs_leg_torque_Nm": 4.856605967367236
+    },
+    {
+      "payload_kg": 10.0,
+      "assumed_payload_com_in_base_m": [
+        0.0,
+        0.0,
+        0.2
+      ],
+      "total_com_in_base_m": [
+        0.011253487833710602,
+        -0.0004339883929732494,
+        0.0461785683970297
+      ],
+      "vertical_wheel_forces_N": [
+        55.621676855592185,
+        55.39384871522668,
+        50.88822807463494,
+        50.660420040613765
+      ],
+      "all_vertical_forces_nonnegative": true,
+      "leg_static_torques_Nm": {
+        "FR_hip_joint": 7.108485452231543,
+        "FR_thigh_joint": 4.283384305003389,
+        "FR_calf_joint": 9.713047095821736,
+        "FL_hip_joint": -7.074541704631547,
+        "FL_thigh_joint": 4.267243579869653,
+        "FL_calf_joint": 9.669532705832282,
+        "RR_hip_joint": 6.387762800559848,
+        "RR_thigh_joint": -3.919155893406871,
+        "RR_calf_joint": -8.787192591332007,
+        "RL_hip_joint": -6.352239301690271,
+        "RL_thigh_joint": -3.900100975597702,
+        "RL_calf_joint": -8.741484805224282
+      },
+      "max_abs_leg_torque_Nm": 9.713047095821736
+    },
+    {
+      "payload_kg": 15.0,
+      "assumed_payload_com_in_base_m": [
+        0.0,
+        0.0,
+        0.2
+      ],
+      "total_com_in_base_m": [
+        0.009143573181663213,
+        -0.0003526199778931014,
+        0.07501852425194254
+      ],
+      "vertical_wheel_forces_N": [
+        68.02121287283413,
+        67.79339430313559,
+        63.01368191011524,
+        62.78588459998271
+      ],
+      "all_vertical_forces_nonnegative": true,
+      "leg_static_torques_Nm": {
+        "FR_hip_joint": 8.998513712144174,
+        "FR_thigh_joint": 5.241331385932558,
+        "FR_calf_joint": 12.141267660048994,
+        "FL_hip_joint": -8.964571423375542,
+        "FL_thigh_joint": 5.2251914001931254,
+        "FL_calf_joint": 12.09775514429609,
+        "RR_hip_joint": 8.236013434763622,
+        "RR_thigh_joint": -4.855928292830869,
+        "RR_calf_joint": -11.161739212506802,
+        "RL_hip_joint": -8.200487488081077,
+        "RL_thigh_joint": -4.836876152535098,
+        "RL_calf_joint": -11.116035475496293
+      },
+      "max_abs_leg_torque_Nm": 12.141267660048994
+    },
+    {
+      "payload_kg": 65.0,
+      "assumed_payload_com_in_base_m": [
+        0.0,
+        0.0,
+        0.2
+      ],
+      "total_com_in_base_m": [
+        0.003180485657829615,
+        -0.00012265476089832136,
+        0.15652664628875743
+      ],
+      "vertical_wheel_forces_N": [
+        192.01657304525315,
+        191.78885018222434,
+        184.26822026491797,
+        184.04053019367188
+      ],
+      "all_vertical_forces_nonnegative": true,
+      "leg_static_torques_Nm": {
+        "FR_hip_joint": 27.89879631127042,
+        "FR_thigh_joint": 14.820802195224218,
+        "FR_calf_joint": 36.4234733023215,
+        "FL_hip_joint": -27.86486861081547,
+        "FL_thigh_joint": 14.804669603427827,
+        "FL_calf_joint": 36.3799795289341,
+        "RR_hip_joint": 26.71851977680131,
+        "RR_thigh_joint": -14.223652287070832,
+        "RR_calf_joint": -34.90720542425471,
+        "RL_hip_joint": -26.6829693519891,
+        "RL_thigh_joint": -14.204627921909028,
+        "RL_calf_joint": -34.86154217821637
+      },
+      "max_abs_leg_torque_Nm": 36.4234733023215
+    }
+  ],
+  "hardware_feasible": null,
+  "limitations": [
+    "fixed original level pose; no collision-aware reachability sweep",
+    "payload mount assumed at base xyz=(0,0,0.20)m",
+    "minimum-norm vertical contact distribution, not unique or measured",
+    "no friction/traction/dynamic/self-collision/structural/thermal/continuous actuator certification",
+    "800mm access and acrobatics remain unresolved; nominal static torques do not certify65kg"
+  ]
+}

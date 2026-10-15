@@ -1,0 +1,15 @@
+{
+  "status": "planned",
+  "task_id": null,
+  "acceptance_tasks": [
+    "1-10"
+  ],
+  "deployment_ready": false,
+  "entry_conditions": [
+    "空载四轮稳定且选定前/后模式；不能沿用仅轮式的退出姿态"
+  ],
+  "exit_conditions": [
+    "恢复四轮稳定支撑后才切换"
+  ],
+  "validated_operating_envelope": null
+}

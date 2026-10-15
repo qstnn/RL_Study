@@ -1,0 +1,143 @@
+{
+  "checked_at": "2026-10-15T15:38:06.702752+08:00",
+  "python": "/home/user/miniconda3/envs/lab/bin/python",
+  "versions": {
+    "torch": "2.7.0+cu128",
+    "rsl-rl": null,
+    "gymnasium": "1.2.0"
+  },
+  "formal_ready": false,
+  "implemented_routes": [
+    "01_stage1"
+  ],
+  "gpu_verified_routes": [],
+  "declared_dimensions": [
+    57,
+    236,
+    16
+  ],
+  "dimension_evidence": "static contract and named-channel CPU test; actual manager dimensions pending",
+  "checks": {
+    "cpu_tests": {
+      "command": [
+        "/home/user/miniconda3/envs/lab/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "/home/user/RL_lab/rl_training/model_lighthw/training/multiskill/tests/test_framework.py"
+      ],
+      "returncode": 0,
+      "status": "passed",
+      "log": "cpu_tests.log"
+    },
+    "registration_assets": {
+      "command": [
+        "/home/user/miniconda3/envs/lab/bin/python",
+        "/home/user/RL_lab/rl_training/model_lighthw/training/multiskill/run.py",
+        "check"
+      ],
+      "returncode": 0,
+      "status": "passed",
+      "log": "registration_assets.log"
+    },
+    "smoke_attempt": {
+      "command": [
+        "/home/user/miniconda3/envs/lab/bin/python",
+        "/home/user/RL_lab/rl_training/model_lighthw/training/multiskill/run.py",
+        "smoke",
+        "--headless",
+        "--num_envs",
+        "32"
+      ],
+      "returncode": 2,
+      "status": "runtime_dependency_blocked",
+      "log": "smoke_attempt.log"
+    },
+    "app_import": {
+      "command": [
+        "/home/user/miniconda3/envs/lab/bin/python",
+        "-c",
+        "from isaaclab.app import AppLauncher"
+      ],
+      "returncode": 1,
+      "status": "runtime_dependency_blocked",
+      "log": "app_import.log"
+    },
+    "environment_config_import": {
+      "command": [
+        "/home/user/miniconda3/envs/lab/bin/python",
+        "-c",
+        "from rl_training.tasks.manager_based.locomotion.multiskill.lighthw.wheel_env_cfg import WheelStage1EnvCfg; cfg=WheelStage1EnvCfg()"
+      ],
+      "returncode": 1,
+      "status": "runtime_dependency_blocked",
+      "log": "environment_config_import.log"
+    },
+    "entrypoint_help": {
+      "command": [
+        "/home/user/miniconda3/envs/lab/bin/python",
+        "/home/user/RL_lab/rl_training/model_lighthw/training/multiskill/routes/route_01_wheel_locomotion/scripts/train.py",
+        "--help"
+      ],
+      "returncode": 0,
+      "status": "passed",
+      "log": "entrypoint_help.log"
+    },
+    "python_compile": {
+      "status": "passed",
+      "files": [
+        "model_lighthw/training/multiskill/audit_model.py",
+        "model_lighthw/training/multiskill/common.py",
+        "model_lighthw/training/multiskill/protocol.py",
+        "model_lighthw/training/multiskill/routes/route_01_wheel_locomotion/scripts/evaluate.py",
+        "model_lighthw/training/multiskill/routes/route_01_wheel_locomotion/scripts/play.py",
+        "model_lighthw/training/multiskill/routes/route_01_wheel_locomotion/scripts/train.py",
+        "model_lighthw/training/multiskill/run.py",
+        "model_lighthw/training/multiskill/tests/test_framework.py",
+        "model_lighthw/training/multiskill/worker.py",
+        "source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/__init__.py",
+        "source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/__init__.py",
+        "source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/catalog.py",
+        "source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/ppo_cfg.py",
+        "source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/rewards.py",
+        "source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/wheel_env_cfg.py"
+      ],
+      "count": 15,
+      "last_worker_recompile": "2026-10-15T15:38:06.702752+08:00"
+    },
+    "baseline_protection": {
+      "status": "passed",
+      "files": 552,
+      "changed": [],
+      "evidence": "protected_files.json",
+      "final_recheck": "2026-10-15T15:38:45.027279+08:00"
+    },
+    "new_source_whitespace": {
+      "status": "passed"
+    },
+    "model_audit": {
+      "status": "passed_static_only",
+      "evidence": "model_audit.json",
+      "hardware_feasible": null
+    },
+    "new_document_links": {
+      "status": "passed"
+    },
+    "no_new_robot_checkpoints": {
+      "status": "passed"
+    }
+  },
+  "new_robot_training_updates": 0,
+  "new_robot_rollout_steps": 0,
+  "final_acceptance": "not_evaluated",
+  "remaining": [
+    "Isaac Sim config import/instantiation",
+    "100-step GPU smoke",
+    "2-update PPO log/save smoke",
+    "trained behavior assessment"
+  ],
+  "blockers": [
+    "isaacsim unavailable",
+    "omni unavailable"
+  ]
+}

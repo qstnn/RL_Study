@@ -1,0 +1,30 @@
+{
+  "status": "implemented_runtime_pending",
+  "task_id": "MultiSkill-LightHW-Wheel-Stage1-v0",
+  "acceptance_tasks": [
+    "1-1",
+    "1-2",
+    "1-5"
+  ],
+  "deployment_ready": false,
+  "observation_contract": "lighthw_multiskill_wheel_stage1_v1",
+  "entry_conditions": [
+    "平地空载",
+    "直立且四轮支撑稳定",
+    "机身速度接近零"
+  ],
+  "exit_conditions": [
+    "零指令后稳定保持",
+    "满足下一技能的状态要求"
+  ],
+  "configured_operating_envelope": {
+    "terrain": "plane",
+    "payload_kg": 0,
+    "towing_force_N": 0,
+    "vx_mps": [
+      0.2,
+      0.6
+    ]
+  },
+  "validated_operating_envelope": null
+}

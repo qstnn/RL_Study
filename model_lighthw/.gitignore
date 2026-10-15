@@ -2,9 +2,7 @@
 training/routes/*/logs/*
 !training/routes/*/logs/.gitkeep
 
-# Meshes are kept locally and are intentionally excluded from the lightweight
-# GitHub project branch; the canonical URDF remains tracked for review.
-lighthw_urdf/meshes/*
+# Canonical meshes are versioned with Git LFS; converted USD stays local.
 
 # Common transient outputs
 **/__pycache__/

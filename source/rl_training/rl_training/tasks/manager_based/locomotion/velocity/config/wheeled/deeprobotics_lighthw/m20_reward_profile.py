@@ -21,6 +21,7 @@ from .adapted_rewards import (
     lighthw_joint_power_l1,
     lighthw_joint_torques_l2,
 )
+from .default_pose import LIGHTHW_DEFAULT_BASE_HEIGHT
 
 # URDF effort/velocity limits used to preserve comparable *normalized* costs.
 # Isaac actuator configuration is the runtime authority; the M20 URDF XML
@@ -72,9 +73,9 @@ def apply_m20_reward_profile(cfg) -> None:
     rewards.base_height_l2.func = lighthw_base_height_l2
     rewards.base_height_l2.weight = -0.5
     rewards.base_height_l2.params = {
-        # LightHW's canonical default pose puts the chassis around 0.416 m;
-        # retaining M20's 0.40 m target would create a constant crouch bias.
-        "target_height": 0.416,
+        # Match the route's geometric standing height so the height reward
+        # does not pull the new reference pose back toward the old crouch.
+        "target_height": LIGHTHW_DEFAULT_BASE_HEIGHT,
         "asset_cfg": SceneEntityCfg("robot", body_names=[base]),
         "sensor_cfg": SceneEntityCfg("height_scanner_base"),
     }

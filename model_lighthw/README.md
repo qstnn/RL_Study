@@ -2,11 +2,17 @@
 
 这个目录用于 LightHW 新机器狗的独立训练线，和现有训练资产分开管理。
 
+## 技能训练入口
+
+当前技能分支为 `lighthw-multiskill-heavy-payload-r6`；请从
+[多技能启动说明](training/multiskill/README.md)完成拉取、环境检查和启动。
+R6 与 R1、下方历史 rough 路线使用独立运行目录。
+
 ## 结构
 
-- `lighthw_urdf/`：当前唯一 canonical LightHW URDF；GitHub 分支只上传 URDF，mesh 保留在本地以避免大文件和训练产物污染仓库。
+- `lighthw_urdf/`：当前唯一 canonical LightHW URDF；本技能分支同时通过 Git LFS 同步全部 17 个规范 STL。
 - `training/routes/route_00_baseline/`：历史基线，保留用于对照。
-- `training/routes/route_04_balanced_highspeed/`：当前唯一可运行的 M20 奖励迁移路线。
+- `training/routes/route_04_balanced_highspeed/`：保留的 M20 奖励迁移路线。
 - `training/routes/route_01_template/`：后续新路线的复制模板。
 - `training/records/`：训练过程与结果的统一记录，主档是 [training/records/training_journal.md](training/records/training_journal.md)。
 

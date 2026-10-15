@@ -1,0 +1,18 @@
+usage: train.py [-h] [--route {00,01,02a,02b,03,04,05a,05b,06}] [--headless]
+                [--num_envs NUM_ENVS] [--max_iterations MAX_ITERATIONS]
+                [--seed SEED] [--eval_seeds EVAL_SEEDS [EVAL_SEEDS ...]]
+                [--device DEVICE] [--checkpoint CHECKPOINT]
+
+LightHW isolated route train/smoke/play/evaluate; check works without Isaac
+Sim.
+
+options:
+  -h, --help            show this help message and exit
+  --route {00,01,02a,02b,03,04,05a,05b,06}
+  --headless
+  --num_envs NUM_ENVS
+  --max_iterations MAX_ITERATIONS
+  --seed SEED
+  --eval_seeds EVAL_SEEDS [EVAL_SEEDS ...]
+  --device DEVICE
+  --checkpoint CHECKPOINT

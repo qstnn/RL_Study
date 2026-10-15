@@ -35,6 +35,7 @@ from .adapted_rewards import (
     lighthw_stand_leg_velocity_l2,
 )
 from .asset_cfg import LIGHTHW_ROUTE_CFG
+from .default_pose import LIGHTHW_DEFAULT_BASE_HEIGHT
 from .m20_reward_profile import apply_m20_reward_profile
 
 
@@ -234,10 +235,11 @@ class DeeproboticsLightHWRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
         }
         self.actions.joint_pos.joint_names = self.leg_joint_names
         self.actions.joint_pos.preserve_order = True
-        # The wheel scale is chosen so a unit policy action can reach the
-        # updated 3.5 m/s command target with the 87.5 mm wheel radius.
-        # The clip is kept slightly above the nominal 3.5 m/s angular speed
-        # target so the policy does not saturate immediately at the boundary.
+        # Keep the wheel action interface unchanged while the low-speed route
+        # learns its baseline.  This scale is an actuator command mapping, not
+        # a claim that the current +/-1 m/s command is physically saturated at
+        # a particular chassis speed; the high-speed route documents its own
+        # command range and must be evaluated separately.
         self.actions.joint_vel.scale = 40.0
         self.actions.joint_vel.clip = {".*_wheel_joint": (-42.0, 42.0)}
         self.actions.joint_vel.joint_names = self.wheel_joint_names
@@ -305,7 +307,7 @@ class DeeproboticsLightHWRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
         self.rewards.flat_orientation_l2.weight = 0.0
         self.rewards.base_height_l2.func = lighthw_base_height_l2
         self.rewards.base_height_l2.weight = -0.5
-        self.rewards.base_height_l2.params["target_height"] = 0.40
+        self.rewards.base_height_l2.params["target_height"] = LIGHTHW_DEFAULT_BASE_HEIGHT
         self.rewards.base_height_l2.params["asset_cfg"].body_names = [self.base_link_name]
         self.rewards.base_height_l2.params["sensor_cfg"] = SceneEntityCfg("height_scanner_base")
         self.rewards.body_lin_acc_l2.weight = 0.0
@@ -434,7 +436,7 @@ class DeeproboticsLightHWRoughEnvCfg(LocomotionVelocityRoughEnvCfg):
         self.commands.base_velocity.debug_vis = False
         self.commands.base_velocity.resampling_time_range = (8.0, 8.0)
         # Start the base route at a learnable forward speed.  The later
-        # high-speed route restores the 3.5 m/s range explicitly.
+        # high-speed route restores the 3.2 m/s range explicitly.
         self.commands.base_velocity.rel_standing_envs = 0.02
         self.commands.base_velocity.ranges.lin_vel_x = (-1.0, 1.0)
         self.commands.base_velocity.ranges.lin_vel_y = (-1.0, 1.0)

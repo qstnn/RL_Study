@@ -1,0 +1,6 @@
+usage: run.py [-h] [--route {00,01,02a,02b,03,04,05a,05b,06}] [--headless]
+              [--num_envs NUM_ENVS] [--max_iterations MAX_ITERATIONS]
+              [--seed SEED] [--eval_seeds EVAL_SEEDS [EVAL_SEEDS ...]]
+              [--device DEVICE] [--checkpoint CHECKPOINT]
+              {list,check,train,smoke,play,evaluate}
+run.py: error: Missing runtime modules: isaacsim; use the complete lab / Isaac Sim environment

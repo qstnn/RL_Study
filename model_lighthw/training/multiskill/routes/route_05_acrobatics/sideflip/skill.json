@@ -1,0 +1,15 @@
+{
+  "status": "feasibility_pending",
+  "task_id": null,
+  "acceptance_tasks": [
+    "1-9"
+  ],
+  "deployment_ready": false,
+  "entry_conditions": [
+    "仅已验证侧翻准备状态，当前未验证"
+  ],
+  "exit_conditions": [
+    "飞行阶段不切换；验证过的落地恢复后退出"
+  ],
+  "validated_operating_envelope": null
+}

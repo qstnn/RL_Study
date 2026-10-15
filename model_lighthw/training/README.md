@@ -1,5 +1,9 @@
 # Training Layout
 
+本分支当前训练入口是 [multiskill / R6 重载持载](multiskill/README.md)。
+说明包含跨电脑同步、Git LFS、100 步短验、2 次 PPO 短验、正式训练与回放命令。
+R6 数据保存在 `multiskill/routes/route_06_heavy_payload/` 的各运行目录中。
+
 - `routes/`：每条训练路线独立放置配置、脚本、日志和结果。
 - `records/`：跨路线的训练记录与结果索引，主档为 [records/training_journal.md](records/training_journal.md)。
 

@@ -1,0 +1,15 @@
+{
+  "status": "reference",
+  "task_id": null,
+  "acceptance_tasks": [
+    "原Rough参考"
+  ],
+  "deployment_ready": false,
+  "entry_conditions": [
+    "不适用"
+  ],
+  "exit_conditions": [
+    "不适用"
+  ],
+  "validated_operating_envelope": null
+}

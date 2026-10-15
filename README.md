@@ -1,5 +1,10 @@
 # rl_training
 
+本分支为 **LightHW 多技能 R6 / 重载静态持载**。
+跨电脑拉取、Git LFS 资产准备、启动训练与回放命令见
+[技能启动说明](model_lighthw/training/multiskill/README.md)。
+下方保留上游项目的通用说明。
+
 [![IsaacSim](https://img.shields.io/badge/IsaacSim-5.1.0-silver.svg)](https://docs.omniverse.nvidia.com/isaacsim/latest/overview.html)
 [![Isaac Lab](https://img.shields.io/badge/IsaacLab-2.3.2-silver)](https://isaac-sim.github.io/IsaacLab)
 [![RSL-RL](https://img.shields.io/badge/RSL--RL-5.0.1-silver)](https://github.com/leggedrobotics/rsl_rl)

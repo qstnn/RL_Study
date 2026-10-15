@@ -1,0 +1,119 @@
+{
+  "checked_at": "2026-10-15T16:22:31.730964+08:00",
+  "branch": "lighthw-multiskill-heavy-payload-r6",
+  "base_lighthw_commit": "62e4614c971ca357943cf1f3c5757c13398e867d",
+  "remote_lighthw_commit_at_fetch": "8b63cf306e835010b2c9aa1d86f616c7ce6e09e6",
+  "cpu_tests": {
+    "passed": 29,
+    "log": "cpu_tests.log"
+  },
+  "compiled_python_files": [
+    "model_lighthw/training/multiskill/common.py",
+    "model_lighthw/training/multiskill/protocol.py",
+    "model_lighthw/training/multiskill/worker.py",
+    "model_lighthw/training/multiskill/audit_model.py",
+    "model_lighthw/training/multiskill/run.py",
+    "model_lighthw/training/multiskill/routes/route_06_heavy_payload/scripts/evaluate.py",
+    "model_lighthw/training/multiskill/routes/route_06_heavy_payload/scripts/metrics.py",
+    "model_lighthw/training/multiskill/routes/route_06_heavy_payload/scripts/worker.py",
+    "model_lighthw/training/multiskill/routes/route_06_heavy_payload/scripts/train.py",
+    "model_lighthw/training/multiskill/routes/route_06_heavy_payload/scripts/play.py",
+    "model_lighthw/training/multiskill/routes/route_06_heavy_payload/scripts/launch.py",
+    "model_lighthw/training/multiskill/routes/route_06_heavy_payload/scripts/training.py",
+    "model_lighthw/training/multiskill/routes/route_01_wheel_locomotion/scripts/evaluate.py",
+    "model_lighthw/training/multiskill/routes/route_01_wheel_locomotion/scripts/train.py",
+    "model_lighthw/training/multiskill/routes/route_01_wheel_locomotion/scripts/play.py",
+    "model_lighthw/training/multiskill/tests/test_payload.py",
+    "model_lighthw/training/multiskill/tests/test_framework.py",
+    "source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/__init__.py",
+    "source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/__init__.py",
+    "source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/payload_env_cfg.py",
+    "source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/wheel_env_cfg.py",
+    "source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/payload_spec.py",
+    "source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/payload_spawn.py",
+    "source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/rewards.py",
+    "source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/ppo_cfg.py",
+    "source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/payload_asset.py",
+    "source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/payload_ppo_cfg.py",
+    "source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/catalog.py",
+    "source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/payload_mdp.py"
+  ],
+  "dependency_import_check": {
+    "missing": []
+  },
+  "entrypoint_checks": [
+    {
+      "command": [
+        "model_lighthw/training/multiskill/run.py",
+        "list"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "model_lighthw/training/multiskill/run.py",
+        "check",
+        "--route",
+        "06",
+        "--payload-kg",
+        "65"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "model_lighthw/training/multiskill/routes/route_06_heavy_payload/scripts/train.py",
+        "--help"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "model_lighthw/training/multiskill/routes/route_06_heavy_payload/scripts/play.py",
+        "--help"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "model_lighthw/training/multiskill/routes/route_06_heavy_payload/scripts/evaluate.py",
+        "--help"
+      ],
+      "returncode": 0
+    }
+  ],
+  "r6_contract": {
+    "dimensions": [
+      58,
+      237,
+      16
+    ],
+    "payload_stages_kg": [
+      0,
+      5,
+      10,
+      15,
+      25,
+      40,
+      65
+    ],
+    "payload_mode": "fixed_rigid_mass_per_run"
+  },
+  "rsl_rl_integration": {
+    "device": "cpu",
+    "data": "synthetic, not robot simulation",
+    "initial_updates": 2,
+    "resumed_updates": 1,
+    "checkpoint_model_optimizer_lr_and_iteration_checked": true,
+    "csv_and_tensorboard_checked": true
+  },
+  "original_source_and_assets": {
+    "checked": 96,
+    "changed": []
+  },
+  "gpu_environment_instantiation": "not_run_to_preserve_active_R1",
+  "gpu_smoke": "pending_on_second_computer",
+  "robot_ppo_updates": 0,
+  "robot_behavior_acceptance": "not_evaluated",
+  "hardware_payload_validation": false
+}
