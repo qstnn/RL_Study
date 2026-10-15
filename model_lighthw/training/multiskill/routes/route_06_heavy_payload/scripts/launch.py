@@ -23,8 +23,35 @@ def positive(value):
     return value
 
 
+def failure_context(run):
+    """读取子进程留下的诊断，不用猜测缺少运行结果的具体原因。"""
+    details = [f"See console log: {run / 'console.log'}"]
+    for name in ('worker_status.json', 'worker_error.json'):
+        path = run / name
+        if not path.is_file():
+            continue
+        try:
+            record = json.loads(path.read_text())
+            if name == 'worker_status.json':
+                details.append(f"Last worker stage: {record.get('stage', 'unknown')}")
+            else:
+                details.append(f"Original worker error: {record.get('exception_type')}: {record.get('error')}")
+                details.append(f"Full traceback: {path}")
+        except (OSError, ValueError, AttributeError):
+            details.append(f"Unreadable diagnostic: {path}")
+    return '; '.join(details)
+
+
 def verify_completion(run, mode):
     # Kit可能提前exit(0)；进程返回零不能代替环境实例化和训练结果证据。
+    if (run / 'worker_error.json').exists():
+        raise RuntimeError('R6 worker reported an exception; ' + failure_context(run))
+    if not (run / 'runtime_check.json').is_file():
+        raise RuntimeError('R6 worker exited before completing runtime validation; '
+                           'missing required output runtime_check.json; ' + failure_context(run))
+    if not (run / 'result.json').is_file():
+        raise RuntimeError('R6 worker exited before writing its final result; '
+                           'missing required output result.json; ' + failure_context(run))
     runtime = json.loads((run / "runtime_check.json").read_text())
     result = json.loads((run / "result.json").read_text())
     if runtime.get("dimensions") != [58, 237, 16] or result.get("mode") != mode or result.get("status") != "completed":
@@ -108,8 +135,10 @@ def main(mode=None, argv=None):
             for line in process.stdout:
                 stream.write(line); stream.flush(); print(line, end='', flush=True)
             code = process.wait()
-        if code == 0:
-            verify_completion(run, args.mode)
+        meta['worker_returncode'] = code
+        if code != 0:
+            raise RuntimeError(f'R6 worker exited with code {code}; ' + failure_context(run))
+        verify_completion(run, args.mode)
         meta['status'] = 'completed' if code == 0 else 'failed'
     except KeyboardInterrupt:
         code, meta['status'] = 130, 'interrupted'

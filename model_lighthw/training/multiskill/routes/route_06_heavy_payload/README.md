@@ -99,3 +99,15 @@ python model_lighthw/training/multiskill/routes/route_06_heavy_payload/scripts/t
 - `training_result.json`、`result.json`：完成更新数、最终模型路径与哈希；缺失时启动器判失败。
 
 这些产物只保存在当前电脑。详见[本轮验证](records/validation.json)；GPU短验未执行，正式R6机器人训练尚未开始。
+
+## 启动提前退出或缺少 runtime_check.json
+
+`runtime_check.json` 是环境创建并通过维度、质量、质心和惯量检查后生成的结果，不能手工补一个空文件。
+缺少它说明运行时检查未完成，需要查看同一个run目录的 `console.log` 查找此前异常；进程返回0也可能提前退出。
+新版本会在 `worker_status.json` 保存最后阶段（如 `app_start`、`config_load`、`environment_creation`、
+`runtime_validation`），并在关闭Isaac Sim之前把Python异常写入 `worker_error.json`。
+`run.json` 的 `worker_returncode` 保留子进程实际退出码，`returncode` 是整个启动器最终结果。
+
+请先保留失败目录，读取 `console.log` 末尾约180行和 `run.json`；新版本再查看上述两个worker诊断文件。
+早期版本缺少worker诊断文件时，已有 `console.log` 仍可用于分析。
+只报告缺少JSON不能判断是依赖、GPU、资产创建还是运行时校验失败，需要前面的日志证据。

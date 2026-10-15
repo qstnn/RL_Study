@@ -87,9 +87,9 @@ def test_r6_checkpoint_rejects_r1_and_nonfinite(tmp_path):
 
 
 def test_exit_zero_without_result_is_not_training_success(tmp_path):
-    with pytest.raises(FileNotFoundError): launch.verify_completion(tmp_path, 'smoke')
+    with pytest.raises(RuntimeError, match='runtime_check.json'): launch.verify_completion(tmp_path, 'smoke')
     common.write_json(tmp_path/'runtime_check.json', {'dimensions':[58,237,16]})
-    with pytest.raises(FileNotFoundError): launch.verify_completion(tmp_path, 'smoke')
+    with pytest.raises(RuntimeError, match='result.json'): launch.verify_completion(tmp_path, 'smoke')
     common.write_json(tmp_path/'result.json', {'mode':'smoke', 'status':'completed'})
     launch.verify_completion(tmp_path, 'smoke')
 

@@ -2,8 +2,10 @@
 import argparse
 import csv
 import json
+import os
 from pathlib import Path
 import sys
+import traceback
 from launch import REPO, SOURCE, spec, now, sha256, write_json
 import metrics
 
@@ -114,13 +116,24 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--run', type=Path, required=True)
     run = parser.parse_args().run.resolve()
-    args = json.loads((run/'request.json').read_text())
-    payload = json.loads((run/'payload.json').read_text())
-    sys.path.insert(0, str(REPO/'source/rl_training'))
-    from isaaclab.app import AppLauncher
-    app = AppLauncher(headless=args['headless'], device=args['device']).app
-    env, runner = None, None
+    stage = 'reading_inputs'
+
+    def mark_stage(value):
+        nonlocal stage
+        stage = value
+        write_json(run/'worker_status.json', {'stage': stage, 'updated_at': now(), 'pid': os.getpid()})
+
+    app, env, runner = None, None, None
     try:
+        mark_stage('reading_inputs')
+        args = json.loads((run/'request.json').read_text())
+        payload = json.loads((run/'payload.json').read_text())
+        sys.path.insert(0, str(REPO/'source/rl_training'))
+        mark_stage('app_launcher_import')
+        from isaaclab.app import AppLauncher
+        mark_stage('app_start')
+        app = AppLauncher(headless=args['headless'], device=args['device']).app
+        mark_stage('task_imports')
         import gymnasium as gym
         import torch
         import rl_training.tasks
@@ -151,6 +164,7 @@ def main():
         from training import make_runner_class, resume_runner
         PayloadRunner = make_runner_class(run, args['payload_kg'])
 
+        mark_stage('config_load')
         spec.register_task()
         cfg = load_cfg_from_registry(spec.TASK, 'env_cfg_entry_point')
         agent = load_cfg_from_registry(spec.TASK, 'rsl_rl_cfg_entry_point')
@@ -166,8 +180,11 @@ def main():
             cfg.episode_length_s = 21.0  # 20秒评估窗之前不触发自动超时重置。
         dump_yaml(str(run/'params/env.yaml'), cfg)
         dump_yaml(str(run/'params/agent.yaml'), agent)
+        mark_stage('environment_creation')
         env = LoggedEnv(gym.make(spec.TASK, cfg=cfg), clip_actions=agent.clip_actions)
+        mark_stage('runtime_validation')
         check_runtime(env, payload, run)
+        mark_stage(args['mode'])
         if args['mode'] == 'smoke':
             done_count = 0
             with torch.inference_mode():
@@ -196,12 +213,21 @@ def main():
             else:
                 result = evaluate(env, runner, args, run, app)
         write_json(run/'result.json', result)
+        mark_stage('completed')
+    except BaseException as error:
+        # 必须在app.close之前保存；Kit关闭过程可能直接结束进程并吞掉外层traceback。
+        write_json(run/'worker_error.json', {'failed_at': now(), 'stage': stage,
+            'exception_type': type(error).__name__, 'error': str(error), 'traceback': traceback.format_exc()})
+        print(f'[R6 WORKER ERROR] {stage}: {type(error).__name__}: {error}', file=sys.stderr, flush=True)
+        traceback.print_exc()
+        raise
     finally:
         if runner is not None and runner.writer is not None:
             runner.writer.close()
         if env is not None:
             env.close()
-        app.close()
+        if app is not None:
+            app.close()
 
 
 if __name__ == '__main__':

@@ -1,0 +1,25 @@
+{
+  "verified_at": "2026-10-15T20:18:47.740065+08:00",
+  "reported_run": "2026-10-15_19-59-05_042337_payload0kg_seed42",
+  "reported_symptom": "runtime_check.json missing after worker exit",
+  "original_secondary_error_reproduced": true,
+  "remote_console_received": false,
+  "remote_root_cause": "unknown; requires same-run console.log",
+  "regression_command": "python -m pytest model_lighthw/training/multiskill/tests/test_r6_startup.py model_lighthw/training/multiskill/tests/test_payload.py -q",
+  "regression_result": "23 passed in 2.02s",
+  "cpu_subprocess_cases": [
+    "exit_zero_without_outputs",
+    "AppLauncher_exception",
+    "native_exit_zero_at_AppLauncher",
+    "task_import_exception_persisted_before_app_close_exit_zero"
+  ],
+  "simulation_used_in_failure_tests": false,
+  "gpu_validation": "not_run",
+  "source_sha256": {
+    "model_lighthw/training/multiskill/routes/route_06_heavy_payload/scripts/launch.py": "86b02d909342594cb3865efb6ebe35211d1a55f59928e9b092501a3cf2bf1ddb",
+    "model_lighthw/training/multiskill/routes/route_06_heavy_payload/scripts/worker.py": "7333bd560e4cc637a5e49d818041143b319429a4352747deaf040eeee2df71d0",
+    "model_lighthw/training/multiskill/tests/test_r6_startup.py": "004098f254f06f78d1676799e2ad51da6e380bc9daa62716eb610cd4917dd4a8",
+    "model_lighthw/training/multiskill/tests/test_payload.py": "29c7bee6bac798944dd2e4c16a2379e19eb03e07f7023222e0e12ace07169b45"
+  },
+  "remote_log_request_status": "first command merged into one line; subsequent relative path not found; awaiting absolute-path log discovery"
+}
