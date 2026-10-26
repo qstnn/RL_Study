@@ -34,7 +34,7 @@ unset PYTHONHOME
 export PYTHONPATH=""
 export LD_LIBRARY_PATH="$(dirname "$(dirname "$r6_python")")/lib"
 source "$r6_sim/setup_conda_env.sh"
-export PYTHONPATH="$r6_root/offline/bootstrap:$r6_root/source/rl_training:$r6_root/Isaaclab/source/isaaclab:$r6_root/Isaaclab/source/isaaclab_assets:$r6_root/Isaaclab/source/isaaclab_tasks:$r6_root/Isaaclab/source/isaaclab_rl:$r6_deps:$r6_deps/cmeel.prefix/lib/python3.11/site-packages:$PYTHONPATH"
+export PYTHONPATH="$r6_root/offline/bootstrap:$r6_root/model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip:$r6_root/source/rl_training:$r6_root/Isaaclab/source/isaaclab:$r6_root/Isaaclab/source/isaaclab_assets:$r6_root/Isaaclab/source/isaaclab_tasks:$r6_root/Isaaclab/source/isaaclab_rl:$r6_deps:$r6_deps/cmeel.prefix/lib/python3.11/site-packages:$PYTHONPATH"
 if [[ "$r6_command" == prepare ]]; then
     "$r6_python" -I "$r6_root/offline/manage.py" prepare
     exec "$r6_python" "$r6_root/offline/doctor.py"

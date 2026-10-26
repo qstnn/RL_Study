@@ -12,10 +12,10 @@
 | R2 跑动/台阶 | `route_02_legged_stairs/` | `rl_training`，保留当前规划，尚无已实现的训练任务 |
 | R3 高障碍 | `route_03_high_obstacle/` | `rl_training`，保留当前可行性规划 |
 | R4 双腿平衡 | `route_04_two_leg_balance/` | `rl_training`，含 split_v4 前/后腿分支与 sustain 等版本 |
-| R5 特技 | `route_05_acrobatics/`、根目录 `r5a*` | `rl_training_r5a`，含 R5A 跳跃/空翻、Auto/Guided 参数与实现；R5B 保持规划状态 |
+| R5 特技 | [`route_05_acrobatics/`](model_lighthw/training/multiskill/routes/route_05_acrobatics/README.md) | R5A 的 Auto/Guided、教师搜索、起跳实验、专用脚本和说明统一放在 `backflip/`；R5B 位于 `sideflip/` |
 | R6 负载 | `route_06_heavy_payload/` | `rl_training_multiskill`，含负载环境、奖励及惯性处理 |
 
-逐文件来源、复制时哈希与本分支哈希见 [`reference/source_manifest.json`](reference/source_manifest.json)。共享目录的选择记录见 [`reference/overlay_resolution.json`](reference/overlay_resolution.json)。为合并三个目录，只整合了公共路线目录、R5A/R6 的启动分发及对应测试预期；详情见清单中的 `integration_note`。
+逐文件来源、复制时哈希与本分支哈希见 [`reference/source_manifest.json`](reference/source_manifest.json)。共享目录的选择记录见 [`reference/overlay_resolution.json`](reference/overlay_resolution.json)。R5 目录迁移前后对应关系见 [`reference/layout_migration.json`](reference/layout_migration.json)。根目录不再外置 R5 专用目录、脚本和说明；框架共享源码仍按 R1/R4/R6 的组织方式放在 `source/`。
 
 ## 22 kg 模型
 
@@ -39,4 +39,4 @@
 python reference/check_snapshot.py
 ```
 
-本地使用已有依赖和临时提供的 mesh 完成了 100 项 CPU 测试，以及 R1/R4A/R5A/R6 的 `check` 入口。临时 mesh 不在提交中。未启动 GPU 仿真或正式训练，没有新增行为或硬件验收。验证命令和边界见 [`reference/VALIDATION.md`](reference/VALIDATION.md)。
+首次快照使用已有依赖和临时提供的 mesh 完成了 100 项 CPU 测试，以及 R1/R4A/R5A/R6 的 `check` 入口；目录整理另做了 R5 路径、导入和 CPU 回归检查。临时 mesh 不在提交中。未启动 GPU 仿真或正式训练。验证命令和边界见 [`reference/VALIDATION.md`](reference/VALIDATION.md)。

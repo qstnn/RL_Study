@@ -12,6 +12,7 @@ import traceback
 
 from review_bundle import ROOT, collect, digest, now, read, safe_child, stable_copy, stamp, verify, write
 from review_bundle import collect as legacy_collect, verify as legacy_verify
+sys.path.insert(0,str(ROOT/"model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/offline"))
 import r5a_review_bundle
 
 

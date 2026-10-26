@@ -24,6 +24,10 @@ def main():
     expected = set(files) | {MANIFEST}
     assert tracked == expected, {"missing": sorted(expected - tracked),
                                  "unexpected": sorted(tracked - expected)}
+    layout = json.loads((ROOT / "reference/layout_migration.json").read_text(encoding="utf-8"))
+    assert not any(Path(path).parts[0].lower().startswith("r5") for path in tracked)
+    for old, new in layout["files"].items():
+        assert old not in tracked and new in tracked, (old, new)
     counts = Counter()
     for relative in sorted(tracked):
         path = ROOT / relative

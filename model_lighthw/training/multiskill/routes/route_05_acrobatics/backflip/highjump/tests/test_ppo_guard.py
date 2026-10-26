@@ -6,7 +6,7 @@ import tempfile
 import unittest
 import torch
 
-ROOT=next(p for p in Path(__file__).resolve().parents if (p/'r5a.sh').is_file())
+ROOT=next(p for p in Path(__file__).resolve().parents if (p/'model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/scripts/r5a.sh').is_file())
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
 from worker import make_runner
 from launch import spec

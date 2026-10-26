@@ -7,7 +7,7 @@ import unittest
 import numpy as np
 import torch
 
-ROOT=next(p for p in Path(__file__).resolve().parents if (p/'r5a.sh').is_file())
+ROOT=next(p for p in Path(__file__).resolve().parents if (p/'model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/scripts/r5a.sh').is_file())
 CORE=ROOT/'source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw'
 SCRIPTS=Path(__file__).resolve().parents[1]/'scripts'
 sys.path[:0]=[str(SCRIPTS),str(CORE)]

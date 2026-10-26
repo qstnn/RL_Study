@@ -111,7 +111,7 @@ def main(argv=None):
     write_json(run/'feasibility_static.json',static); write_json(run/'contract.json',spec.CONTRACT)
     snapshot(run)
     hashes=json.loads((run/'source_manifest.json').read_text())
-    for path in (REPO/'r5a.sh',REPO/'offline/r5a_refine.py',REPO/'offline/r5a_review_bundle.py',ROUTE/'compat/v1.json'):
+    for path in (REPO/'model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/scripts/r5a.sh',REPO/'model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/offline/r5a_refine.py',REPO/'model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/offline/r5a_review_bundle.py',ROUTE/'compat/v1.json'):
         if path.is_file():
             rel=str(path.relative_to(REPO)); target=run/'source_snapshot'/rel
             target.parent.mkdir(parents=True,exist_ok=True); shutil.copy2(path,target); hashes[rel]=sha256(target)

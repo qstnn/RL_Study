@@ -1,0 +1,80 @@
+> reference 文本快照：当前目录和入口见 [R5 路线索引](../../README.md)。下文保留原版本研究与离线交付说明；文中模型、数据及旧 ZIP 不随本分支上传，旧补丁安装步骤对应其原始目录布局。
+
+> **新增 J1 v3 高跳阶段**：本轮请先阅读 [R5A_HIGHJUMP.md](R5A_HIGHJUMP.md)，使用 `bash model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/scripts/r5a.sh highjump`。下文 `refine` 保留原 J1 v2 训练行为。
+
+# R5A J1 v2：起跳判定修复与落地停稳训练
+
+适用对象：已经安装 `lighthw-r5a-usb-20261019.zip`、并完成第一轮 J1 训练的离线电脑。这个小补丁不需要 Git、联网或重新传输全部模型资产。当前阶段仍然是零负载起跳、落地缓冲和停稳，未加入完整空翻。
+
+## 在另一台电脑安装
+
+先结束该 R5A 工程正在运行的训练或回放。把补丁 ZIP 放进原来的 R5A 工程目录。下面是本次返回日志中记录的实际目录；如果你移动过工程，第一行改成现在的位置。
+
+逐行执行：
+
+```bash
+cd /home/huawei/RL_Lab/RL_Study/model_lighthw/rl_training_r5a_usb_20261019
+unzip lighthw-r5a-j1-v2-patch-20261019.zip
+python lighthw-r5a-j1-v2-patch-20261019/apply_patch.py --project .
+bash model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/scripts/r5a.sh prepare
+bash model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/scripts/r5a.sh check
+```
+
+安装器先核对全部补丁文件和原工程版本，再替换文件；原文件备份到 `.usb_patch_backups/日期时间/`。安装失败会回滚已替换内容。重复安装同一补丁会跳过已更新文件。如果发现本地文件与已知版本不同，会报告具体文件并停止，避免覆盖你的修改。
+
+`prepare` 使用现有包内依赖，无需下载新资源。模型、历史 session、环境依赖与日志继续保留。原 v1 模型必须显式迁移，直接交给新版 `train` 或 `play` 会因契约不匹配被拒绝，这是预期保护。
+
+## 执行下一轮
+
+在原工程目录运行一条命令：
+
+```bash
+bash model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/scripts/r5a.sh refine
+```
+
+它会按已审查模型的 SHA256 自动寻找原来的 `model_999.pt`。找不到时，明确指定原文件，例如：
+
+```bash
+bash model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/scripts/r5a.sh refine --checkpoint "offline_sessions/route_05a/20261019_143005_207871/train/training/model_999.pt"
+```
+
+流程依次为：
+
+1. 保存原模型副本；生成全部网络权重不变的冻结复评模型，以及保留 Actor、重置 Critic/Adam 的训练起点。探索标准差改为 0.05，初始学习率 1e-4；v2 更新从 0 计数，原先的 1000 次更新记录在迁移来源中。
+2. 先冻结复评 seed43/44/45，各 4 回合。要求真实起跳、落地、没有物理失败，并完整运行 4 秒。若这一关失败，不启动新训练，直接保留诊断并回收资料。末段停稳不足不会阻止这一关，因为它正是下一步要学习的目标。
+3. 默认 512 环境、seed42、最多 300 次更新，学习落地后制动、降低漂移和冲击。
+4. 冻结最终模型，重复相同 12 回合评估，再生成 seed42 的 3 回合录像。
+5. 将训练前后评估、迁移来源、原模型及新模型、优化器、完整配置和源码、训练曲线、1 kHz 轨迹、图表、录像及错误记录统一放入一个回收目录。
+
+显存不足可改成 `bash model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/scripts/r5a.sh refine --num-envs 256`。仅做冻结复评、不训练，可用 `bash model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/scripts/r5a.sh refine --baseline-only`。本阶段每次最多允许 300 更新；不要在结果未经审查时反复运行同一命令。
+
+## 修改内容及判据
+
+- 起跳、腾空、触地和稳定状态每个已完成的 1 ms 物理步更新一次，策略仍为 50 Hz。跳过重复物理帧，按环境独立清零回合计时，不读取 reset 后遗留的接触缓冲。
+- 起跳门槛维持原值，未靠放宽条件消除漏检：四轮净空 >15 mm、接触力绝对值 <2 N、整机 COM 向上速度 ≥0.25 m/s。
+- 质心升高 ≥5 cm、有效腾空 ≥0.10 s；回合最后必须连续稳定 ≥1 s。稳定要求包含四轮支撑、水平速度 <0.05 m/s、相对起跳前的位置漂移 <5 cm、垂直速度 <0.15 m/s，以及原来的姿态和机身高度范围。
+- `success` 表示当前连续保持达标；`ever_success` 仅记录曾经达标。成功奖励仅在正常回合末结算，滑走后不能继续算成功。
+- 落地恢复奖励关注速度和位置，已触地且回合时刻达到 1.5 秒后，加强对轮部运动和水平移动的约束。保留现有参考关节动作、质量、摩擦、自碰撞和腿/轮力矩及速度上限。
+- 3 倍机重仍只是落地冲击奖励的软阈值，不代表机械结构的许可承载。当前未验收实机或完整后空翻。
+
+物理级事件更新会增加运行开销。终端会显示实际采样时间；它不再只在每个策略步的最后一帧检查起跳。
+
+## 带回什么
+
+结束后按终端的 `[USB REVIEW]` 路径，把**整个文件夹**复制到 U 盘带回。位置也记录在 `usb_review/route_05a/LATEST.txt`。本次 `summary.json` 将 baseline 与 final 分组，首页成功率优先采用最终模型，不把训练前后的回合混算。
+
+如中途断电或强制结束，保留 session，之后执行：
+
+```bash
+bash model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/scripts/r5a.sh collect --session "offline_sessions/route_05a/J1_v2_实际日期时间"
+```
+
+回放最终模型时：
+
+```bash
+bash model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/scripts/r5a.sh play --session "offline_sessions/route_05a/J1_v2_实际日期时间"
+```
+
+仍为 World 自由视角；沿用本机 LightHW 配色、地面和天空，需要跟随时自行在 Isaac Sim 窗口设置。
+
+验证结果见 `offline/R5A_VALIDATION.json`，补丁目录另附 `VALIDATION.md`。短验证证明修复与离线流程可执行，不代表正式 300 次训练已完成或动作已经收敛。
