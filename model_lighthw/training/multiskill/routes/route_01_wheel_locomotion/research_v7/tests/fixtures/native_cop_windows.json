@@ -1,0 +1,46 @@
+{
+  "samples": [
+    {
+      "source": "results/2026-10-23_admission_continuation/ordinary_budget240_cpu/seed43_case00_physics_trace.npz",
+      "source_sha256": "1e030dffbea01345e166dbdaf1939ed716a067b69b0f163a1654aea00f10d16f",
+      "time_s": 20.0,
+      "indices_zero_based": [
+        19980,
+        19999
+      ],
+      "note": "Actual executed states only, no successful recovery labels."
+    },
+    {
+      "source": "results/2026-10-23_admission_continuation/ordinary_budget240_gpu/seed43_case00_physics_trace.npz",
+      "source_sha256": "16c5ca93f36458eab3d7fb187a07cdbe346a535012fdd055a25d1dc81087644a",
+      "time_s": 20.0,
+      "indices_zero_based": [
+        19980,
+        19999
+      ],
+      "note": "Actual executed states only, no successful recovery labels."
+    },
+    {
+      "source": "results/2026-10-23_admission_continuation/ordinary_gain600_cpu_diagnostic/aborted_physics_trace.npz",
+      "source_sha256": "c2a054a4d5485585460ade77176ccbce58228e965d1b5e96d1aebff3afd87974",
+      "time_s": 16.52,
+      "indices_zero_based": [
+        16500,
+        16519
+      ],
+      "note": "Actual executed states only, no successful recovery labels."
+    },
+    {
+      "source": "results/2026-10-23_admission_continuation/ordinary_gain600_cpu_diagnostic/aborted_physics_trace.npz",
+      "source_sha256": "c2a054a4d5485585460ade77176ccbce58228e965d1b5e96d1aebff3afd87974",
+      "time_s": 16.54,
+      "indices_zero_based": [
+        16520,
+        16539
+      ],
+      "note": "Actual executed states only, no successful recovery labels."
+    }
+  ],
+  "fixture_sha256": "419e344ba5d436d4e4e342ebdfabcc2a1b4f7df0404cdd41dc459294a2f163ff",
+  "successful_teacher_labels": 0
+}

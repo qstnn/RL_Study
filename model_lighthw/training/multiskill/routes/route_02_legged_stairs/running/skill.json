@@ -1,0 +1,15 @@
+{
+  "status": "planned",
+  "task_id": null,
+  "acceptance_tasks": [
+    "1-3"
+  ],
+  "deployment_ready": false,
+  "entry_conditions": [
+    "四轮稳定、无载低速、任务模式已初始化"
+  ],
+  "exit_conditions": [
+    "回到已验证稳定支撑阶段并停车"
+  ],
+  "validated_operating_envelope": null
+}

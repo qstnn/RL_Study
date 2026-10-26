@@ -1,0 +1,31 @@
+{
+  "status": "implemented_runtime_pending",
+  "task_id": "MultiSkill-LightHW-HeavyPayload-v0",
+  "acceptance_tasks": [
+    "1-11"
+  ],
+  "deployment_ready": false,
+  "entry_conditions": [
+    "已验证载荷范围且四轮稳定、载荷固定，当前65kg未验证"
+  ],
+  "exit_conditions": [
+    "卸载或交接至明确验载的控制器，不能直接切到空载Actor"
+  ],
+  "validated_operating_envelope": null,
+  "observation_action_dimensions": [
+    58,
+    237,
+    16
+  ],
+  "payload_stages_kg": [
+    0,
+    5,
+    10,
+    15,
+    25,
+    40,
+    65
+  ],
+  "payload_mode": "fixed_mass_per_run",
+  "runtime_validated": false
+}

@@ -1,0 +1,43 @@
+{
+  "note": "Read-only extraction of executed failed physical states. Offline queries are not successful labels.",
+  "order": [
+    "GPU .44s: RR zero load and +3.1mm native gap",
+    "CPU 1.86s: FL/RR no native points",
+    "GPU t0: preserve original startup branch"
+  ],
+  "sources": [
+    {
+      "run": "results/2026-10-23_coordinated_capture/coord_discrete_guard_gpu",
+      "policy_index": 22,
+      "policy_pre_time_s": 0.44,
+      "files": {
+        "seed43_case00_physics_trace.npz": "e3cd3227070c7709fbf7f92bc4ae74d5182eaad13b52c690faebe2a2fbbef142",
+        "seed43_case00_policy_trace.npz": "a8cf57dd198030e19afbc130c5b2005390c5661754bfee33e65be730231eb4a0",
+        "initial_state_runtime.json": "7da13f0f2a3a0310de7bd51a254470d5facc6e8454ace29fd8039c1f21cb58f5",
+        "request.json": "c66ad696fda5194d6945884370df61761a432970056276317178f1e2b8688a95"
+      }
+    },
+    {
+      "run": "results/2026-10-23_coordinated_capture/coord_discrete_hold_cpu",
+      "policy_index": 93,
+      "policy_pre_time_s": 1.86,
+      "files": {
+        "seed43_case00_physics_trace.npz": "2748b0a50b9d277f98bb453cec3b928ff58b7bda86418e338dac396912ec29f9",
+        "seed43_case00_policy_trace.npz": "611205610e442bf40845440369177ed9af2da24a3edc5b6e3707fc001e1be998",
+        "initial_state_runtime.json": "1d72594f73ea889c9f8f4949b369c8d42dfcdb8ec5d45f6fdd060469799770d3",
+        "request.json": "1b85d576649e1b09f7c1134681b79dab424c05f6c8c4e9f24315585bcdd5758d"
+      }
+    },
+    {
+      "run": "results/2026-10-23_coordinated_capture/coord_discrete_guard_gpu",
+      "policy_index": 0,
+      "policy_pre_time_s": 0.0,
+      "files": {
+        "seed43_case00_physics_trace.npz": "e3cd3227070c7709fbf7f92bc4ae74d5182eaad13b52c690faebe2a2fbbef142",
+        "seed43_case00_policy_trace.npz": "a8cf57dd198030e19afbc130c5b2005390c5661754bfee33e65be730231eb4a0",
+        "initial_state_runtime.json": "7da13f0f2a3a0310de7bd51a254470d5facc6e8454ace29fd8039c1f21cb58f5",
+        "request.json": "c66ad696fda5194d6945884370df61761a432970056276317178f1e2b8688a95"
+      }
+    }
+  ]
+}

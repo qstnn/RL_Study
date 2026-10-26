@@ -1,0 +1,45 @@
+{
+  "status": "passed",
+  "at": "2026-10-22T19:11:32.085279+08:00",
+  "session": {
+    "status": "completed",
+    "started_at": "2026-10-22T19:01:27+08:00",
+    "finished_at": "2026-10-22T19:08:46+08:00"
+  },
+  "protected_source_files": 38,
+  "comparison_source_files": 6,
+  "assets": 18,
+  "model_sha256": "e986f82bdd9c4832084e4a9a000f2f05274bf914c7e869a4bc94dc8b6af88f65",
+  "original_sources_assets_and_model_unchanged": true,
+  "geometry_identical_to_baseline": true,
+  "runtime_identical_to_baseline": true,
+  "cases": 6,
+  "physics_samples": 72000,
+  "full_successes": 0,
+  "physical_failures": 0,
+  "peak_nonwheel_contact_N": 0.0,
+  "terminal_four_stability_s": [
+    2.001,
+    2.001,
+    2.001,
+    2.001,
+    2.001,
+    2.001
+  ],
+  "control_replay_exact_arrays": 31,
+  "successful_data_added": 0,
+  "training_runs": 0,
+  "ppo_updates": 0,
+  "ppo_admission": false,
+  "cpu_guard_tests": 5,
+  "python_syntax_files": 3,
+  "shell_syntax": true,
+  "artifacts": {
+    "result.json": "9351b1a9c1e171286a9d2472936c5874aa256ffc551c2afff82bb348eb4f56e0",
+    "comparison_verification.json": "775ef1c2667a8662e50996b9f0105fc8ff179d29f9e0f61f128541f78ca5886c",
+    "review.json": "1537273da4111d2e13e87e41d8d4978522e072ded4e0766d36ba0a8791ce1eb5",
+    "behavior.png": "188905775121cffef6a101beebe5bc5865d098f919f2180ffc654fdd3274a8d3"
+  },
+  "analysis_sha256": "ffb7e0855237642b2f89861739440b9362629d7c5cb8ac7b0540b08c4d61c1d0",
+  "guard_tests_sha256": "59523f75be1f7af9c054d89083accebc87133c89e953a030f84fff21ac5df3ae"
+}

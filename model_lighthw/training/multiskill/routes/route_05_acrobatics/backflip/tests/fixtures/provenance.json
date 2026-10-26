@@ -1,0 +1,17 @@
+{
+  "source_archive_sha256": "f9a807b03c885cbcac2cbe8038998cadf50a6ec3c8e609d0380502a57a68282e",
+  "source_trace_sha256": "cfb48abbb51a557813493ea2dcc8e7d925c63b14e8df9b830be650a544d7e64c",
+  "case": "seed43_episode0",
+  "channels": [
+    "t",
+    "com",
+    "com_velocity",
+    "wheel_force_z",
+    "wheel_clearance",
+    "tilt",
+    "base_height",
+    "body_force",
+    "applied_torque"
+  ],
+  "source_clock_hz": 1000
+}

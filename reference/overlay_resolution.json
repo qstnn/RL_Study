@@ -1,0 +1,68 @@
+[
+  {
+    "path": "source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/catalog.py",
+    "existing_source": "rl_training/source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/catalog.py",
+    "candidate_source": "rl_training_multiskill/source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/catalog.py",
+    "selected": "existing"
+  },
+  {
+    "path": "model_lighthw/training/multiskill/routes/route_06_heavy_payload/README.md",
+    "existing_source": "rl_training/model_lighthw/training/multiskill/routes/route_06_heavy_payload/README.md",
+    "candidate_source": "rl_training_multiskill/model_lighthw/training/multiskill/routes/route_06_heavy_payload/README.md",
+    "selected": "rl_training_multiskill"
+  },
+  {
+    "path": "model_lighthw/training/multiskill/routes/route_06_heavy_payload/skill.json",
+    "existing_source": "rl_training/model_lighthw/training/multiskill/routes/route_06_heavy_payload/skill.json",
+    "candidate_source": "rl_training_multiskill/model_lighthw/training/multiskill/routes/route_06_heavy_payload/skill.json",
+    "selected": "rl_training_multiskill"
+  },
+  {
+    "path": "model_lighthw/training/multiskill/routes/route_06_heavy_payload/scripts/README.md",
+    "existing_source": "rl_training/model_lighthw/training/multiskill/routes/route_06_heavy_payload/scripts/README.md",
+    "candidate_source": "rl_training_multiskill/model_lighthw/training/multiskill/routes/route_06_heavy_payload/scripts/README.md",
+    "selected": "rl_training_multiskill"
+  },
+  {
+    "path": "model_lighthw/training/multiskill/routes/route_06_heavy_payload/configs/README.md",
+    "existing_source": "rl_training/model_lighthw/training/multiskill/routes/route_06_heavy_payload/configs/README.md",
+    "candidate_source": "rl_training_multiskill/model_lighthw/training/multiskill/routes/route_06_heavy_payload/configs/README.md",
+    "selected": "rl_training_multiskill"
+  },
+  {
+    "path": "model_lighthw/training/multiskill/routes/route_06_heavy_payload/evaluation/README.md",
+    "existing_source": "rl_training/model_lighthw/training/multiskill/routes/route_06_heavy_payload/evaluation/README.md",
+    "candidate_source": "rl_training_multiskill/model_lighthw/training/multiskill/routes/route_06_heavy_payload/evaluation/README.md",
+    "selected": "rl_training_multiskill"
+  },
+  {
+    "path": "model_lighthw/training/multiskill/tests/test_framework.py",
+    "existing_source": "rl_training/model_lighthw/training/multiskill/tests/test_framework.py",
+    "candidate_source": "rl_training_multiskill/model_lighthw/training/multiskill/tests/test_framework.py",
+    "selected": "existing"
+  },
+  {
+    "path": "model_lighthw/training/multiskill/common.py",
+    "existing_source": "rl_training/model_lighthw/training/multiskill/common.py",
+    "candidate_source": "rl_training_multiskill/model_lighthw/training/multiskill/common.py",
+    "selected": "rl_training_multiskill"
+  },
+  {
+    "path": "source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/catalog.py",
+    "existing_source": "rl_training/source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/catalog.py",
+    "candidate_source": "rl_training_r5a/source/rl_training/rl_training/tasks/manager_based/locomotion/multiskill/lighthw/catalog.py",
+    "selected": "existing"
+  },
+  {
+    "path": "model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/README.md",
+    "existing_source": "rl_training/model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/README.md",
+    "candidate_source": "rl_training_r5a/model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/README.md",
+    "selected": "rl_training_r5a"
+  },
+  {
+    "path": "model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/skill.json",
+    "existing_source": "rl_training/model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/skill.json",
+    "candidate_source": "rl_training_r5a/model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/skill.json",
+    "selected": "rl_training_r5a"
+  }
+]

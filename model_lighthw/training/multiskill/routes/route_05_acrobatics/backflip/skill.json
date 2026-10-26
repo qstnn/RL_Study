@@ -1,0 +1,18 @@
+{
+  "status": "J1_v2_bounded_refinement",
+  "task_id": "MultiSkill-LightHW-R5A-JumpLanding-v1",
+  "acceptance_tasks": [
+    "1-8"
+  ],
+  "deployment_ready": false,
+  "entry_conditions": [
+    "零负载、名义模型和独立 J1 配置；起跳前先稳定支撑"
+  ],
+  "exit_conditions": [
+    "真实起跳落地，完整4秒回合末连续停稳至少1秒；审查后再决定后旋阶段"
+  ],
+  "validated_operating_envelope": null,
+  "stage": "J1_recovery_v2",
+  "full_backflip_implemented": false,
+  "formal_behavior_acceptance": "requires_formal_v2_review"
+}

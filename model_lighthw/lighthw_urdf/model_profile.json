@@ -1,0 +1,25 @@
+{
+  "model_version": "lighthw_uniform_22kg_v1",
+  "robot_mass_kg": 22.0,
+  "urdf_path": "model_lighthw/lighthw_urdf/urdf/lighthw.urdf",
+  "urdf_sha256": "781d9998885ed5962eacaf6363271480a3b98f346879ce8101a311e0314242a9",
+  "source_urdf_sha256": "5abb7c07c0ad401f7940018fee739ecc2fb4e0d3e8fc83274e75d1886db19fbb",
+  "source_robot_mass_kg": "11.668111486857054",
+  "mass_and_inertia_scale": "1.8854807845109101104205704575339029638655218390161",
+  "scaling": "all 17 link masses and all six inertia components; local COM and geometry preserved",
+  "route_scope": [
+    "R1",
+    "R2A",
+    "R2B",
+    "R3",
+    "R4A",
+    "R4B",
+    "R5A",
+    "R5B",
+    "R6"
+  ],
+  "payload_mass_is_additional": true,
+  "actuator_parameters_changed": false,
+  "historical_runs_and_checkpoints": "preserved; previous behavior validation does not transfer",
+  "evidence": "static and CPU checks only; no simulator rollout or training for this revision"
+}

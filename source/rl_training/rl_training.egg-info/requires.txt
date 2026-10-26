@@ -1,0 +1,7 @@
+psutil
+colorama
+xacrodoc
+numpy
+pandas
+pinocchio
+cusrl[all]

@@ -1,0 +1,94 @@
+{
+  "status": "formal_training_stopped_by_user_behavior_gaps",
+  "task_id": "MultiSkill-LightHW-Wheel-MotorSizing-v0",
+  "acceptance_tasks": [
+    "1-1",
+    "1-2",
+    "1-5"
+  ],
+  "deployment_ready": false,
+  "observation_contract": "lighthw_r1_unified_v2",
+  "actor_critic_action_dims": [
+    290,
+    242,
+    16
+  ],
+  "single_actor": true,
+  "curriculum": "all_conditions_from_update_zero",
+  "configured_operating_envelope": {
+    "payload_kg": [
+      0,
+      5,
+      10,
+      15
+    ],
+    "towed_kg": [
+      0,
+      20,
+      40
+    ],
+    "payload_towing_mutually_exclusive": true,
+    "slope_deg": [
+      -25,
+      -20,
+      -15,
+      -10,
+      -5,
+      0,
+      5,
+      10,
+      15,
+      20,
+      25
+    ],
+    "unloaded_command_mps": [
+      0.2,
+      3.1
+    ],
+    "unloaded_actual_speed_min_mps": 3.0,
+    "loaded_command_reference_mps": [
+      0.2,
+      0.6
+    ],
+    "loaded_moving_speed_min": null,
+    "ground_friction": 2.3,
+    "rolling_coefficient": 0.02,
+    "hitch_height_initial_m": 0.1,
+    "leg_cap_Nm": 96.0,
+    "wheel_cap_Nm": 48.0,
+    "torque_frame": "joint output shaft",
+    "caps_are_minimum_motor_rating": false
+  },
+  "validated_operating_envelope": null,
+  "implementation_evidence": "records/validation.json",
+  "motor_cap_comparison": "records/motor_caps_review.md",
+  "limitations": [
+    "Formal V2 training was stopped by the user; latest saved model4200 is finite but has no new fixed behavior evaluation; model3900 screening still has unresolved task failures",
+    "Torque limits are exploration ceilings; successful traces are needed for motor sizing",
+    "Ground friction and low hitch are explicit experimental assumptions",
+    "Hitch force model has no drawbar/bracket collision mesh",
+    "Constant-gradient straight lanes; no slope transitions or steering",
+    "Joint torque RMS is not a validated thermal rating"
+  ],
+  "formal_training": {
+    "run": "runs/2026-10-16_10-19-29.659784",
+    "started_at": "2026-10-16T10:19:29.715768+08:00",
+    "status": "stopped_by_user",
+    "checked_at": "2026-10-16T15:22:55.915410+08:00",
+    "completed_updates": 4239,
+    "budget": 5000,
+    "last_logged_iteration": 4238,
+    "latest_saved_checkpoint": "training/model_4200.pt",
+    "exact_stop_time": null
+  },
+  "midrun_review": "results/2026-10-16_14-45-55_live_training_review/README.md",
+  "midrun_fixed_screen": {
+    "checkpoint": "model_3900.pt",
+    "standard_cases": 18,
+    "standard_survived_20s": 11,
+    "standard_task_passed": 7,
+    "extra_flat_low_speed_passed": true,
+    "randomized_reliability": false
+  },
+  "next_experiment_proposal": "records/2026-10-16_v2_stopped_next_plan.json"
+}

@@ -1,0 +1,15 @@
+{
+  "status": "feasibility_pending",
+  "task_id": null,
+  "acceptance_tasks": [
+    "1-7"
+  ],
+  "deployment_ready": false,
+  "entry_conditions": [
+    "仅在已验证障碍几何、载荷与接触可达范围进入"
+  ],
+  "exit_conditions": [
+    "到达稳定平台或完成受控下降；攀爬中不可任意切Actor"
+  ],
+  "validated_operating_envelope": null
+}

@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "protected_source_files": 38,
+  "probe_source_files": 2,
+  "assets": 18,
+  "model_sha256": "e986f82bdd9c4832084e4a9a000f2f05274bf914c7e869a4bc94dc8b6af88f65",
+  "original_sources_and_model_unchanged": true,
+  "geometry_identical_to_baseline": true,
+  "cases": 6,
+  "physics_samples": 72000,
+  "full_successes": 0,
+  "physical_failures": 0,
+  "peak_nonwheel_contact_N": 0.0,
+  "terminal_four_stability_s": 2.001,
+  "successful_data_added": 0,
+  "training_runs": 0,
+  "ppo_updates": 0,
+  "ppo_admission": false,
+  "cpu_guard_tests": 5,
+  "analysis_syntax_files": 3,
+  "artifacts": {
+    "result.json": "aef97dacecf6eec3e979103279f944a85836f5bd42a2bae2ed9deb0da8bd3286",
+    "probe_verification.json": "9242de750062bbcb1ef166afee7e87dfdae6ebdf32bb236d2805b3b2b6b4e155",
+    "review.json": "348450a5305bfe790f7038546b7a3d2d0b84036a61e398fa04a36efe27671ee9",
+    "behavior.png": "5ac726ad02bd9742dc3a03654fe091143337da48f307c55d8702a4ab3c581e90"
+  },
+  "analysis_sha256": "dcaa05130e9b4b2d844325906fbf6621ffd736a5f5fbc9681e58abfbde913eb3"
+}

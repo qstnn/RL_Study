@@ -1,0 +1,7 @@
+{
+  "source": "/home/user/RL_lab/exports/r5a-v3-validation-20261019/probe_01/reference_probe_trace.npz",
+  "sha256": "bab732f4b1e4e150345d6dc0f72fca405e63afdf0568c0dc018291b6a1dc06c0",
+  "kind": "actual_1kHz_GPU_reference_probe",
+  "physics_samples": 4001,
+  "profile": 0
+}

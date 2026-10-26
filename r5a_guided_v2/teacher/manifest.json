@@ -1,0 +1,36 @@
+{
+  "files": {
+    "__init__.py": "9c74061dc44b4aec5c8edc5a449c5016f01e06aab61938c5a3f4a42d47ea2a88",
+    "bc_initial_actor.pt": "909dc0c3783bec05afb481b614ac6c03347a662fb84dec275facb2a85e075523",
+    "candidates/teacher_rear15_d120.json": "15da0d26896ceae7a2317b65571510f45c6245e541a1684eb446451d0fdceaa9",
+    "candidates/teacher_rear15_d40.json": "204325e24f464eb38232d034e3a42b3ab281b29d815ed61005515f4e1f49deaa",
+    "candidates/teacher_rear15_d80.json": "8cd11fdbc217b89bef46681c1dc52397231e8b2fed05817e32d9b70823b177cb",
+    "control.py": "d68b27e57dae92a7663c7fe2d0827edfe4b03c43dae08a21620971b6333a4784",
+    "control_handoff.py": "c3870bcce0f6e16ea865bb5920f3df265a7642220d92d21dfb70070ac8a3aa64",
+    "control_kick.py": "97d496ec70fb362ef927df2486113180e55253598d7204d7104a481b58a77b73",
+    "control_split.py": "4987d3e266b1245583bc17869f51c4d386b2a35e426c53fb2dd085e3e5611422",
+    "control_split_bound.py": "41f430deaa109ce6a2a696b90a22f90126bd9a853c128a29428abe1894599255",
+    "evidence/cpu_rear15_d120_result.json": "013f91a837c19be095ad64d20358008ead1266fef39369f6a33eeab7e0522e81",
+    "evidence/cpu_rear15_d40_result.json": "d4724f9967e024a117302fcc39431011126dbf956fd8d23469361a65240e3c7a",
+    "evidence/cpu_rear15_d80_result.json": "16d692d67703bf5500bc79f29ea0a57e2b3a9e6c72b0de5e4a426ccc52eb59ec",
+    "evidence/cpu_rear15_d80_teacher_policy.npz": "e0accf7b499fc167ede47d9ac6a1e18275177c29075508ec431aee1a9aba49a4",
+    "evidence/cpu_rear15_d80_teacher_trace.json": "7b9ec90c2eb403f661fcaba61414b2d26f102f0d160f4926478d376feda1faed",
+    "evidence/cpu_rear15_d80_teacher_trace.npz": "36ab756739ba6417597c1ecc1d4aafa8db88b369a2d5957c789ad655a0f8eae5",
+    "evidence/target_gpu_boundary.npz": "84c1da58dff77b3db994604e768352908521f7325a520bcfc6fae4b7c7a1d881",
+    "kick_reference.json": "120c69d02b2bb943b8ced84c7cb85b4e395baf4f915641b48fd908a5d9d2a614",
+    "open_reference.json": "82c7b7be69a05e64b87175000d8aedb0517c5eb7d0bda67643d9044a29fcba04"
+  },
+  "cpu_full_successes": [
+    "evidence/cpu_rear15_d80_result.json",
+    "evidence/cpu_rear15_d40_result.json",
+    "evidence/cpu_rear15_d120_result.json"
+  ],
+  "candidates": [
+    "candidates/teacher_rear15_d80.json",
+    "candidates/teacher_rear15_d40.json",
+    "candidates/teacher_rear15_d120.json"
+  ],
+  "scope": "CPU verified only; each target candidate requires two full native target-device replays before demonstrations",
+  "original_failure": "left front calf against left rear thigh at 1.034s",
+  "fix": "rear opening starts 11.604 degrees earlier; smooth 80/40/120ms capture transition"
+}

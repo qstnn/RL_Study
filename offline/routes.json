@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "routes": {
+    "06": {
+      "name": "R6 重载静态持载",
+      "entry": "model_lighthw/training/multiskill/routes/route_06_heavy_payload/scripts/launch.py",
+      "train_defaults": [
+        "--headless",
+        "--num_envs",
+        "1024",
+        "--max_iterations",
+        "1000"
+      ],
+      "shared_parameters": [
+        "payload_kg",
+        "seed",
+        "device"
+      ],
+      "evaluation_parameters": [
+        "eval_seeds",
+        "eval_episodes"
+      ],
+      "evaluate_args": [
+        "--headless",
+        "--physics-trace"
+      ],
+      "video_args": [
+        "--headless",
+        "--record-video"
+      ],
+      "contract_version": "R6 launch.py result/runtime_check contract",
+      "status": "integrated"
+    },
+    "05a": {
+      "name": "R5A J1 v2 起跳、落地缓冲与末段停稳",
+      "entry": "model_lighthw/training/multiskill/routes/route_05_acrobatics/backflip/scripts/launch.py",
+      "train_defaults": [
+        "--headless",
+        "--num_envs",
+        "512",
+        "--max_iterations",
+        "300"
+      ],
+      "shared_parameters": [
+        "seed",
+        "device"
+      ],
+      "evaluation_parameters": [
+        "eval_seeds",
+        "eval_episodes"
+      ],
+      "evaluate_args": [
+        "--headless",
+        "--physics-trace"
+      ],
+      "video_args": [
+        "--headless",
+        "--record-video",
+        "--play-episodes",
+        "3"
+      ],
+      "contract_version": "lighthw_r5a_jump_landing_v2",
+      "status": "integrated_J1_v2_only"
+    }
+  },
+  "note": "05a is the zero-payload jump/landing precursor, not full backflip. Other routes require their own reviewed adapter. R1/R6 checkpoints cannot initialize R5A."
+}

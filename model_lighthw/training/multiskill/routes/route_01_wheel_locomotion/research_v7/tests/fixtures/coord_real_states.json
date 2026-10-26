@@ -1,0 +1,23 @@
+{
+  "source": "results/2026-10-23_capture_dynamics/red_native_dynamics_cpu",
+  "control_indices": [
+    0,
+    10,
+    20
+  ],
+  "time_s": [
+    0.0,
+    0.2,
+    0.4
+  ],
+  "extractor": "results/2026-10-23_coordinated_capture/replay_coord.py",
+  "fixture_sha256": "f8aaf8c84f5eb4a9965f7c2bfa6c8c1170bf70cb0308e396a214d2b3dd37bdf6",
+  "source_sha256": {
+    "seed43_case00_policy_trace.npz": "472fe1f01aa7ff9774ce79f4214ea9294283caeb0285f57dae0d71d322c08a87",
+    "seed43_case00_physics_trace.npz": "9880223d49454419ae343a389faa999e1cebb24df562c38866dc51901f413e2c",
+    "initial_state_runtime.json": "1d72594f73ea889c9f8f4949b369c8d42dfcdb8ec5d45f6fdd060469799770d3",
+    "request.json": "a3885433aa1b20fe6064d5d31a1955456ad58bbb5f669c7923d50e610a982190"
+  },
+  "executed_new_actions": false,
+  "successful_teacher_labels": 0
+}

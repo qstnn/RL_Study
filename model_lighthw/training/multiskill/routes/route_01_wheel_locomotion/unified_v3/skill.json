@@ -1,0 +1,31 @@
+{
+  "version": "lighthw_r1_unified_v3",
+  "task": "MultiSkill-LightHW-Wheel-MotorSizingV3-v0",
+  "implemented": true,
+  "deployment_ready": false,
+  "behavior_accepted": false,
+  "status": "scope_revised_gpu_sampling_validated_500_update_diagnostic_pending",
+  "entry": "scripts/train.py",
+  "actor_dim": 290,
+  "critic_dim": 242,
+  "action_dim": 16,
+  "conditions": "64 simultaneous mutually exclusive payload/towing conditions; no towing at -25deg; unloaded-only 3m/s",
+  "physical_assumptions": {
+    "ground_friction": 2.3,
+    "rolling_coefficient": 0.02,
+    "hitch_height_m": 0.1,
+    "leg_cap_Nm": 96,
+    "wheel_cap_Nm": 48
+  },
+  "capability_evidence": "Prior behavior results retained; 40kg uphill25 still unpassed, downhill25 towing is out of current scope; no motor rating determined",
+  "requirements_revision": "2026-10-16_no_towing_at_minus25",
+  "training_condition_count": 64,
+  "evaluation_case_count": 16,
+  "excluded_conditions": [
+    {
+      "slope_deg": -25.0,
+      "towed_kg_gt": 0.0
+    }
+  ],
+  "current_validation": "records/2026-10-16_downhill_scope_revision.json"
+}

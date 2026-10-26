@@ -1,0 +1,12 @@
+# Training artifacts
+training/routes/*/logs/*
+!training/routes/*/logs/.gitkeep
+
+# Meshes are kept locally and are intentionally excluded from the lightweight
+# GitHub project branch; the canonical URDF remains tracked for review.
+lighthw_urdf/meshes/*
+
+# Common transient outputs
+**/__pycache__/
+**/.pytest_cache/
+**/wandb/

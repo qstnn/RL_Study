@@ -1,0 +1,109 @@
+{
+  "status": "implemented_runtime_validated",
+  "task_id": "MultiSkill-LightHW-R4a-RearBalance-v4",
+  "acceptance_tasks": [
+    "1-10"
+  ],
+  "deployment_ready": false,
+  "entry_conditions": [
+    "空载四轮真实站稳；R4a固定RR/RL后腿支撑，R4b固定FR/FL前腿支撑"
+  ],
+  "exit_conditions": [
+    "恢复四轮稳定支撑后才切换"
+  ],
+  "validated_operating_envelope": null,
+  "training_ready": true,
+  "actor_dim": 305,
+  "critic_dim": 88,
+  "action_dim": 16,
+  "training_scope": "split_v4: R4a rear first; R4b front independent; fixed conditions; revised rewards; no automatic frozen evaluation",
+  "validation": "split_v4/validation/summary.json",
+  "formal_training_started": true,
+  "previous_formal_training": {
+    "version": "v2",
+    "last_complete_evaluated_attempt": 300,
+    "last_logged_attempt": 337,
+    "status": "user_interrupted",
+    "frozen_cases_across_checkpoints": 18,
+    "successes": 0
+  },
+  "launcher": "split_v4/scripts/r4a.sh",
+  "automatic_frozen_evaluation": false,
+  "review_policy": "after user reports completion and requests review",
+  "older_formal_training": [
+    {
+      "version": "v1",
+      "completed_updates": 1000,
+      "frozen_cases_across_checkpoints": 60,
+      "successes": 0
+    }
+  ],
+  "formal_training_completed": true,
+  "latest_formal_review": {
+    "version": "split_v4_R4a",
+    "completed_attempts": 1000,
+    "accepted_updates": 996,
+    "final_cases": 6,
+    "successes": 0,
+    "strict_hold_seconds": 0.0,
+    "behavior_accepted": false,
+    "report": "split_v4/results/2026-10-21_R4a_1000_review/README.md"
+  },
+  "next_training_recommendation": "do not start D2 500 updates; first perform zero-PPO dynamic reachability study at native PD/action limits for the -56.12deg rear-support target, then design a new soft-gated reward profile and rerun a small fresh diagnostic",
+  "next_diagnostic": {
+    "reward_profile": "unload_diag_v1",
+    "support_mode": "rear",
+    "num_envs": 512,
+    "max_iterations": 200,
+    "save_every": 50,
+    "seed": 42,
+    "automatic_frozen_evaluation": false,
+    "checkpoint_transfer": "forbidden from baseline_v4",
+    "status": "completed_frozen_review_failed_behavior",
+    "run": "split_v4/R4a/runs/2026-10-21T14-08-59+08-00/train_000200",
+    "review": "split_v4/results/2026-10-21_R4a_diag_200_review/summary.json",
+    "completed_updates": 200,
+    "accepted_updates": 197,
+    "strict_hold_seconds": 0.0,
+    "successes": 0,
+    "behavior_accepted": false,
+    "freeze_evaluation_cases": 18,
+    "freeze_evaluation_checkpoints": [100, 150, 200],
+    "max_final_pair_seconds": 0.151,
+    "final_hold_target_error_deg": 56.283684,
+    "final_hold_com_line_error_m": 0.288557,
+    "freeze_evaluation_successes": 0,
+    "launcher": "split_v4/scripts/r4a.sh"
+  },
+  "active_skill": "R4a",
+  "branches": {
+    "R4a": {
+      "support_mode": "rear",
+      "task_id": "MultiSkill-LightHW-R4a-RearBalance-v4",
+      "launcher": "split_v4/scripts/r4a.sh",
+      "run_directory": "split_v4/R4a/runs",
+      "formal_training_started": true,
+      "behavior_accepted": false,
+      "training_ready": true,
+      "ppo_validated": true,
+      "validation": "split_v4/validation/summary.json",
+      "formal_training_completed": true,
+      "latest_review": "split_v4/results/2026-10-21_R4a_diag_200_review/README.md",
+      "diagnostic_completed_updates": 200,
+      "diagnostic_behavior_review": "completed_failed",
+      "diagnostic_behavior_accepted": false
+    },
+    "R4b": {
+      "support_mode": "front",
+      "task_id": "MultiSkill-LightHW-R4b-FrontBalance-v4",
+      "launcher": "split_v4/scripts/r4b.sh",
+      "run_directory": "split_v4/R4b/runs",
+      "formal_training_started": false,
+      "behavior_accepted": false,
+      "status": "implemented_smoke_validated",
+      "ppo_validated": false,
+      "validation": "split_v4/validation/r4b_smoke/result.json"
+    }
+  },
+  "validated_at": "2026-10-22 09:44 Asia/Shanghai"
+}

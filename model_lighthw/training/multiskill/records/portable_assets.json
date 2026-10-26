@@ -1,0 +1,25 @@
+{
+  "urdf": "model_lighthw/lighthw_urdf/urdf/lighthw.urdf",
+  "urdf_sha256": "781d9998885ed5962eacaf6363271480a3b98f346879ce8101a311e0314242a9",
+  "meshes": {
+    "model_lighthw/lighthw_urdf/meshes/Base_link.STL": "a6dbaa22756431924cf909783c26586aec9c10aa75c80ef4d90433886b5e7800",
+    "model_lighthw/lighthw_urdf/meshes/FR_hip_link.STL": "30daf2bc9bc34db9e9a284415590d26f262cbf150f5fa7aa1ad8d9bbb11b0f99",
+    "model_lighthw/lighthw_urdf/meshes/FR_thigh_link.STL": "7a58d9b91693db46c6dc4d2aec1921106980f044f14cbb30bb15c00d1b9066af",
+    "model_lighthw/lighthw_urdf/meshes/FR_calf_link.STL": "9ac58208ce979ff4aa781b673dc672fd17034b656bcc7c353b11c0d477047441",
+    "model_lighthw/lighthw_urdf/meshes/FR_wheel_link.STL": "414ef55ce9b23cd63e14b41400d9bb16a654f8093d655966b01c4230f848dae5",
+    "model_lighthw/lighthw_urdf/meshes/FL_hip_link.STL": "b7f0ac0a962b1b186c0bc5df0be3ca43fb75887590fb29be867309d2db4c3c1d",
+    "model_lighthw/lighthw_urdf/meshes/FL_thigh_link.STL": "ce051cbecd24f98314d1c2f8f2786159478bd155817a390ea337e26cecbf8b0b",
+    "model_lighthw/lighthw_urdf/meshes/FL_calf_link.STL": "af6c83aff8fdbb732bac7b4b66c5253990e5371726fe1f39f788c85485dd4c6a",
+    "model_lighthw/lighthw_urdf/meshes/FL_wheel_link.STL": "e04d847bd92e2e82e2db97936baac7bc4bf84e55eed807aec79693b96ea56457",
+    "model_lighthw/lighthw_urdf/meshes/RR_hip_link.STL": "50ed9c9f67a4233cc89972e0fcb931220600fd8def4803c7b1208776d12359de",
+    "model_lighthw/lighthw_urdf/meshes/RR_thigh_link.STL": "7d38d8eb8a9b98c61a7a5145574d04fe17c085f714fe8504575a9c1b5c9fa763",
+    "model_lighthw/lighthw_urdf/meshes/RR_calf_link.STL": "9d1f7fcd8474c8d2d58f07ae48952591da4ef0819337cbe257a29c47054df230",
+    "model_lighthw/lighthw_urdf/meshes/RR_wheel_link.STL": "de3b3cdc14eec5d77b643604428d18d4a19a480adf0f3a13ed9b9167d83bd23e",
+    "model_lighthw/lighthw_urdf/meshes/RL_hip_link.STL": "ddc49b47b15f04b69d6ea3f1e5695378f790858fbd94f88a702bfb2082f4f4cc",
+    "model_lighthw/lighthw_urdf/meshes/RL_thigh_link.STL": "dc8909987b4cf065facdfb6606c062c35447d3f01bbc548994e4a294eaf71285",
+    "model_lighthw/lighthw_urdf/meshes/RL_calf_link.STL": "865636e859e42f7f5efca4780ccf25b064f5e77f5bf09ed33e109320d4332fe4",
+    "model_lighthw/lighthw_urdf/meshes/RL_wheel_link.STL": "4046ec2e68eec89622ba44797e49bb4795d4937c9a3e25156fb6e9c0fed754b0"
+  },
+  "mass_kg": 22.0,
+  "joint_count": 16
+}

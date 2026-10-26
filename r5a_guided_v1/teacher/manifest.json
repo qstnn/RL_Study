@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "candidates": [
+    "candidates/teacher_355.json"
+  ],
+  "cpu_full_successes": [
+    "evidence/cpu_355_result.json",
+    "evidence/cpu_repeat44_result.json",
+    "evidence/cpu_repeat45_result.json"
+  ],
+  "files": {
+    "__init__.py": "9c74061dc44b4aec5c8edc5a449c5016f01e06aab61938c5a3f4a42d47ea2a88",
+    "bc_initial_actor.pt": "909dc0c3783bec05afb481b614ac6c03347a662fb84dec275facb2a85e075523",
+    "candidates/teacher_355.json": "b3455eb6a21288cb19221d3bca0eaddabeb1ba570084d4e6c0d636ea25ea7788",
+    "control.py": "d68b27e57dae92a7663c7fe2d0827edfe4b03c43dae08a21620971b6333a4784",
+    "control_kick.py": "97d496ec70fb362ef927df2486113180e55253598d7204d7104a481b58a77b73",
+    "control_split.py": "4987d3e266b1245583bc17869f51c4d386b2a35e426c53fb2dd085e3e5611422",
+    "control_split_bound.py": "41f430deaa109ce6a2a696b90a22f90126bd9a853c128a29428abe1894599255",
+    "evidence/cpu_355_result.json": "6f5263af8405168eb05be55e967d481a105c6a437aa1972e8dcba8e2b8bfce2b",
+    "evidence/cpu_355_teacher.json": "6f5263af8405168eb05be55e967d481a105c6a437aa1972e8dcba8e2b8bfce2b",
+    "evidence/cpu_355_teacher.png": "3d420d13bd1021e0801b12bfd99076b5c42f2f85da456dc15b078649d9e2167d",
+    "evidence/cpu_355_teacher_policy.npz": "e08a4020a2617c3c286ec1e77cb57b63ceba3c438aa3144cb9dbc02499a81aff",
+    "evidence/cpu_355_teacher_trace.json": "7b9ec90c2eb403f661fcaba61414b2d26f102f0d160f4926478d376feda1faed",
+    "evidence/cpu_355_teacher_trace.npz": "74520bc49ef6f4f10d020f3d4b40cdf9cfd23c6ce7e7e35a5dae090bc4b3b197",
+    "evidence/cpu_repeat44_result.json": "6f5263af8405168eb05be55e967d481a105c6a437aa1972e8dcba8e2b8bfce2b",
+    "evidence/cpu_repeat45_result.json": "6f5263af8405168eb05be55e967d481a105c6a437aa1972e8dcba8e2b8bfce2b",
+    "kick_reference.json": "120c69d02b2bb943b8ced84c7cb85b4e395baf4f915641b48fd908a5d9d2a614",
+    "open_reference.json": "82c7b7be69a05e64b87175000d8aedb0517c5eb7d0bda67643d9044a29fcba04"
+  },
+  "device_scope": "CPU PhysX; fixed initial conditions; repeated seeds are not robustness trials",
+  "policy_action_limit": "tanh(3)",
+  "target_gpu_recheck_required": true
+}

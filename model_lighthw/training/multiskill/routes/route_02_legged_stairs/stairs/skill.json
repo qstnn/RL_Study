@@ -1,0 +1,15 @@
+{
+  "status": "planned",
+  "task_id": null,
+  "acceptance_tasks": [
+    "1-6"
+  ],
+  "deployment_ready": false,
+  "entry_conditions": [
+    "低速对齐已感知台阶，技能要求的感知有效"
+  ],
+  "exit_conditions": [
+    "四轮处于足够平台且姿态/速度稳定"
+  ],
+  "validated_operating_envelope": null
+}

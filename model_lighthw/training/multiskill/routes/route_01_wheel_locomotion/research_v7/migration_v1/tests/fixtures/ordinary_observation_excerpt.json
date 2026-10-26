@@ -1,0 +1,1314 @@
+{
+  "purpose": "Actual first 16 control frames for observation reconstruction tests ONLY; failed full towing run, no successful labels",
+  "source_run": "/home/user/RL_lab/rl_training/model_lighthw/training/multiskill/routes/route_01_wheel_locomotion/research_v7/results/2026-10-23_admission_continuation/ordinary_fast020_cpu",
+  "control_frames": [
+    0,
+    16
+  ],
+  "physics_frames": [
+    0,
+    320
+  ],
+  "source_sha256": {
+    "request.json": "2fc4fb6eee27b05a72d7d20659645258c3152abc31f58cae60ed99c89474e1cb",
+    "runtime_check.json": "9baf0c52fc9b0bcf2aa938b0205072d22f823416d366ab164ed56b3311c12fee",
+    "initial_state_runtime.json": "509f1437586403c728ada0dee3b871a4f5004455d2cfaeb710de2869a22f5e38",
+    "seed43_case00_policy_trace.npz": "7e06542eb6df3564b91d435db9f33ab7424036d5b266ec9ba87e543b836f31cd",
+    "seed43_case00_physics_trace.npz": "2fa4a543b485cbe5d1f4cad3bac14574678ab05ea311a945bde7863b5be93f9f"
+  },
+  "fixture_sha256": "417e357064675aa8b86ce0078f93eca94fab8299175561f968fd12a486d5b0e8",
+  "initial": {
+    "mode": "ordinary",
+    "initial_pose_progress": null,
+    "initial_route_velocity_mps": 0.0,
+    "env_origin": [
+      0.0,
+      70.0,
+      0.0
+    ],
+    "robot_root_state": [
+      -0.17590343952178955,
+      70.0,
+      0.3772261440753937,
+      0.9762960076332092,
+      0.0,
+      -0.2164396196603775,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "cart_root_state": [
+      -1.6946980953216553,
+      70.0,
+      -0.4592372179031372,
+      0.9762960076332092,
+      0.0,
+      -0.2164396196603775,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "joint_position_action_order": [
+      0.0,
+      0.6000000238418579,
+      -1.5,
+      0.0,
+      0.6000000238418579,
+      -1.5,
+      0.0,
+      -0.6000000238418579,
+      1.5,
+      0.0,
+      -0.6000000238418579,
+      1.5,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "cart_mass_kg": 40.0,
+    "episode_step": 0,
+    "simulation_device": "cpu",
+    "robot_tensor_device": "cpu",
+    "cuda_available": true,
+    "cuda_device_name": null,
+    "note": "Captured immediately before first measured control step; no physical state change here."
+  },
+  "runtime": {
+    "checked_at": "2026-10-23T14:23:01.025534+08:00",
+    "dimensions": [
+      300,
+      252,
+      16
+    ],
+    "action_order": [
+      "FR_hip_joint",
+      "FR_thigh_joint",
+      "FR_calf_joint",
+      "FL_hip_joint",
+      "FL_thigh_joint",
+      "FL_calf_joint",
+      "RR_hip_joint",
+      "RR_thigh_joint",
+      "RR_calf_joint",
+      "RL_hip_joint",
+      "RL_thigh_joint",
+      "RL_calf_joint",
+      "FR_wheel_joint",
+      "FL_wheel_joint",
+      "RR_wheel_joint",
+      "RL_wheel_joint"
+    ],
+    "policy_terms": [
+      "base_ang_vel",
+      "projected_gravity",
+      "velocity_commands",
+      "joint_pos",
+      "joint_vel",
+      "actions",
+      "heading_error",
+      "task_context"
+    ],
+    "critic_terms": [
+      "base_lin_vel",
+      "base_ang_vel",
+      "projected_gravity",
+      "velocity_commands",
+      "joint_pos",
+      "joint_vel",
+      "actions",
+      "height_scan",
+      "context"
+    ],
+    "policy_history_frames": 5,
+    "num_envs": 1,
+    "physics_dt": 0.001,
+    "policy_dt": 0.02,
+    "slopes_deg": [
+      25.0
+    ],
+    "payloads_kg": [
+      0.0
+    ],
+    "towed_masses_kg": [
+      40.0
+    ],
+    "physical_robot_masses_kg": [
+      11.66811
+    ],
+    "physical_active_cart_masses_kg": [
+      40.0
+    ],
+    "disabled_cart_note": "0kg tow environments park a disconnected gravity-disabled cart away from lanes",
+    "terrain_ray_max_error_m": 3.1739473342895508e-06,
+    "ground_friction": 3.0,
+    "rolling_coefficient": 0.02,
+    "wheel_damping": 2.0,
+    "passive_cart_drive_stiffness": 0.0,
+    "payload_examples": [
+      {
+        "env": 0,
+        "payload_kg": 0.0,
+        "base_mass_kg": 6.375988960266113,
+        "base_com_m": [
+          0.04137258946657714,
+          -0.00147484314233726,
+          0.01199519494678874
+        ],
+        "inertia_body_frame": [
+          [
+            0.012369656935334207,
+            -6.354520337481545e-06,
+            -0.00048238123417832044
+          ],
+          [
+            -6.354520792228896e-06,
+            0.0493471659719944,
+            -1.0697818652261093e-05
+          ],
+          [
+            -0.00048238123417832044,
+            -1.0697825928218707e-05,
+            0.05612371861934662
+          ]
+        ]
+      }
+    ],
+    "physical_com_inertia_verified": true,
+    "unloaded_inertia_urdf_verified": true,
+    "nonbase_inertia_unchanged": true,
+    "behavior_acceptance": "not_evaluated",
+    "minus25_towing_count": 0,
+    "payload_towing_mutually_exclusive": true,
+    "software_effort_limits_Nm": [
+      96.0,
+      96.0,
+      96.0,
+      96.0,
+      96.0,
+      96.0,
+      96.0,
+      96.0,
+      96.0,
+      96.0,
+      96.0,
+      96.0,
+      48.0,
+      48.0,
+      48.0,
+      48.0
+    ],
+    "solver_effort_limits_Nm": [
+      1000000000.0,
+      1000000000.0,
+      1000000000.0,
+      1000000000.0,
+      1000000000.0,
+      1000000000.0,
+      1000000000.0,
+      1000000000.0,
+      1000000000.0,
+      1000000000.0,
+      1000000000.0,
+      1000000000.0,
+      1000000000.0,
+      1000000000.0,
+      1000000000.0,
+      1000000000.0
+    ],
+    "motor_sample_hz": 1000,
+    "hitch_height_initial_m": 0.04,
+    "robot_hitch_local_m": [
+      -0.3799999952316284,
+      0.0,
+      -0.1762229949235916
+    ],
+    "cart_hitch_local_m": [
+      0.3499999940395355,
+      0.0,
+      -0.25999999046325684
+    ],
+    "loaded_command_mps": [
+      0.2,
+      0.6
+    ],
+    "unloaded_only_3mps_requirement": true,
+    "unique_condition_count": 1,
+    "class_counts": {
+      "unloaded": 0,
+      "payload_only": 0,
+      "towing_only": 1
+    },
+    "command_profile": "slew",
+    "unloaded_acceleration_mps2": 1.0,
+    "loaded_acceleration_mps2": 0.05,
+    "hitch_margin_m": 0.05,
+    "leg_kp": [
+      80.0,
+      80.0,
+      80.0,
+      80.0,
+      80.0,
+      80.0,
+      80.0,
+      80.0,
+      80.0,
+      80.0,
+      80.0,
+      80.0
+    ],
+    "leg_kd": [
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0
+    ],
+    "rigid_body_angular_caps": {
+      "status": "matched",
+      "unit": "deg/s",
+      "environments": 1,
+      "checked_bodies": 17,
+      "wheel_bodies": 4,
+      "wheel_cap": 4000.0,
+      "other_body_cap": 1000.0,
+      "source": {
+        "source_prim": "/World/envs/env_0/Robot",
+        "before": {
+          "Base_link": {
+            "physics:centerOfMass": "(0.04137259, -0.0014748431, 0.011995195)",
+            "physics:diagonalInertia": "(0.012364337, 0.049347155, 0.05612905)",
+            "physics:mass": "6.375988960266113",
+            "physics:principalAxes": "(0.9999845, 0.0007829989, -0.0055114464, 0.00009181769)",
+            "physxArticulation:enabledSelfCollisions": "False",
+            "physxArticulation:solverPositionIterationCount": "4",
+            "physxArticulation:solverVelocityIterationCount": "1",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "FL_hip_link": {
+            "physics:centerOfMass": "(0.03799077, 0.03713449, 0.0005882226)",
+            "physics:diagonalInertia": "(0.000085802334, 0.00014928644, 0.000116786774)",
+            "physics:mass": "0.1321806013584137",
+            "physics:principalAxes": "(0.9611889, 0.030309524, 0.0030273006, 0.27420458)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "FL_thigh_link": {
+            "physics:centerOfMass": "(-0.00005479164, 0.04237444, -0.11346573)",
+            "physics:diagonalInertia": "(0.002967595, 0.0031794126, 0.00036947735)",
+            "physics:mass": "0.41060760617256165",
+            "physics:principalAxes": "(0.9950429, -0.09944461, 0.00046074184, 0.0004968381)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "FL_calf_link": {
+            "physics:centerOfMass": "(-0.0002745676, 0.0025438578, -0.13906705)",
+            "physics:diagonalInertia": "(0.0029742566, 0.0031493264, 0.00022749604)",
+            "physics:mass": "0.37571319937705994",
+            "physics:principalAxes": "(0.9994659, -0.032675393, 0.00012964799, -0.000539457)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "FL_wheel_link": {
+            "physics:centerOfMass": "(3.5639758e-7, -0.013540248, -3.415193e-7)",
+            "physics:diagonalInertia": "(0.0010661258, 0.0020369934, 0.0010661377)",
+            "physics:mass": "0.40468940138816833",
+            "physics:principalAxes": "(0.9708694, 2.491162e-7, -0.23960932, 6.147836e-8)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "FR_hip_link": {
+            "physics:centerOfMass": "(0.035161037, -0.038054276, 0.00025183184)",
+            "physics:diagonalInertia": "(0.000085802334, 0.00014928644, 0.000116786774)",
+            "physics:mass": "0.1321806013584137",
+            "physics:principalAxes": "(0.9611889, 0.030309524, 0.0030273006, 0.27420458)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "FR_thigh_link": {
+            "physics:centerOfMass": "(-0.00006728289, -0.04235228, -0.11341599)",
+            "physics:diagonalInertia": "(0.0029654352, 0.0031767124, 0.00036892862)",
+            "physics:mass": "0.41045066714286804",
+            "physics:principalAxes": "(0.9950408, 0.09946348, 0.0005343558, 0.00074854965)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "FR_calf_link": {
+            "physics:centerOfMass": "(0.0002943168, -0.0025415176, -0.13905853)",
+            "physics:diagonalInertia": "(0.0029725777, 0.0031474864, 0.00022724537)",
+            "physics:mass": "0.37555110454559326",
+            "physics:principalAxes": "(0.9994668, 0.032648377, -0.00013983453, -0.000641116)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "FR_wheel_link": {
+            "physics:centerOfMass": "(-7.14267e-9, 0.01354025, 4.930158e-7)",
+            "physics:diagonalInertia": "(0.0010661376, 0.0020369932, 0.0010661257)",
+            "physics:mass": "0.40468931198120117",
+            "physics:principalAxes": "(0.9911445, 2.5345417e-7, -0.1327877, 3.39563e-8)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "RL_hip_link": {
+            "physics:centerOfMass": "(-0.035161037, 0.038054276, 0.0002518318)",
+            "physics:diagonalInertia": "(0.000085802334, 0.00014928644, 0.000116786774)",
+            "physics:mass": "0.1321806013584137",
+            "physics:principalAxes": "(0.9611889, 0.030309524, 0.0030273006, 0.27420458)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "RL_thigh_link": {
+            "physics:centerOfMass": "(0.00006727339, 0.042352278, -0.113415964)",
+            "physics:diagonalInertia": "(0.002965435, 0.0031767122, 0.00036892877)",
+            "physics:mass": "0.41045045852661133",
+            "physics:principalAxes": "(0.9950408, -0.09946348, -0.00053437427, 0.000748851)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "RL_calf_link": {
+            "physics:centerOfMass": "(-0.00029396714, 0.0025416142, -0.1390582)",
+            "physics:diagonalInertia": "(0.0029725642, 0.0031474722, 0.00022724508)",
+            "physics:mass": "0.3755498230457306",
+            "physics:principalAxes": "(0.99946666, -0.03264863, 0.00014019692, -0.0006410949)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "RL_wheel_link": {
+            "physics:centerOfMass": "(-4.2406427e-7, -0.013540252, 2.525559e-7)",
+            "physics:diagonalInertia": "(0.0010661262, 0.0020369939, 0.001066138)",
+            "physics:mass": "0.4046894907951355",
+            "physics:principalAxes": "(0.9916998, -2.3017407e-7, -0.12857464, -2.9842244e-8)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "RR_hip_link": {
+            "physics:centerOfMass": "(-0.03799077, -0.03713449, 0.0005882226)",
+            "physics:diagonalInertia": "(0.000085802334, 0.00014928644, 0.000116786774)",
+            "physics:mass": "0.1321806013584137",
+            "physics:principalAxes": "(0.9611889, 0.030309524, 0.0030273006, 0.27420458)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "RR_thigh_link": {
+            "physics:centerOfMass": "(0.000054934022, -0.042374436, -0.11346574)",
+            "physics:diagonalInertia": "(0.0029675942, 0.003179412, 0.00036947723)",
+            "physics:mass": "0.41060754656791687",
+            "physics:principalAxes": "(0.9950429, 0.09944459, -0.00046044972, 0.0004996446)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "RR_calf_link": {
+            "physics:centerOfMass": "(0.00027452334, -0.0025439544, -0.13906674)",
+            "physics:diagonalInertia": "(0.0029742431, 0.003149313, 0.00022749575)",
+            "physics:mass": "0.37571194767951965",
+            "physics:principalAxes": "(0.9994659, 0.03267564, -0.0001299965, -0.00053943106)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "RR_wheel_link": {
+            "physics:centerOfMass": "(-4.848202e-7, 0.013540248, -9.305842e-8)",
+            "physics:diagonalInertia": "(0.0010661258, 0.0020369934, 0.0010661377)",
+            "physics:mass": "0.40468940138816833",
+            "physics:principalAxes": "(0.99892676, -1.0789792e-8, -0.04631728, 2.3270391e-7)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          }
+        },
+        "after": {
+          "Base_link": {
+            "physics:centerOfMass": "(0.04137259, -0.0014748431, 0.011995195)",
+            "physics:diagonalInertia": "(0.012364337, 0.049347155, 0.05612905)",
+            "physics:mass": "6.375988960266113",
+            "physics:principalAxes": "(0.9999845, 0.0007829989, -0.0055114464, 0.00009181769)",
+            "physxArticulation:enabledSelfCollisions": "False",
+            "physxArticulation:solverPositionIterationCount": "4",
+            "physxArticulation:solverVelocityIterationCount": "1",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "FL_hip_link": {
+            "physics:centerOfMass": "(0.03799077, 0.03713449, 0.0005882226)",
+            "physics:diagonalInertia": "(0.000085802334, 0.00014928644, 0.000116786774)",
+            "physics:mass": "0.1321806013584137",
+            "physics:principalAxes": "(0.9611889, 0.030309524, 0.0030273006, 0.27420458)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "FL_thigh_link": {
+            "physics:centerOfMass": "(-0.00005479164, 0.04237444, -0.11346573)",
+            "physics:diagonalInertia": "(0.002967595, 0.0031794126, 0.00036947735)",
+            "physics:mass": "0.41060760617256165",
+            "physics:principalAxes": "(0.9950429, -0.09944461, 0.00046074184, 0.0004968381)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "FL_calf_link": {
+            "physics:centerOfMass": "(-0.0002745676, 0.0025438578, -0.13906705)",
+            "physics:diagonalInertia": "(0.0029742566, 0.0031493264, 0.00022749604)",
+            "physics:mass": "0.37571319937705994",
+            "physics:principalAxes": "(0.9994659, -0.032675393, 0.00012964799, -0.000539457)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "FL_wheel_link": {
+            "physics:centerOfMass": "(3.5639758e-7, -0.013540248, -3.415193e-7)",
+            "physics:diagonalInertia": "(0.0010661258, 0.0020369934, 0.0010661377)",
+            "physics:mass": "0.40468940138816833",
+            "physics:principalAxes": "(0.9708694, 2.491162e-7, -0.23960932, 6.147836e-8)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "4000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "FR_hip_link": {
+            "physics:centerOfMass": "(0.035161037, -0.038054276, 0.00025183184)",
+            "physics:diagonalInertia": "(0.000085802334, 0.00014928644, 0.000116786774)",
+            "physics:mass": "0.1321806013584137",
+            "physics:principalAxes": "(0.9611889, 0.030309524, 0.0030273006, 0.27420458)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "FR_thigh_link": {
+            "physics:centerOfMass": "(-0.00006728289, -0.04235228, -0.11341599)",
+            "physics:diagonalInertia": "(0.0029654352, 0.0031767124, 0.00036892862)",
+            "physics:mass": "0.41045066714286804",
+            "physics:principalAxes": "(0.9950408, 0.09946348, 0.0005343558, 0.00074854965)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "FR_calf_link": {
+            "physics:centerOfMass": "(0.0002943168, -0.0025415176, -0.13905853)",
+            "physics:diagonalInertia": "(0.0029725777, 0.0031474864, 0.00022724537)",
+            "physics:mass": "0.37555110454559326",
+            "physics:principalAxes": "(0.9994668, 0.032648377, -0.00013983453, -0.000641116)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "FR_wheel_link": {
+            "physics:centerOfMass": "(-7.14267e-9, 0.01354025, 4.930158e-7)",
+            "physics:diagonalInertia": "(0.0010661376, 0.0020369932, 0.0010661257)",
+            "physics:mass": "0.40468931198120117",
+            "physics:principalAxes": "(0.9911445, 2.5345417e-7, -0.1327877, 3.39563e-8)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "4000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "RL_hip_link": {
+            "physics:centerOfMass": "(-0.035161037, 0.038054276, 0.0002518318)",
+            "physics:diagonalInertia": "(0.000085802334, 0.00014928644, 0.000116786774)",
+            "physics:mass": "0.1321806013584137",
+            "physics:principalAxes": "(0.9611889, 0.030309524, 0.0030273006, 0.27420458)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "RL_thigh_link": {
+            "physics:centerOfMass": "(0.00006727339, 0.042352278, -0.113415964)",
+            "physics:diagonalInertia": "(0.002965435, 0.0031767122, 0.00036892877)",
+            "physics:mass": "0.41045045852661133",
+            "physics:principalAxes": "(0.9950408, -0.09946348, -0.00053437427, 0.000748851)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "RL_calf_link": {
+            "physics:centerOfMass": "(-0.00029396714, 0.0025416142, -0.1390582)",
+            "physics:diagonalInertia": "(0.0029725642, 0.0031474722, 0.00022724508)",
+            "physics:mass": "0.3755498230457306",
+            "physics:principalAxes": "(0.99946666, -0.03264863, 0.00014019692, -0.0006410949)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "RL_wheel_link": {
+            "physics:centerOfMass": "(-4.2406427e-7, -0.013540252, 2.525559e-7)",
+            "physics:diagonalInertia": "(0.0010661262, 0.0020369939, 0.001066138)",
+            "physics:mass": "0.4046894907951355",
+            "physics:principalAxes": "(0.9916998, -2.3017407e-7, -0.12857464, -2.9842244e-8)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "4000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "RR_hip_link": {
+            "physics:centerOfMass": "(-0.03799077, -0.03713449, 0.0005882226)",
+            "physics:diagonalInertia": "(0.000085802334, 0.00014928644, 0.000116786774)",
+            "physics:mass": "0.1321806013584137",
+            "physics:principalAxes": "(0.9611889, 0.030309524, 0.0030273006, 0.27420458)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "RR_thigh_link": {
+            "physics:centerOfMass": "(0.000054934022, -0.042374436, -0.11346574)",
+            "physics:diagonalInertia": "(0.0029675942, 0.003179412, 0.00036947723)",
+            "physics:mass": "0.41060754656791687",
+            "physics:principalAxes": "(0.9950429, 0.09944459, -0.00046044972, 0.0004996446)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "RR_calf_link": {
+            "physics:centerOfMass": "(0.00027452334, -0.0025439544, -0.13906674)",
+            "physics:diagonalInertia": "(0.0029742431, 0.003149313, 0.00022749575)",
+            "physics:mass": "0.37571194767951965",
+            "physics:principalAxes": "(0.9994659, 0.03267564, -0.0001299965, -0.00053943106)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "1000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          },
+          "RR_wheel_link": {
+            "physics:centerOfMass": "(-4.848202e-7, 0.013540248, -9.305842e-8)",
+            "physics:diagonalInertia": "(0.0010661258, 0.0020369934, 0.0010661377)",
+            "physics:mass": "0.40468940138816833",
+            "physics:principalAxes": "(0.99892676, -1.0789792e-8, -0.04631728, 2.3270391e-7)",
+            "physxContactReport:threshold": "1.0",
+            "physxRigidBody:angularDamping": "0.0",
+            "physxRigidBody:disableGravity": "False",
+            "physxRigidBody:linearDamping": "0.0",
+            "physxRigidBody:maxAngularVelocity": "4000.0",
+            "physxRigidBody:maxDepenetrationVelocity": "1.0",
+            "physxRigidBody:maxLinearVelocity": "1000.0",
+            "physxRigidBody:retainAccelerations": "False"
+          }
+        },
+        "relative_paths": {
+          "Base_link": "Base_link",
+          "FL_hip_link": "FL_hip_link",
+          "FL_thigh_link": "FL_thigh_link",
+          "FL_calf_link": "FL_calf_link",
+          "FL_wheel_link": "FL_wheel_link",
+          "FR_hip_link": "FR_hip_link",
+          "FR_thigh_link": "FR_thigh_link",
+          "FR_calf_link": "FR_calf_link",
+          "FR_wheel_link": "FR_wheel_link",
+          "RL_hip_link": "RL_hip_link",
+          "RL_thigh_link": "RL_thigh_link",
+          "RL_calf_link": "RL_calf_link",
+          "RL_wheel_link": "RL_wheel_link",
+          "RR_hip_link": "RR_hip_link",
+          "RR_thigh_link": "RR_thigh_link",
+          "RR_calf_link": "RR_calf_link",
+          "RR_wheel_link": "RR_wheel_link"
+        },
+        "differences": [
+          {
+            "body": "FL_wheel_link",
+            "attribute": "physxRigidBody:maxAngularVelocity",
+            "before": "1000.0",
+            "after": "4000.0"
+          },
+          {
+            "body": "FR_wheel_link",
+            "attribute": "physxRigidBody:maxAngularVelocity",
+            "before": "1000.0",
+            "after": "4000.0"
+          },
+          {
+            "body": "RL_wheel_link",
+            "attribute": "physxRigidBody:maxAngularVelocity",
+            "before": "1000.0",
+            "after": "4000.0"
+          },
+          {
+            "body": "RR_wheel_link",
+            "attribute": "physxRigidBody:maxAngularVelocity",
+            "before": "1000.0",
+            "after": "4000.0"
+          }
+        ],
+        "unit": "deg/s",
+        "changed_before_cloning_and_physics": true
+      }
+    },
+    "conditional_exploration_columns": {
+      "current_vx": 42,
+      "current_towed_context": 299,
+      "noise_true_state_inputs": false
+    },
+    "wheel_target_clip_rad_s": [
+      [
+        -50.0,
+        50.0
+      ],
+      [
+        -50.0,
+        50.0
+      ],
+      [
+        -50.0,
+        50.0
+      ],
+      [
+        -50.0,
+        50.0
+      ]
+    ],
+    "wheel_joint_velocity_limits_rad_s": [
+      60.0,
+      60.0,
+      60.0,
+      60.0
+    ],
+    "wheel_solver_velocity_limits_rad_s": [
+      60.0,
+      60.0,
+      60.0,
+      60.0
+    ],
+    "wheel_actuator_velocity_limits_rad_s": [
+      60.0,
+      60.0,
+      60.0,
+      60.0
+    ],
+    "episode_length_s": 45.0,
+    "observation_noise_scale": 0.1,
+    "policy_enable_corruption": false,
+    "noise_terms": {
+      "base_ang_vel": {
+        "n_min": -0.020000000000000004,
+        "n_max": 0.020000000000000004,
+        "scale": 0.5
+      },
+      "projected_gravity": {
+        "n_min": -0.005000000000000001,
+        "n_max": 0.005000000000000001,
+        "scale": 1.0
+      },
+      "joint_pos": {
+        "n_min": -0.001,
+        "n_max": 0.001,
+        "scale": 1.0
+      },
+      "joint_vel": {
+        "n_min": -0.15000000000000002,
+        "n_max": 0.15000000000000002,
+        "scale": 0.05
+      }
+    }
+  },
+  "network_contract": {
+    "version": "lighthw_r1_unified_v6",
+    "task": "MultiSkill-LightHW-Wheel-MotorSizingV6-v0",
+    "policy_dim": 300,
+    "critic_dim": 252,
+    "action_dim": 16,
+    "requirements_revision": "2026-10-16_no_towing_at_minus25",
+    "excluded_conditions": [
+      {
+        "slope_deg": -25.0,
+        "towed_kg_gt": 0.0
+      }
+    ],
+    "training_condition_count": 64,
+    "evaluation_case_count": 16,
+    "minus25_requirements": "unloaded >=3m/s; payload15 downhill without speed threshold; no trailer",
+    "history_frames": 5,
+    "history_layout": "term-major, oldest-to-newest; last frame is current",
+    "policy_terms": {
+      "base_ang_vel": 3,
+      "projected_gravity": 3,
+      "velocity_commands": 3,
+      "joint_pos": 16,
+      "joint_vel": 16,
+      "actions": 16,
+      "heading_error": 1,
+      "task_context": 2
+    },
+    "policy_base_linear_velocity": false,
+    "policy_height_scan": false,
+    "heading_observation": "IMU heading relative to reset heading, radians",
+    "critic_extra": [
+      "surface_normal_b_x",
+      "surface_normal_b_y",
+      "surface_normal_b_z",
+      "payload_kg/15",
+      "heading_error_rad",
+      "towed_mass_kg/40"
+    ],
+    "reward_profile": "v6_rl_towing_signed_robot_cart_progress",
+    "critic_task_state_extra": [
+      "hold_route_displacement/.05",
+      "hold_lateral_displacement/.05",
+      "hold_elapsed/7",
+      "requested_vx/3.1",
+      "phase0",
+      "phase1",
+      "phase2",
+      "phase3",
+      "phase_elapsed/30",
+      "remaining_distance/goal"
+    ],
+    "slope_posture": "uphill relative pitch [-min(.4*slope,10deg),0]; downhill +/-min(.2*abs(slope),5deg); roll constrained",
+    "default_leg_pose_penalty": "flat zero-command only; disabled on slopes >=2deg",
+    "hitch_clearance_margin_m": 0.05,
+    "hitch_failure_clearance_m": 0.005,
+    "physics_dt": 0.001,
+    "policy_dt": 0.02,
+    "episode_s": 65.0,
+    "action_order": [
+      "FR_hip_joint",
+      "FR_thigh_joint",
+      "FR_calf_joint",
+      "FL_hip_joint",
+      "FL_thigh_joint",
+      "FL_calf_joint",
+      "RR_hip_joint",
+      "RR_thigh_joint",
+      "RR_calf_joint",
+      "RL_hip_joint",
+      "RL_thigh_joint",
+      "RL_calf_joint",
+      "FR_wheel_joint",
+      "FL_wheel_joint",
+      "RR_wheel_joint",
+      "RL_wheel_joint"
+    ],
+    "leg_mapping": "clip(default + scale * raw, URDF_lower, URDF_upper)",
+    "leg_scale": {
+      "hip": 0.08,
+      "thigh": 0.14,
+      "calf": 0.14
+    },
+    "leg_pd": [
+      80.0,
+      3.0
+    ],
+    "wheel_scale": 5.0,
+    "wheel_clip": [
+      -50.0,
+      50.0
+    ],
+    "wheel_joint_velocity_limit_rad_s": 60.0,
+    "wheel_damping": 2.0,
+    "actuator_delay_steps": [
+      0,
+      0
+    ],
+    "empirical_normalization": false,
+    "payload_kg": [
+      0.0,
+      5.0,
+      10.0,
+      15.0
+    ],
+    "payload_center_m": [
+      0.0,
+      0.0,
+      0.2
+    ],
+    "payload_size_m": [
+      0.3,
+      0.25,
+      0.2
+    ],
+    "payload_model": "rigid_composite_mass_com_principal_inertia",
+    "angles_deg": [
+      -25.0,
+      -20.0,
+      -15.0,
+      -10.0,
+      -5.0,
+      0.0,
+      5.0,
+      10.0,
+      15.0,
+      20.0,
+      25.0
+    ],
+    "slope_mix": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      -5.0,
+      5.0,
+      -10.0,
+      10.0,
+      -15.0,
+      15.0,
+      -20.0,
+      20.0,
+      -25.0,
+      25.0
+    ],
+    "terrain": "eleven long constant-gradient lanes; signed tan(degrees)",
+    "unloaded_speed_mps": [
+      0.2,
+      3.1
+    ],
+    "unloaded_acceptance_speed_mps": 3.0,
+    "loaded_command_mps": [
+      0.2,
+      0.6
+    ],
+    "loaded_minimum_speed_requirement": null,
+    "zero_probability": 0.25,
+    "standing_command_zero_on_reset": true,
+    "payload_towing_mutually_exclusive": true,
+    "condition_class_weights": {
+      "unloaded": 0.25,
+      "payload_only": 0.25,
+      "towing_only": 0.5
+    },
+    "unloaded_high_speed_anchor_probability_given_moving": 0.4,
+    "target_condition_fraction": 0.2,
+    "command_period_s": "full_task_cycle",
+    "command_slew_mps2": {
+      "unloaded": 1.0,
+      "loaded": 0.3
+    },
+    "training_reset_zero_s": 3.0,
+    "standing_after_applied_command_zero": true,
+    "hold_drift_tolerance_m": 0.05,
+    "tracking_frame": "fixed route tangent and lateral, independent of body heading",
+    "positive_tracking_safety_gate": "smooth posture/heading/height/hitch; negative costs remain active",
+    "initialization": "known V4/V5/V6 Actor and compatible Critic transfer; zero-extended task columns; new Adam and calibrated noise",
+    "towed_mass_kg": [
+      0.0,
+      20.0,
+      40.0
+    ],
+    "towing_model": "passive_four_wheel_cart_compliant_drawbar",
+    "default_rolling_coefficient": 0.02,
+    "default_ground_friction": 4.0,
+    "default_leg_torque_limit_Nm": 96.0,
+    "default_wheel_torque_limit_Nm": 48.0,
+    "default_hitch_height_m": 0.07,
+    "torque_measurement_hz": 1000,
+    "torque_measurement_frame": "joint output shaft",
+    "effort_reward_denominator": "explicit actuator effort_limit in actual joint order",
+    "loaded_evaluation": "travel 1m, slew to zero, settle 2s, hold 5s; 60s budget, no moving speed threshold",
+    "unloaded_evaluation": "zero3s, target3.1 until11s, slew to zero, settle2s, hold5s; 30s budget",
+    "drawbar_rest_m": 1.0,
+    "drawbar_stiffness_Npm": 2000.0,
+    "drawbar_damping_Nspm": 150.0,
+    "training": "all conditions from update zero; one shared ActorCritic and one PPO optimizer",
+    "urdf_sha256": "5abb7c07c0ad401f7940018fee739ecc2fb4e0d3e8fc83274e75d1886db19fbb",
+    "policy_known_task_context": [
+      "nominal payload_kg/15",
+      "nominal trailer_kg/40"
+    ],
+    "wheel_body_angular_cap_deg_s": 4000.0,
+    "other_body_angular_cap_deg_s": 1000.0,
+    "reset_height_m": 0.416223,
+    "hitch_reference": "actual reset clearance on nominal surface",
+    "behavior_scope": "Training readiness is separate from final 16-case task acceptance",
+    "reward_weights_changed": {
+      "surface_height": -200.0,
+      "stand_drift": -2.0,
+      "towing_support_margin": -3.0
+    },
+    "towing_support_target_fraction": 0.25,
+    "ppo_learning_rate": 3e-05,
+    "critic_learning_rate": 0.0001,
+    "ppo_schedule": "fixed_with_measured_kl_stop",
+    "initial_noise_std_by_action": [
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.08,
+      0.08,
+      0.08,
+      0.08
+    ],
+    "observation_noise_scale": 0.1,
+    "ppo_kl_stop_threshold": 0.01,
+    "ppo_kl_guard": "full-rollout post-step backtracking 1..1/256; reject Actor and Adam if none acceptable; Critic continues",
+    "ppo_optimizer_state_version": 3,
+    "ppo_rollout_steps": 64,
+    "gamma": 0.995,
+    "gae_lambda": 0.95,
+    "critic_warmup_updates": 20,
+    "periodic_evaluation": "baseline and every100; named-case regression gate and best eligible checkpoint",
+    "loaded_progress_reference_mps": 0.2,
+    "loaded_progress_weight": 6.0,
+    "reference_cache_schema": "case_stage_success_v1",
+    "reference_static_stages": [
+      "initial_settle",
+      "static_mid",
+      "static_hold"
+    ],
+    "reference_moving_stages": [
+      "wait",
+      "move",
+      "brake",
+      "stop_settle",
+      "stop_hold"
+    ],
+    "reference_loss_coef": 0.1,
+    "reference_sampling": "uniform_case_phase_group_then_uniform_frame",
+    "reference_max_group_mse": 0.0,
+    "reference_action_scale": [
+      0.2,
+      0.2,
+      0.2,
+      0.2,
+      0.2,
+      0.2,
+      0.2,
+      0.2,
+      0.2,
+      0.2,
+      0.2,
+      0.2,
+      0.2,
+      0.2,
+      0.2,
+      0.2
+    ],
+    "min_noise_std_by_action": [
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.08,
+      0.08,
+      0.08,
+      0.08
+    ],
+    "max_noise_std_by_action": [
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.04,
+      0.08,
+      0.08,
+      0.08,
+      0.08
+    ],
+    "ignored_policy_columns": [
+      205,
+      285
+    ],
+    "ignored_policy_column_semantics": "all five previous-action frames; weights and Adam moments remain zero",
+    "exploration": "same 300->16 mean Actor; commanded towing motion multiplies std up to8; all probabilities use conditional std",
+    "towing_height_free_band_m": [
+      0.36,
+      0.44
+    ],
+    "towing_progress_weight": 8.0,
+    "towing_slip_weight": -0.05,
+    "towing_failure_extra_weight": -400.0,
+    "distance_reached_bonus": 10.0,
+    "teacher_required": false,
+    "training_readiness": "software/runtime integration; heavy towing behavior is the PPO learning objective"
+  },
+  "request_metadata": {
+    "seed": 43,
+    "initial_state_mode": "ordinary",
+    "slope_deg": 25.0,
+    "physical_cart_mass_kg": 40.0,
+    "noise": false,
+    "physical_trailer_connected": true,
+    "actor_inference": false,
+    "ppo_updates": 0,
+    "execution_physics": {
+      "device": "cpu",
+      "hitch_height_m": 0.04,
+      "robot_hitch_offset_m": 0.2,
+      "robot_hitch_nominal_height_m": 0.24000000000000002,
+      "cart_hitch_nominal_height_m": 0.04,
+      "loaded_acceleration_mps2": 0.05,
+      "ground_friction": 3.0,
+      "friction_combine": "min",
+      "rolling_coefficient": 0.02,
+      "base_com_shift_m": 0.0,
+      "robot_mass_variant": false
+    },
+    "ground_friction": 3.0,
+    "rounded_cart_wheels": true,
+    "position_iterations": 4,
+    "velocity_iterations": 1,
+    "cart_solver_iterations": [
+      4,
+      1
+    ]
+  },
+  "solver": {
+    "/physicsScene": {
+      "physxScene:enableExternalForcesEveryIteration": false,
+      "physxScene:maxPositionIterationCount": 4,
+      "physxScene:maxVelocityIterationCount": 1,
+      "physxScene:minPositionIterationCount": 1,
+      "physxScene:minVelocityIterationCount": 0
+    },
+    "/World/envs/env_0/Robot/Base_link": {
+      "physxArticulation:solverPositionIterationCount": 4,
+      "physxArticulation:solverVelocityIterationCount": 1,
+      "physxRigidBody:solverPositionIterationCount": 16,
+      "physxRigidBody:solverVelocityIterationCount": 1
+    },
+    "/World/envs/env_0/Trailer/cart_base": {
+      "physxArticulation:solverPositionIterationCount": 4,
+      "physxArticulation:solverVelocityIterationCount": 1,
+      "physxRigidBody:solverPositionIterationCount": 16,
+      "physxRigidBody:solverVelocityIterationCount": 1
+    }
+  },
+  "geometry": {
+    "variant": "spherical_tread_passive_wheels",
+    "total_mass_kg": 40.0,
+    "wheel_radius_m": 0.14,
+    "wheel_mass_kg": 1.0,
+    "wheel_centers_m": [
+      [
+        0.25,
+        0.4,
+        -0.16
+      ],
+      [
+        0.25,
+        -0.4,
+        -0.16
+      ],
+      [
+        -0.25,
+        0.4,
+        -0.16
+      ],
+      [
+        -0.25,
+        -0.4,
+        -0.16
+      ]
+    ],
+    "wheel_inertia_diagonal_kgm2": [
+      0.007840000000000001,
+      0.007840000000000001,
+      0.007840000000000001
+    ],
+    "overall_width_m": 1.08,
+    "original_cylinder_cart": false,
+    "note": "Round tire cross-section; widened wheel centers prevent body overlap. No drive, reduced gravity, or robot model change."
+  }
+}

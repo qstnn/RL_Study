@@ -1,0 +1,20 @@
+{
+  "cpu_tests_passed": 5,
+  "python_syntax_files": 3,
+  "shell_syntax_passed": true,
+  "geometry_executed_exactly_matches_baseline": true,
+  "initial_attempt_failed_before_simulation": true,
+  "initial_attempt_physics_traces": 0,
+  "initial_attempt_error": {
+    "error": "",
+    "traceback": "Traceback (most recent call last):\n  File \"/home/user/RL_lab/rl_training/model_lighthw/training/multiskill/routes/route_04_two_leg_balance/smooth_v6/diagnostics/takeover04/probe.py\", line 147, in worker\n    check_probe_sources(run)\n  File \"/home/user/RL_lab/rl_training/model_lighthw/training/multiskill/routes/route_04_two_leg_balance/smooth_v6/diagnostics/takeover04/probe.py\", line 91, in check_probe_sources\n    assert read(run / 'geometry.json') == read(BASELINE / 'geometry.json')\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+    "at": "2026-10-22T17:42:27+08:00"
+  },
+  "initial_attempt_path": "/home/user/RL_lab/rl_training/model_lighthw/training/multiskill/routes/route_04_two_leg_balance/smooth_v6/diagnostics/takeover04/runs/2026-10-22_fourth_actor_takeover_6",
+  "baseline_behavior_check": {
+    "expected_exit": 1,
+    "successes": 0,
+    "cases": 6
+  },
+  "note": "Only the new probe preflight was fixed; original 38 execution sources and Actor remain frozen."
+}
